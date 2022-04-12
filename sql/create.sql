@@ -7,7 +7,7 @@ create table Musician (
 	img oid
 );
 
-drop type instr_enum cascade;
+drop type if exists instr_enum cascade;
 create type instr_enum as enum ('guitar', 'bass', 'vocal', 'drums');
 
 drop table if exists Instrument cascade;
@@ -23,7 +23,7 @@ create table MusInstrInt (
 );
 
 
-drop type genre_enum cascade;
+drop type if exists genre_enum cascade;
 create type genre_enum as enum('rock', 'alternative', 'indie', 'blues', 'metal');
 
 drop table if exists Band cascade;
@@ -46,8 +46,23 @@ create table Membership (
 	unique (musName, bandName, enterDate)
 );
 
+drop table if exists Album cascade;
+create table Album (
+    albumID int generated always as identity primary key,
+    releaseDate date,
+    title varchar(64) not null,
+    bandID int not null references Band(bandID),
+    unique(title, bandID)
+);
 
-
-
+drop table if exists Song cascade;
+create table Song (
+    songID int generated always as identity primary key,
+    length interval HOUR TO SECOND not null,
+    data oid not null,
+    songName varchar(64) not null,
+    albumID int not null references Album(albumID),
+    unique(songName, albumID)
+);
 
 
