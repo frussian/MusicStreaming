@@ -9,3 +9,4 @@ call insert_musician('Axl Rose', 'GnR frontman', '1962-02-06', '{vocal}');
 
 select * from musician;
 select * from instrument;
+select unnest(enum_range(NULL::instr_enum));

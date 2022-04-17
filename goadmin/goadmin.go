@@ -8,13 +8,29 @@ import (
 	"time"
 )
 
-func addMusician(conn *pgx.Conn) {
+func getInstruments(conn *pgx.Conn) []string {
+	var instruments []string
+	rows, err := conn.Query(context.Background(), "select unnest(enum_range(NULL::instr_enum));")
+	if err != nil {
+		panic(err)
+	}
+	for rows.Next() {
+		instr := ""
+		err = rows.Scan(&instr)
+		if err != nil {
+			panic(err)
+		}
+		instruments = append(instruments, instr)
+	}
+	return instruments
+}
+
+func addMusician(conn *pgx.Conn) error {
 	timeFormat := "02-01-2006"
 	prompt := promptui.Prompt{
 		Label:       "Enter musician name",
-		IsConfirm:   false,
 	}
-	_, err := prompt.Run()
+	name, err := prompt.Run()
 	if err != nil {
 		panic(err)
 	}
@@ -27,6 +43,82 @@ func addMusician(conn *pgx.Conn) {
 	dateStr, err := prompt.Run()
 	date, err := time.Parse(timeFormat, dateStr)
 	fmt.Println(date)
+
+	prompt.Label = "Enter biography"
+	prompt.Validate = nil
+	bio, _ := prompt.Run()
+
+	availInstrs := getInstruments(conn)
+
+	prompt.Label = "more instruments?"
+	prompt.IsConfirm = true
+
+	selectPrompt := promptui.Select{
+		Label:             "choose instrument",
+		Items:             availInstrs,
+	}
+
+	instruments := make([]string, 0, len(availInstrs))
+	for {
+		i, _, _ := selectPrompt.Run()
+		instruments = append(instruments, availInstrs[i])
+		next, _ := prompt.Run()
+		if next != "" && next != "y" {
+			break
+		}
+	}
+
+	instrStr := "{"
+	for i, instr := range instruments {
+		if i == len(instruments) - 1 {
+			instrStr += instr + "}"
+		} else {
+			instrStr += instr + ","
+		}
+	}
+
+	_, err = conn.Exec(context.Background(),
+		"call insert_musician($1, $2, $3, $4);", name, bio, date, instrStr)
+	return err
+}
+
+func addInstrument(conn *pgx.Conn) error {
+	prompt := promptui.Prompt {
+		Label:       "Enter musician name",
+	}
+	name, err := prompt.Run()
+	if err != nil {
+		panic(err)
+	}
+
+	availInstrs := getInstruments(conn)
+
+	prompt.Label = "more instruments?"
+	prompt.IsConfirm = true
+	selectPrompt := promptui.Select{
+		Label:             "choose instrument",
+		Items:             availInstrs,
+	}
+	instruments := make([]string, 0, len(availInstrs))
+
+	for {
+		i, _, _ := selectPrompt.Run()
+		instruments = append(instruments, availInstrs[i])
+		next, _ := prompt.Run()
+		if next != "" && next != "y" {
+			break
+		}
+	}
+
+	stmt := "insert into Instrument(musicianID, type) values" +
+		"((select musicianID from musician where musicianName=$1), $2);"
+	for _, instr := range instruments {
+		_, err = conn.Exec(context.Background(), stmt, name, instr)
+		if err != nil {
+			return err
+		}
+	}
+	return nil
 }
 
 func main() {
@@ -90,7 +182,7 @@ func main() {
 	}
 	fmt.Println(conn)
 
-	commands := []string{"add musician", "add instrument",}
+	commands := []string{"add musician", "add instrument", "exit"}
 	options := promptui.Select{
 		Label:             "choose action",
 		Items:             commands,
@@ -103,15 +195,32 @@ func main() {
 		Stdout:            nil,
 	}
 
+	exit := false
 	for {
 		i, _, err := options.Run()
 		if err != nil {
 			panic(err)
 		}
-		fmt.Println(i)
-		if i == 0 {
-			addMusician(conn)
+		switch i {
+		case 0:
+			err = addMusician(conn)
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Println("successful")
+			}
+		case 1:
+			err = addInstrument(conn)
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Println("successful")
+			}
+		case len(commands) - 1:
+			exit = true
 		}
-		break
+		if exit {
+			break
+		}
 	}
 }
