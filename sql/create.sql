@@ -83,6 +83,7 @@ create constraint trigger instr_del_trig
     execute procedure instr_del_trig();
 --
 
+--helper procedure for minimum cardinality
 create or replace procedure insert_musician(name varchar(32), bio text,
     dateOfBirth date, instr instr_enum[]) language plpgsql
 as $$
@@ -102,6 +103,7 @@ end
 $$;
 --
 
+--
 
 drop type if exists genre_enum cascade;
 create type genre_enum as enum('rock', 'alternative', 'indie', 'blues', 'metal');
