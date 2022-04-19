@@ -118,15 +118,64 @@ create table Band (
 	img oid
 );
 
+--triggers and procedures for band and membership
+
+--insert band trigger
+create or replace function band_insert_trig() returns trigger as $band_insert_trig$
+begin
+    if not exists(
+            select 1 from Membership
+            where bandID = new.bandID
+        ) then
+        raise exception 'cannot insert band: band % must have at least 1 participant', new.bandName;
+    end if;
+    return null;
+end;
+$band_insert_trig$ language plpgsql;
+
+drop trigger if exists band_insert_trig on Band;
+create constraint trigger band_insert_trig
+    after insert on Band
+    initially deferred
+    for each row
+execute procedure band_insert_trig();
+--
+
+
 drop table if exists Membership cascade;
 create table Membership (
-	membID int generated always as identity primary key,
-	musName varchar(32) references Musician(musicianName),
-	bandName varchar(32) references Band(bandName),
+	musID int references Musician(musicianID)
+        on delete cascade,
+	bandID int references Band(bandID)
+        on delete cascade
+        deferrable initially deferred,
 	enterDate date not null,
 	quitDate date,
-	unique (musName, bandName, enterDate)
+	primary key (musID, bandID, enterDate)
 );
+
+--delete membership trigger
+create or replace function membership_delete_trig() returns trigger as $membership_delete_trig$
+begin
+    if not exists (select 1 from Membership
+            where bandID = old.bandID
+        ) then
+        raise exception 'cannot delete membership: band % must have at least 1 participant', old.bandID;
+    end if;
+    return null;
+end;
+$membership_delete_trig$ language plpgsql;
+
+drop trigger if exists membership_delete_trig on Membership;
+create constraint trigger membership_delete_trig
+    after delete on Membership
+    initially deferred
+    for each row
+execute procedure membership_delete_trig();
+--
+
+--
+
 
 drop table if exists Album cascade;
 create table Album (
@@ -145,8 +194,8 @@ create table Song (
     data oid not null,
     songName varchar(64) not null,
     albumID int not null references Album(albumID),
-    unique(songName, albumID),
-    unique(albumID, index)
+--     unique(songName, albumID),
+    unique(albumID, songName, index)
 );
 
 

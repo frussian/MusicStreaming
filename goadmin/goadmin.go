@@ -178,7 +178,7 @@ func main() {
 
 	conn, err := pgx.Connect(context.Background(), url)
 	if err != nil {
-		return
+		panic(err)
 	}
 	fmt.Println(conn)
 
