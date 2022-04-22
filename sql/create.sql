@@ -12,9 +12,8 @@ create type instr_enum as enum ('guitar', 'bass', 'vocal', 'drums');
 
 drop table if exists Instrument cascade;
 create table Instrument (
-    musicianID int references Musician(musicianId)
-        on delete cascade
-        deferrable initially deferred,
+    musicianID int not null references Musician(musicianId)
+        on delete cascade,
 	"type" instr_enum not null,
 	primary key(musicianID, "type")
 );
@@ -118,7 +117,37 @@ create table Band (
 	img oid
 );
 
+drop table if exists Membership cascade;
+create table Membership (
+	musID int not null references Musician(musicianID)
+        on delete cascade,
+	bandID int not null references Band(bandID)
+        on delete cascade,
+	enterDate date not null,
+	quitDate date,
+	primary key (musID, bandID, enterDate)
+);
+
 --triggers and procedures for band and membership
+
+create or replace procedure insert_band(bandName varchar(64), genre genre_enum,
+                                        foundingDate date, terminationDate date,
+                                        musicianNameP varchar(32), enterDate date,
+                                        quitDate date)
+language plpgsql
+as $$
+declare
+    id int;
+begin
+--     start transaction;
+    insert into band(bandName, genre, foundingDate, terminationDate) values
+        (bandName, genre, foundingDate, terminationDate) returning bandID into id;
+    insert into Membership(musID, bandID, enterDate, quitDate) values
+        ((select musicianID from musician m where m.musicianName = musicianNameP),
+         id, enterDate, quitDate);
+--     commit;
+end
+$$;
 
 --insert band trigger
 create or replace function band_insert_trig() returns trigger as $band_insert_trig$
@@ -140,19 +169,6 @@ create constraint trigger band_insert_trig
     for each row
 execute procedure band_insert_trig();
 --
-
-
-drop table if exists Membership cascade;
-create table Membership (
-	musID int references Musician(musicianID)
-        on delete cascade,
-	bandID int references Band(bandID)
-        on delete cascade
-        deferrable initially deferred,
-	enterDate date not null,
-	quitDate date,
-	primary key (musID, bandID, enterDate)
-);
 
 --delete membership trigger
 create or replace function membership_delete_trig() returns trigger as $membership_delete_trig$
@@ -176,13 +192,13 @@ execute procedure membership_delete_trig();
 
 --
 
-
 drop table if exists Album cascade;
 create table Album (
     albumID int generated always as identity primary key,
     releaseDate date,
     title varchar(64) not null,
-    bandID int not null references Band(bandID),
+    bandID int not null references Band(bandID)
+        on delete cascade,
     unique(title, bandID)
 );
 
@@ -193,9 +209,51 @@ create table Song (
     index int not null,
     data oid not null,
     songName varchar(64) not null,
-    albumID int not null references Album(albumID),
---     unique(songName, albumID),
+    albumID int not null references Album(albumID)
+        on delete cascade,
     unique(albumID, songName, index)
 );
 
+--album and song triggers and procedures
 
+--insert album trigger
+create or replace function album_insert_trig() returns trigger as $album_insert_trig$
+begin
+    if not exists(
+            select 1 from Song
+            where albumID = new.albumID
+        ) then
+        raise exception 'cannot insert album: album % must have at least 1 song', new.title;
+    end if;
+    return null;
+end;
+$album_insert_trig$ language plpgsql;
+
+drop trigger if exists album_insert_trig on Album;
+create constraint trigger album_insert_trig
+    after insert on album
+    initially deferred
+    for each row
+execute procedure album_insert_trig();
+--
+
+--delete song trigger
+create or replace function song_delete_trig() returns trigger as $song_delete_trig$
+begin
+    if not exists(
+            select 1 from Song
+            where albumID = old.albumID
+        ) then
+        raise exception 'cannot delete song: album % must have at least 1 song', old.albumID;
+    end if;
+    return null;
+end;
+$song_delete_trig$ language plpgsql;
+
+drop trigger if exists song_delete_trig on Song;
+create constraint trigger song_delete_trig
+    after insert on Song
+    initially deferred
+    for each row
+execute procedure song_delete_trig();
+--
