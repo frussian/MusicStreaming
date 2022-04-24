@@ -8,6 +8,10 @@ import (
 	"time"
 )
 
+const (
+	TIME_FORMAT = "02-01-2006" //dd-mm-yyyy
+)
+
 func getInstruments(conn *pgx.Conn) []string {
 	var instruments []string
 	rows, err := conn.Query(context.Background(), "select unnest(enum_range(NULL::instr_enum));")
@@ -26,7 +30,6 @@ func getInstruments(conn *pgx.Conn) []string {
 }
 
 func addMusician(conn *pgx.Conn) error {
-	timeFormat := "02-01-2006"
 	prompt := promptui.Prompt{
 		Label:       "Enter musician name",
 	}
@@ -37,11 +40,11 @@ func addMusician(conn *pgx.Conn) error {
 
 	prompt.Label = "Enter birth date(dd-mm-yyyy)"
 	prompt.Validate = func(s string) error {
-		_, err := time.Parse(timeFormat, s)
+		_, err := time.Parse(TIME_FORMAT, s)
 		return err
 	}
 	dateStr, err := prompt.Run()
-	date, err := time.Parse(timeFormat, dateStr)
+	date, err := time.Parse(TIME_FORMAT, dateStr)
 	fmt.Println(date)
 
 	prompt.Label = "Enter biography"
@@ -180,9 +183,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(conn)
 
-	commands := []string{"add musician", "add instrument", "exit"}
+	commands := []string{"add musician", "add instrument", "add album", "exit"}
 	options := promptui.Select{
 		Label:             "choose action",
 		Items:             commands,
@@ -216,6 +218,13 @@ func main() {
 			} else {
 				fmt.Println("successful")
 			}
+		case 2:
+			err = addAlbum(conn)
+			if err != nil {
+				fmt.Println(err)
+			} else {
+				fmt.Println("successful")
+			}
 		case len(commands) - 1:
 			exit = true
 		}
@@ -223,4 +232,6 @@ func main() {
 			break
 		}
 	}
+
+	conn.Close(context.Background())
 }

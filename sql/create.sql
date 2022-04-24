@@ -145,6 +145,7 @@ begin
     insert into Membership(musID, bandID, enterDate, quitDate) values
         ((select musicianID from musician m where m.musicianName = musicianNameP),
          id, enterDate, quitDate);
+--     raise notice 'id: %', (select musicianID from musician m where m.musicianName = musicianNameP);
 --     commit;
 end
 $$;
@@ -202,6 +203,7 @@ create table Album (
     unique(title, bandID)
 );
 
+--TODO: https://postgrespro.ru/docs/postgresql/9.5/lo
 drop table if exists Song cascade;
 create table Song (
     songID int generated always as identity primary key,
@@ -252,7 +254,7 @@ $song_delete_trig$ language plpgsql;
 
 drop trigger if exists song_delete_trig on Song;
 create constraint trigger song_delete_trig
-    after insert on Song
+    after delete on Song
     initially deferred
     for each row
 execute procedure song_delete_trig();
