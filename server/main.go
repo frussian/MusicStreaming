@@ -50,7 +50,11 @@ func main() {
 	parseCfg()
 	fmt.Println(cfg)
 	srvlog := log.New("module", "server")
-	srvlog.SetHandler(log.LvlFilterHandler(log.LvlInfo, log.StdoutHandler))
+	lvl, err := log.LvlFromString(cfg.LogLvl)
+	if err != nil {
+		panic(err)
+	}
+	srvlog.SetHandler(log.LvlFilterHandler(lvl, log.StdoutHandler))
 	srvlog.Info("test msg", "path", "test")
 	srvlog.Debug("test msg", "path", "test")
 }
