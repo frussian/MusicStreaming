@@ -1,28 +1,56 @@
 package main
 
 import (
-	"database/sql"
+	"encoding/json"
+	"flag"
 	"fmt"
-	_ "github.com/jackc/pgx/v4/stdlib"
+	log "gopkg.in/inconshreveable/log15.v2"
+	"io/ioutil"
+	"os"
 )
 
-func main() {
-	connStr := "user=anton password=<pass> dbname=MusicDB sslmode=disable"
-	db, err := sql.Open("pgx", connStr)
-	if err != nil {
-		panic(err)
-	}
-	defer db.Close()
+type SrvCFG struct {
+	DbServer string `json:"db_server"`
+	DbPort   int    `json:"db_port"`
+	DbName   string `json:"db_name"`
+	DbUser   string `json:"db_user"`
+	DbPass   string `json:"db_pass"`
+	LogLvl   string `json:"log_lvl"`
+}
 
-	result, err := db.Query("select * from musician;")
+var (
+	cfgPath string
+	cfg SrvCFG
+)
+
+
+func parseFlags() {
+	flag.StringVar(&cfgPath, "cfg", "server.cfg", "path to cfg file")
+	flag.Parse()
+}
+
+func parseCfg() {
+	file, err := os.Open(cfgPath)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(result)
-	for result.Next() {
-		var id int
-		var dateOfBirth, bio, name string
-		result.Scan(&id, &dateOfBirth, &bio, &name)
-		fmt.Println(id, dateOfBirth, bio, name)
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		panic(err)
 	}
+	err = json.Unmarshal(data, &cfg)
+	if err != nil {
+		panic(err)
+	}
+}
+
+func main() {
+	//connStr := "user=anton password=<pass> dbname=MusicDB sslmode=disable"
+	parseFlags()
+	parseCfg()
+	fmt.Println(cfg)
+	srvlog := log.New("module", "server")
+	srvlog.SetHandler(log.LvlFilterHandler(log.LvlInfo, log.StdoutHandler))
+	srvlog.Info("test msg", "path", "test")
+	srvlog.Debug("test msg", "path", "test")
 }

@@ -1,0 +1,8 @@
+{
+    "db_server": "localhost",
+    "db_port": 5432,
+    "db_name": "MusicDB",
+    "db_user": "postgres",
+    "db_pass": "<pass>",
+    "log_lvl": "debug", //debug, info, warn, error, crit
+}
