@@ -131,7 +131,6 @@ type TCPBuf struct {
 
 	listeners []*ServerListener
 	streams []*Stream
-	//TODO: common read channel for all streams
 	readChan chan streamData
 	logger log.Logger
 }

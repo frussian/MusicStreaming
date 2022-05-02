@@ -76,8 +76,6 @@ func readRoutine(stream *Stream) {
 			} else {
 				stream.instance.logger.Info(fmt.Sprintf("closing %s stream", stream.addr.String()))
 			}
-			//close(stream.readChan)
-			//TODO: send nil as data for stream
 			stream.readChan <- streamData{stream, nil}
 			break
 		}
@@ -98,7 +96,6 @@ func (stream *Stream) tryRead() {
 		if stream.inHead + read > stream.inTail {
 			oldRead := read
 			read = stream.inTail - stream.inHead
-			//TODO: log warning about too much read
 			stream.instance.logger.Warn("too much read",
 				"stream", stream, "read", oldRead,
 				"read avail", read)
