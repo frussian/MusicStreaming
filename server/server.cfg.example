@@ -1,8 +1,13 @@
 {
+    "host": "192.168.1.30",
+    "port": 3018,
+    "ms_loop": 100,  //loop interval in ms
+    "in_size": 65536,  //input buffer size
+    "out_size": 65536,  //output buffer size
     "db_server": "localhost",
     "db_port": 5432,
     "db_name": "MusicDB",
     "db_user": "postgres",
     "db_pass": "<pass>",
-    "log_lvl": "debug", //debug, info, warn, error, crit
+    "log_lvl": "debug",  //debug, info, warn, error, crit
 }

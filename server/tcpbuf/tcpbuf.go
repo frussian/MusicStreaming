@@ -1,8 +1,10 @@
 package tcpbuf
 
 import (
+	"fmt"
 	log "gopkg.in/inconshreveable/log15.v2"
 	"net"
+	"time"
 )
 
 type EventType int
@@ -112,9 +114,13 @@ type Stream struct {
 	addr *net.TCPAddr
 	conn *net.TCPConn
 
-	readChan chan []byte
+	readChan chan streamData
 
 	instance *TCPBuf
+}
+
+func (s *Stream) String() string {
+	return fmt.Sprintf("%p", s)
 }
 
 type TCPBuf struct {
@@ -125,12 +131,16 @@ type TCPBuf struct {
 
 	listeners []*ServerListener
 	streams []*Stream
-
+	//TODO: common read channel for all streams
+	readChan chan streamData
 	logger log.Logger
 }
 
-func NewTCPBuf(logger log.Logger) *TCPBuf {
-	return &TCPBuf{listeners: nil, streams: nil, logger: logger}
+func NewTCPBuf(logger log.Logger, readChanSize int) *TCPBuf {
+	return &TCPBuf{listeners: nil,
+		streams: nil,
+		logger: logger,
+		readChan: make(chan streamData, readChanSize)}
 }
 
 //only for clients
@@ -148,7 +158,7 @@ func (instance *TCPBuf) NewTCPStream(userCtx interface{}, host string, port, inS
 		outBuf:   make([]byte, outSize),
 		addr: addr,
 		isServer: false,
-		readChan: make(chan []byte),
+		readChan: instance.readChan,
 		instance: instance,
 	}
 	instance.streams = append(instance.streams, stream)
@@ -161,14 +171,28 @@ func ConnectTCPStream(stream *Stream) bool {
 	return false
 }
 
-func (instance *TCPBuf) Loop() {
+func (instance *TCPBuf) Loop(ms time.Duration) {
+	timeout := time.After(ms)
+	for _, stream := range instance.streams {
+		stream.tryWrite()
+		stream.tryRead()
+	}
 	for _, listener := range instance.listeners {
 		if listener.active {
 			instance.loopServer(listener)
 		}
 	}
-	for _, stream := range instance.streams {
-		instance.loopStream(stream)
+	stop := false
+	for {
+		select {
+		case <-timeout:
+			stop = true
+		case data := <-instance.readChan:
+			instance.processStreamRead(data)
+		}
+		if stop {
+			break
+		}
 	}
 }
 
@@ -187,7 +211,7 @@ func (instance *TCPBuf) AcceptStream(userCtx interface{},
 		outBuf:   make([]byte, instance.currentListener.outSize),
 		addr:     instance.currentAddr,
 		conn:     instance.currentConn,
-		readChan: make(chan []byte),
+		readChan: instance.readChan,
 		instance: instance,
 	}
 	instance.streams = append(instance.streams, stream)

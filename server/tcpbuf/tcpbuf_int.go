@@ -2,11 +2,14 @@ package tcpbuf
 
 import (
 	"fmt"
-	log "gopkg.in/inconshreveable/log15.v2"
 	"io"
 	"net"
 )
 
+type streamData struct {
+	stream *Stream
+	data []byte
+}
 
 func connectToServer(stream *Stream) bool {
 	return false
@@ -63,20 +66,22 @@ func (instance *TCPBuf) loopServer(server *ServerListener) {
 
 func readRoutine(stream *Stream) {
 	stream.instance.logger.Info("started read routine")
-	tmpBuf := make([]byte, 256)
 	for {
+		tmpBuf := make([]byte, 256)
 		n, err := stream.conn.Read(tmpBuf)
-		stream.instance.logger.Info(fmt.Sprintf("read %d", n))
+		//stream.instance.logger.Info(fmt.Sprintf("read %d", n))
 		if err != nil {
 		 	if err != io.EOF {
-				log.Error(err.Error())
+				stream.instance.logger.Error(err.Error())
 			} else {
-				log.Info(fmt.Sprintf("closing %s stream", stream.addr.String()))
+				stream.instance.logger.Info(fmt.Sprintf("closing %s stream", stream.addr.String()))
 			}
-			close(stream.readChan)
+			//close(stream.readChan)
+			//TODO: send nil as data for stream
+			stream.readChan <- streamData{stream, nil}
 			break
 		}
-		stream.readChan <- tmpBuf[:n]
+		stream.readChan <- streamData{stream, tmpBuf[:n]}
 	}
 	stream.instance.logger.Info("closing read routine")
 }
@@ -91,15 +96,24 @@ func (stream *Stream) tryRead() {
 	if res >= 0 {
 		read := int(res)
 		if stream.inHead + read > stream.inTail {
+			oldRead := read
 			read = stream.inTail - stream.inHead
 			//TODO: log warning about too much read
+			stream.instance.logger.Warn("too much read",
+				"stream", stream, "read", oldRead,
+				"read avail", read)
 		}
 		stream.inHead += read
 		if stream.inHead == stream.inTail {
+			stream.instance.logger.Debug("clear in buf",
+				"stream", stream,
+				"head", stream.inHead, "tail", stream.inTail)
 			stream.inHead = 0
 			stream.inTail = 0
 		}
 		if stream.inHead > 0 {
+			stream.instance.logger.Debug("moving input buffer",
+				"stream", stream, "offset", stream.inHead)
 			copy(stream.inBuf, stream.inBuf[stream.inHead:])
 			stream.inTail -= stream.inHead
 			stream.inHead = 0
@@ -113,7 +127,7 @@ func (stream *Stream) tryWrite() {
 	evt := stream.instance.newEvent(stream.outBuf[stream.outTail:], WRITE,
 		stream.addr, nil)
 	res := stream.cb(stream.userCtx, evt)
-	if res >= 0 {
+	if res > 0 {
 		toWrite := int(res)
 		if stream.outTail + toWrite >= len(stream.outBuf) {
 			toWrite = len(stream.outBuf) - stream.outTail
@@ -121,19 +135,30 @@ func (stream *Stream) tryWrite() {
 		}
 		stream.outTail += toWrite
 		if stream.outTail == len(stream.outBuf) {
+			stream.instance.logger.Debug("moving output buffer",
+				"stream", stream, "offset", stream.outHead)
 			copy(stream.outBuf, stream.outBuf[stream.outHead:])
+			stream.outTail -= stream.outHead
+			stream.outHead = 0
 		}
 
 	}
 
 	//TODO: maybe move this to goroutine
+	if stream.outHead == stream.outTail {
+		return
+	}
+	stream.instance.logger.Debug("start writing")
 	n, _ := stream.conn.Write(stream.outBuf[stream.outHead:stream.outTail])
+	stream.instance.logger.Debug("finish writing")
 	stream.outHead += n
 	if stream.outHead >= stream.outTail {
 		stream.outHead = 0
 		stream.outTail = 0
 	} else {
 		n := stream.outHead
+		stream.instance.logger.Debug("moving output buffer",
+			"stream", stream, "offset", stream.outHead)
 		copy(stream.outBuf, stream.outBuf[stream.outHead:stream.outTail])
 		stream.outHead = 0
 		stream.outTail -= n
@@ -165,43 +190,74 @@ func (instance *TCPBuf) findStream(stream *Stream) int {
 	return -1
 }
 
-func (instance *TCPBuf) loopStream(stream *Stream) {
-	stop := false
-	for {
-		select {
-		case tmpBuf, ok := <-stream.readChan:
-			if !ok {
-				stream.handleCloseConn()
-				return
-			}
-			n := len(tmpBuf)
-			if stream.inTail + n >= len(stream.inBuf) {
-				if stream.inHead > 0 {
-					//trying to move to free up space
-					copy(stream.inBuf, stream.inBuf[stream.inHead:])
-				}
-				delta := stream.inHead
-				stream.inTail -= delta
-				stream.inHead = 0
-				if n > delta {
-					//TODO: still overflow
-					n = delta
-				}
-			}
-			copy(stream.inBuf[stream.inTail:], tmpBuf)
-			stream.inTail += n
-			stream.tryRead()
-		default:
-			stop = true
+func (instance *TCPBuf) processStreamRead(data streamData) {
+	stream := data.stream
+	tmpBuf := data.data
+	if tmpBuf == nil {
+		stream.handleCloseConn()
+		return
+	}
+	n := len(tmpBuf)
+	if stream.inTail+n >= len(stream.inBuf) {
+		instance.logger.Warn("more in data than available",
+			"stream", stream, "offset", stream.inHead)
+		if stream.inHead > 0 {
+			//trying to move to free up space
+			instance.logger.Debug("moving input buffer",
+				"stream", stream, "offset", stream.inHead)
+			copy(stream.inBuf, stream.inBuf[stream.inHead:])
 		}
-		if stop {
-			break
+		delta := stream.inHead
+		stream.inTail -= delta
+		stream.inHead = 0
+		if n > delta {
+			//TODO: still overflow
+			n = delta
 		}
 	}
 
+	copy(stream.inBuf[stream.inTail:], tmpBuf)
+	stream.inTail += n
 	stream.tryRead()
-	stream.tryWrite()
 }
+//
+//func (instance *TCPBuf) loopStream(stream *Stream) {
+//	stop := false
+//	for {
+//		select {
+//		case tmpBuf, ok := <-stream.readChan:
+//			if !ok {
+//				stream.handleCloseConn()
+//				return
+//			}
+//			n := len(tmpBuf)
+//			if stream.inTail + n >= len(stream.inBuf) {
+//				if stream.inHead > 0 {
+//					//trying to move to free up space
+//					copy(stream.inBuf, stream.inBuf[stream.inHead:])
+//				}
+//				delta := stream.inHead
+//				stream.inTail -= delta
+//				stream.inHead = 0
+//				if n > delta {
+//					//TODO: still overflow
+//					n = delta
+//				}
+//			}
+//			copy(stream.inBuf[stream.inTail:], tmpBuf)
+//			stream.inTail += n
+//			stream.tryRead()
+//		default:
+//			stop = true
+//		}
+//		if stop {
+//			break
+//		}
+//	}
+//
+//	stream.tryRead()
+//	stream.tryWrite()
+//}
 
 func (instance *TCPBuf) newEvent(data []byte, kind EventType, addr *net.TCPAddr, err error) Event {
 	return Event{

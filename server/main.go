@@ -8,15 +8,26 @@ import (
 	"io/ioutil"
 	"musicplatform/tcpbuf"
 	"os"
+	"time"
 )
 
 type SrvCFG struct {
+	Host     string `json:"host"`
+	Port     int    `json:"port"`
+	MsLoop   int    `json:"ms_loop"`
+	InSize   int    `json:"in_size"`
+	OutSize  int    `json:"out_size"`
 	DbServer string `json:"db_server"`
 	DbPort   int    `json:"db_port"`
 	DbName   string `json:"db_name"`
 	DbUser   string `json:"db_user"`
 	DbPass   string `json:"db_pass"`
 	LogLvl   string `json:"log_lvl"`
+}
+
+type ServerState struct {
+	logger log.Logger
+	read int
 }
 
 var (
@@ -47,14 +58,24 @@ func parseCfg() {
 }
 
 func testStreamCB(userCtx interface{}, evt tcpbuf.Event) tcpbuf.RetType {
-	logger := userCtx.(log.Logger)
+	state := userCtx.(*ServerState)
+	logger := state.logger
 	switch evt.Kind {
 	case tcpbuf.READ:
+		if len(evt.Data) < 6 {
+			break
+		}
+		state.read += len(evt.Data)
 		logger.Info(fmt.Sprintf("recv: %s", string(evt.Data)))
+		logger.Info(fmt.Sprintf("total: %d", state.read))
 		return tcpbuf.RetType(len(evt.Data))
 	case tcpbuf.WRITE:
-		//evt.Data[1] = '1'
-		//return 1
+		if state.read > 0 {
+			//state.read = 0
+			//msg := "received"
+			//copy(evt.Data, msg)
+			//return tcpbuf.RetType(len(msg))
+		}
 	case tcpbuf.CLOSING:
 		logger.Info(fmt.Sprintf("closing %s", evt.Addr.String()))
 	}
@@ -62,7 +83,8 @@ func testStreamCB(userCtx interface{}, evt tcpbuf.Event) tcpbuf.RetType {
 }
 
 func testServCB(userCtx interface{}, evt tcpbuf.Event) tcpbuf.RetType {
-	logger := userCtx.(log.Logger)
+	state := userCtx.(*ServerState)
+	logger := state.logger
 	switch evt.Kind {
 	case tcpbuf.ERROR_LISTEN:
 		if evt.Addr == nil {
@@ -74,7 +96,7 @@ func testServCB(userCtx interface{}, evt tcpbuf.Event) tcpbuf.RetType {
 		logger.Info("listening on", "host", evt.Addr.String())
 	case tcpbuf.NEW_CONN:
 		logger.Info("new conn", "remote", evt.Addr.String())
-		evt.Instance.AcceptStream(logger, testStreamCB)
+		evt.Instance.AcceptStream(state, testStreamCB)
 	}
 	return tcpbuf.OK
 }
@@ -89,18 +111,21 @@ func main() {
 		panic(err)
 	}
 	srvlog.SetHandler(log.LvlFilterHandler(lvl, log.StdoutHandler))
-	srvlog.Info("test msg", "path", "test")
-	srvlog.Debug("test msg", "path", "test")
-	srvlog.Info(fmt.Sprintf("%d", tcpbuf.OK))
+
+
+	state := &ServerState{srvlog, 0}
 
 	tcpLogger := log.New("module", "tcpbuf")
-	instance := tcpbuf.NewTCPBuf(tcpLogger)
-	serv := instance.NewServerListener("192.168.1.30", 3018,
-										testServCB, 65535, 65535,
-										srvlog)
+	//tcpLogger.SetHandler(log.)
+	instance := tcpbuf.NewTCPBuf(tcpLogger, 128)
+	serv := instance.NewServerListener(cfg.Host, cfg.Port,
+										testServCB, cfg.InSize, cfg.OutSize,
+										state)
 	serv.StartServer()
-
+	state.logger.Info("starting", "host", cfg.Host, "port", cfg.Port,
+		"loop ms", cfg.MsLoop, "inSize", cfg.InSize, "outSize", cfg.OutSize)
+	msLoop := time.Duration(cfg.MsLoop) * time.Millisecond
 	for {
-		instance.Loop()
+		instance.Loop(msLoop)
 	}
 }
