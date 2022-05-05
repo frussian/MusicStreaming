@@ -1,0 +1,120 @@
+syntax = "proto3";
+option go_package = "proto";
+
+enum EntityType {
+  BAND = 0;
+  ALBUM = 1;
+  SONG = 2;
+  CONCERT = 3;
+  MUSICIAN = 4;
+  MEMBERSHIP = 5;
+}
+
+enum ReqType {
+  TABLE_REQ_TYPE = 0;
+  SIMPLE_REQ_TYPE = 1;
+  STREAM_REQ_TYPE = 2;
+}
+
+message ReqAnsHeader {
+  uint64 reqId = 1;
+  ReqType type = 2;
+  bool cancel = 3;  //send again with cancel = true to cancel request
+}
+
+message TableReq {
+  uint32 first = 1;
+  uint32 last = 2;
+  string filter = 3;
+  EntityType type = 4;
+}
+
+message SimpleReq {
+  string reqString = 1;
+  EntityType type = 4;
+}
+
+message StreamReq {
+  int64 objId = 1;
+  int32 suggestedSize = 2;
+}
+
+message TableAns {
+  repeated Band bands = 1;
+  repeated Album albums = 2;
+  repeated Concert concerts = 3;
+  repeated Song songs = 4;
+  EntityType type = 5;
+}
+
+message SimpleAns {
+  Band band = 1;
+  Album album = 2;
+  Song song = 3;
+  Concert concert = 4;
+  Musician musician = 5;
+  Membership membership = 6;
+}
+
+message StreamAns {
+  bytes data = 1;
+  bool isFinal = 2;
+}
+
+enum Genre {
+  ROCK = 0;
+  ALTERNATIVE = 1;
+  INDIE = 2;
+  BLUES = 3;
+  METAL = 4;
+}
+
+message Membership {
+  string musName = 1;
+  string bandName = 2;
+  int64 unixEntryDate = 3;
+  int64 unixQuitDate = 4;
+}
+
+message Concert {
+  int32 capacity = 1;
+  string description = 2;
+  int64 unixDateTime = 3;
+  string location = 4;
+  repeated string bandNames = 5;
+}
+
+message Band {
+  string bandName = 1;
+  Genre genre = 2;
+  int64 unixFoundDate = 3;
+  int64 unixTermDate = 4;
+  string description = 5;
+  int64 objId = 9;
+  repeated string albumNames = 6;
+  repeated Membership participants = 7;
+  repeated Concert concerts = 8;
+}
+
+message Song {
+  string songName = 1;
+  int32 lengthSec = 2;
+  string albumName = 3;
+  string bandName = 4;
+  int64 objId = 5;
+}
+
+message Album {
+  string title = 1;
+  int64 unixReleaseDate = 2;
+  repeated Song songs = 3;
+  string bandName = 4;
+}
+
+message Musician {
+  string musName = 1;
+  int64 unixDateOfBirth = 2;
+  string bio = 3;
+  int64 objId = 5;
+  repeated Membership memberships = 4;
+}
