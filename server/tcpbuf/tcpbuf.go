@@ -26,7 +26,7 @@ const (
 	OK RetType = -iota
 	RECONNECT
 	ERROR
-
+	CLOSE
 )
 
 type Event struct {

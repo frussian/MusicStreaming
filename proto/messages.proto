@@ -1,5 +1,5 @@
 syntax = "proto3";
-option go_package = "proto";
+option go_package = "./proto";
 
 enum EntityType {
   BAND = 0;
@@ -10,16 +10,31 @@ enum EntityType {
   MEMBERSHIP = 5;
 }
 
-enum ReqType {
-  TABLE_REQ_TYPE = 0;
-  SIMPLE_REQ_TYPE = 1;
-  STREAM_REQ_TYPE = 2;
+//enum ReqType {
+//  TABLE_REQ_TYPE = 0;
+//  SIMPLE_REQ_TYPE = 1;
+//  STREAM_REQ_TYPE = 2;
+//}
+
+message Request {
+  uint64 reqId = 1;
+//  ReqType type = 2;
+  bool cancel = 3;  //send again with cancel = true to cancel request or failed req on server side
+  oneof msg {
+    TableReq tableReq = 4;
+    SimpleReq simpleReq = 5;
+    StreamReq streamReq = 6;
+  }
 }
 
-message ReqAnsHeader {
+message Answer {
   uint64 reqId = 1;
-  ReqType type = 2;
-  bool cancel = 3;  //send again with cancel = true to cancel request
+  bool cancel = 2;
+  oneof msg {
+    TableAns tableAns = 3;
+    SimpleAns simpleAns = 4;
+    StreamAns streamAns = 5;
+  }
 }
 
 message TableReq {
@@ -48,12 +63,14 @@ message TableAns {
 }
 
 message SimpleAns {
-  Band band = 1;
-  Album album = 2;
-  Song song = 3;
-  Concert concert = 4;
-  Musician musician = 5;
-  Membership membership = 6;
+  oneof msg {
+    Band band = 1;
+    Album album = 2;
+    Song song = 3;
+    Concert concert = 4;
+    Musician musician = 5;
+    Membership membership = 6;
+  }
 }
 
 message StreamAns {

@@ -9,7 +9,9 @@ class NetworkThread: public QThread
 public:
 	explicit NetworkThread(QObject *parent = nullptr);
 protected:
-//	virtual void run() override;
+	virtual void run() override;
+
+private:
 };
 
 #endif // NETWORKTHREAD_H

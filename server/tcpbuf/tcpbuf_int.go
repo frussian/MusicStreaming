@@ -115,8 +115,9 @@ func (stream *Stream) tryRead() {
 			stream.inTail -= stream.inHead
 			stream.inHead = 0
 		}
-	} else {
-		//TODO: error
+	} else if res == CLOSE {
+		stream.handleCloseConn()
+		return
 	}
 }
 
@@ -139,6 +140,9 @@ func (stream *Stream) tryWrite() {
 			stream.outHead = 0
 		}
 
+	} else if res == CLOSE {
+		stream.handleCloseConn()
+		return
 	}
 
 	//TODO: maybe move this to goroutine
@@ -164,10 +168,14 @@ func (stream *Stream) tryWrite() {
 }
 
 func (stream *Stream) handleCloseConn() {
+	i := stream.instance.findStream(stream)
+	if i == -1 {
+		return
+	}
 	evt := stream.instance.newEvent(nil, CLOSING, stream.addr, nil)
 	stream.cb(stream.userCtx, evt)
 	stream.conn.Close()
-	i := stream.instance.findStream(stream)
+
 	stream.instance.logger.Info(fmt.Sprintf("%v", stream.instance.streams))
 	stream.instance.logger.Info(fmt.Sprintf("%p", stream))
 	stream.instance.removeStream(i)

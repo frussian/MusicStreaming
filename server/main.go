@@ -3,10 +3,13 @@ package main
 import (
 	"encoding/json"
 	"flag"
-	"fmt"
+	"github.com/jackc/pgx/v4"
 	log "gopkg.in/inconshreveable/log15.v2"
 	"io/ioutil"
 	"musicplatform/tcpbuf"
+	"github.com/gammazero/deque"
+	//"musicplatform/proto"
+	//protobuf "google.golang.org/protobuf/proto"
 	"os"
 	"time"
 )
@@ -26,13 +29,16 @@ type SrvCFG struct {
 }
 
 type ServerState struct {
+	cfg SrvCFG
+	lib *tcpbuf.TCPBuf
 	logger log.Logger
+	pgxconn *pgx.Conn
 	read int
+	messages deque.Deque
 }
 
 var (
 	cfgPath string
-	cfg SrvCFG
 )
 
 
@@ -42,7 +48,7 @@ func parseFlags() {
 	flag.Parse()
 }
 
-func parseCfg() {
+func parseCfg(cfg *SrvCFG) {
 	file, err := os.Open(cfgPath)
 	if err != nil {
 		panic(err)
@@ -57,75 +63,64 @@ func parseCfg() {
 	}
 }
 
-func testStreamCB(userCtx interface{}, evt tcpbuf.Event) tcpbuf.RetType {
-	state := userCtx.(*ServerState)
-	logger := state.logger
-	switch evt.Kind {
-	case tcpbuf.READ:
-		if len(evt.Data) < 6 {
-			break
-		}
-		state.read += len(evt.Data)
-		logger.Info(fmt.Sprintf("recv: %s", string(evt.Data)))
-		logger.Info(fmt.Sprintf("total: %d", state.read))
-		return tcpbuf.RetType(len(evt.Data))
-	case tcpbuf.WRITE:
-		if state.read > 0 {
-			//state.read = 0
-			//msg := "received"
-			//copy(evt.Data, msg)
-			//return tcpbuf.RetType(len(msg))
-		}
-	case tcpbuf.CLOSING:
-		logger.Info(fmt.Sprintf("closing %s", evt.Addr.String()))
-	}
-	return tcpbuf.OK
-}
+func test() {
+	//write
+	//album := &proto.Album{}
+	//album.Title = "Metallica"
+	//album.BandName = "Metallica"
+	//album.Songs = []*proto.Song{{SongName: "Enter Sandman"}}
+	//t, _ := time.Parse("02-01-2006", "19-08-1991")
+	//album.UnixReleaseDate = t.Unix()
+	//bytes, err := protobuf.Marshal(album)
+	//if err != nil {
+	//	panic(err)
+	//}
+	//f, _ := os.Create("test.out")
+	//f.Write(bytes)
 
-func testServCB(userCtx interface{}, evt tcpbuf.Event) tcpbuf.RetType {
-	state := userCtx.(*ServerState)
-	logger := state.logger
-	switch evt.Kind {
-	case tcpbuf.ERROR_LISTEN:
-		if evt.Addr == nil {
-			logger.Error("invalid address")
-		} else {
-			logger.Error("error listening", "host", evt.Addr.String())
-		}
-	case tcpbuf.LISTENING:
-		logger.Info("listening on", "host", evt.Addr.String())
-	case tcpbuf.NEW_CONN:
-		logger.Info("new conn", "remote", evt.Addr.String())
-		evt.Instance.AcceptStream(state, testStreamCB)
-	}
-	return tcpbuf.OK
+	//read
+	//bytes := make([]byte, 1024)
+	//f, _ := os.Open("test.out")
+	//n, _ := f.Read(bytes)
+	//album := &proto.Album{}
+	//protobuf.Unmarshal(bytes[:n], album)
+	//fmt.Println(album)
 }
 
 func main() {
+	state := &ServerState{}
 	parseFlags()
-	parseCfg()
-	fmt.Println(cfg)
+	parseCfg(&state.cfg)
+
 	srvlog := log.New("module", "server")
-	lvl, err := log.LvlFromString(cfg.LogLvl)
+	lvl, err := log.LvlFromString(state.cfg.LogLvl)
 	if err != nil {
 		panic(err)
 	}
 	srvlog.SetHandler(log.LvlFilterHandler(lvl, log.StdoutHandler))
 
-
-	state := &ServerState{srvlog, 0}
-
 	tcpLogger := log.New("module", "tcpbuf")
 	//tcpLogger.SetHandler(log.)
 	instance := tcpbuf.NewTCPBuf(tcpLogger, 128)
-	serv := instance.NewServerListener(cfg.Host, cfg.Port,
-										testServCB, cfg.InSize, cfg.OutSize,
-										state)
+
+	state.lib = instance
+	state.logger = srvlog
+	state.read = 0
+
+	connected := connectToDB(state)
+	if !connected {
+		os.Exit(1)
+	}
+	serv := instance.NewServerListener(state.cfg.Host, state.cfg.Port,
+		servCB, state.cfg.InSize,
+		state.cfg.OutSize, state)
 	serv.StartServer()
-	state.logger.Info("starting", "host", cfg.Host, "port", cfg.Port,
-		"loop ms", cfg.MsLoop, "inSize", cfg.InSize, "outSize", cfg.OutSize)
-	msLoop := time.Duration(cfg.MsLoop) * time.Millisecond
+
+	msLoop := time.Duration(state.cfg.MsLoop) * time.Millisecond
+
+	state.logger.Info("starting", "host", state.cfg.Host, "port", state.cfg.Port,
+		"loop ms", state.cfg.MsLoop, "inSize", state.cfg.InSize, "outSize", state.cfg.OutSize)
 	for {
-		instance.Loop(msLoop)
+		loop(state, msLoop)
 	}
 }

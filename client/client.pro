@@ -11,24 +11,35 @@ CONFIG += c++17
 SOURCES += \
     audioplayer.cpp \
     main.cpp \
+    mainwidget.cpp \
     mainwindow.cpp \
+    networkparser.cpp \
     networkthread.cpp \
-    oggdecoder.cpp
+	oggdecoder.cpp \
+	messages.pb.cc
 
 HEADERS += \
     audioplayer.h \
+    mainwidget.h \
     mainwindow.h \
+    networkparser.h \
     networkthread.h \
-    oggdecoder.h
+	oggdecoder.h \
+	messages.pb.h
 
 FORMS += \
     mainwindow.ui
 
-LIBS += -LC:/msys64/mingw64/lib -lopus
-LIBS += -lopusfile
-INCLUDEPATH += "C:/msys64/mingw64/include/opus" "C:/msys64/mingw64/include"
+LIBS += -lopusfile -lopus -lprotobuf
+INCLUDEPATH += C:/msys64/mingw64/include/opus
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
 else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
+
+DISTFILES += \
+    stylesheet.txt
+
+RESOURCES += \
+    resources.qrc
