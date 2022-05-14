@@ -1,7 +1,7 @@
 drop table if exists Musician cascade;
 create table Musician (
 	musicianID int generated always as identity primary key,
-	musicianName varchar(32) unique not null,
+	musicianName varchar(64) unique not null,
 	biography text,
 	dateOfBirth date,
 	img oid
@@ -112,6 +112,7 @@ create table Band (
 	bandID int generated always as identity primary key,
 	bandName varchar(64) unique not null,
 	genre genre_enum,
+	description text null,
 	foundingDate date,
 	terminationDate date,
 	img oid
@@ -130,18 +131,18 @@ create table Membership (
 
 --triggers and procedures for band and membership
 
-create or replace procedure insert_band(bandName varchar(64), genre genre_enum,
+create or replace procedure insert_band(bandName varchar(64), genre genre_enum, description text,
                                         foundingDate date, terminationDate date,
                                         musicianNameP varchar(32), enterDate date,
-                                        quitDate date)
+                                        quitDate date, img oid)
 language plpgsql
 as $$
 declare
     id int;
 begin
 --     start transaction;
-    insert into band(bandName, genre, foundingDate, terminationDate) values
-        (bandName, genre, foundingDate, terminationDate) returning bandID into id;
+    insert into band(bandName, genre, description, foundingDate, terminationDate, img) values
+        (bandName, genre, description, foundingDate, terminationDate, img) returning bandID into id;
     insert into Membership(musID, bandID, enterDate, quitDate) values
         ((select musicianID from musician m where m.musicianName = musicianNameP),
          id, enterDate, quitDate);
@@ -190,6 +191,21 @@ create constraint trigger membership_delete_trig
     for each row
 execute procedure membership_delete_trig();
 --
+
+create or replace procedure insert_membership(bandNameP varchar(64), musNameP varchar(64),
+                                              enterDate date, quitDate date)
+language plpgsql
+as $$
+declare
+    bandID int;
+    musID int;
+begin
+    bandID = (select b.bandID from Band b where b.bandName = bandNameP);
+    musID = (select musicianID from Musician m where m.musicianname = musNameP);
+    insert into Membership(musID, bandID, enterDate, quitDate) values
+         (musID, bandID, enterDate, quitDate);
+end
+$$;
 
 --
 
@@ -259,3 +275,37 @@ create constraint trigger song_delete_trig
     for each row
 execute procedure song_delete_trig();
 --
+
+drop table if exists Concert cascade;
+create table Concert (
+    concertID int generated always as identity primary key,
+    description text null,
+    capacity int null,
+    concertDate date not null,
+    location varchar(64) not null,
+    concertTime time not null,
+    unique (concertDate, location, concertTime)
+);
+
+drop table if exists BandConcertInt cascade;
+create table BandConcertInt (
+    bandID int references Band(bandID) on delete cascade,
+    concertID int references Concert(concertID) on delete cascade,
+    primary key (bandID, concertID)
+);
+
+create or replace function band_concert_int_upd_trig() returns trigger as $bandconcertint_upd_trig$
+    begin
+        if new.concertID <> old.concertID or new.bandid <> old.bandid then
+            raise exception 'cannot update foreign key in instrument';
+        end if;
+    end;
+$bandconcertint_upd_trig$ language plpgsql;
+
+
+drop trigger if exists band_concert_int_upd_trig on BandConcertInt;
+create constraint trigger band_concert_int_upd_trig
+    after update on BandConcertInt
+    for each row
+    execute procedure band_concert_int_upd_trig();
+
