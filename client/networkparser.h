@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include "messages.pb.h"
+#include <QAbstractSocket>
 
 class QTcpSocket;
 
@@ -11,20 +12,36 @@ class NetworkParser : public QObject
 	Q_OBJECT
 public:
 	explicit NetworkParser(QThread *th);
-	bool connectToHost(QString host, int port);
+	void connectToHost(QString host, int port);
 public slots:
 	int requestTable(uint64_t reqId, int first, int last, QString filter,
 					 enum EntityType type);
 private slots:
 	void connected();
+	void disconnected();
+	void socketError(QAbstractSocket::SocketError);
+	void reconnect();
 	void readyRead();
-
+	void stateChanged(QAbstractSocket::SocketState);
 signals:
-
+	void tableAns(uint64_t reqId, TableAns ans);
+	void simpleAns(uint64_t reqId, SimpleAns ans);
+	void streamAns(uint64_t reqId, StreamAns);
+	void parserConnected();
 private:
+	int handleSize();
+	int handlePkt();
+
 	QString host;
 	int port;
+	bool isConnected = false;
 	QTcpSocket *socket;
+	int state;
+	QByteArray buf;
+	int pktlen;
 };
+
+//Q_DECLARE_METATYPE(QAbstractSocket::SocketError);
+//Q_DECLARE_METATYPE(QAbstractSocket::SocketState);
 
 #endif // NETWORKPARSER_H

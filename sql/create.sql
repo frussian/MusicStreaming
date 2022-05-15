@@ -309,3 +309,15 @@ create constraint trigger band_concert_int_upd_trig
     for each row
     execute procedure band_concert_int_upd_trig();
 
+drop view AlbumTable;
+create view AlbumTable as
+    select title, (select bandname from band b where b.bandid = a.bandid),
+			(select count(*) from song s where s.albumid = a.albumid), releaseDate
+    from album a order by title;
+
+drop view SongTable;
+create view SongTable as
+    select songname, length, a.title, (select bandname from band b
+     where b.bandid = a.bandID) from song
+    join album a on a.albumID = song.albumID
+    order by songname;

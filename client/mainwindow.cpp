@@ -18,7 +18,6 @@ MainWindow::MainWindow(QThread *th, QWidget *parent)
 	fileMenu->addAction("p 3");
 	QToolBar* toolBar = addToolBar(tr("toolbar"));
 	toolBar->addAction("test");
-	qDebug() << centralWidget();
 
 	mainWidget = new MainWidget(th);
 	setCentralWidget(mainWidget);

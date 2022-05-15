@@ -7,7 +7,6 @@ import (
 	log "gopkg.in/inconshreveable/log15.v2"
 	"io/ioutil"
 	"musicplatform/tcpbuf"
-	"github.com/gammazero/deque"
 	//"musicplatform/proto"
 	//protobuf "google.golang.org/protobuf/proto"
 	"os"
@@ -34,7 +33,6 @@ type ServerState struct {
 	logger log.Logger
 	pgxconn *pgx.Conn
 	read int
-	messages deque.Deque
 }
 
 var (

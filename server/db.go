@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/log/log15adapter"
 	log "gopkg.in/inconshreveable/log15.v2"
+	"math"
 	"musicplatform/proto"
 )
 
@@ -48,7 +49,7 @@ func connectToDB(state *ServerState) bool {
 
 func dbTableBandReq(state *ServerState, first, last uint32, filter string) *proto.TableAns {
 	filter = "%" + filter + "%"
-	sql := `select * from band where bandname like $1 order by bandname limit $2 offset $3;`
+	sql := `select bandname, genre, foundingdate, terminationdate, img from band where bandname ilike $1 order by bandname limit $2 offset $3;`
 	rows, err := state.pgxconn.Query(context.Background(), sql, filter, last-first+1, first)
 	if err != nil {
 		state.logger.Error(err.Error())
@@ -59,17 +60,91 @@ func dbTableBandReq(state *ServerState, first, last uint32, filter string) *prot
 		band := &proto.Band{}
 		var genre string
 		var found, term pgtype.Date
-		err = rows.Scan(nil, &band.BandName, &genre, &found, &term, &band.ObjId)
+		err = rows.Scan(&band.BandName, &genre, &found, &term, &band.ObjId)
 		if err != nil {
 			state.logger.Error(err.Error())
+			continue
 		}
 		band.Genre = mapToGenre[genre]
 		//TODO if found.Status = Null {unix = 0}
-		band.UnixFoundDate = found.Time.Unix()
-		band.UnixTermDate = term.Time.Unix()
+		if found.Status == pgtype.Null {
+			band.UnixFoundDate = 0
+		} else {
+			band.UnixFoundDate = found.Time.Unix()
+		}
+		if term.Status == pgtype.Null {
+			band.UnixTermDate = 0
+		} else {
+			band.UnixTermDate = term.Time.Unix()
+		}
 		bands.Bands = append(bands.Bands, band)
-		state.logger.Info(fmt.Sprintf("%v", band))
 	}
 	bands.Type = proto.EntityType_BAND
 	return bands
+}
+
+func dbTableAlbumReq(state *ServerState, first, last uint32, filter string) *proto.TableAns {
+	filter = "%" + filter + "%"
+	sql := `select * from AlbumTable where title ilike $1 limit $2 offset $3;`
+	rows, err := state.pgxconn.Query(context.Background(), sql, filter, last-first+1, first)
+	if err != nil {
+		state.logger.Error(err.Error())
+		return nil
+	}
+	albums := &proto.TableAns{Albums: make([]*proto.Album, 0, last-first+1)}
+
+	for rows.Next() {
+		album := &proto.Album{}
+		var nsongs pgtype.Int8
+		var title, bandname pgtype.Varchar
+		var reldate pgtype.Date
+		err = rows.Scan(&title, &bandname, &nsongs, &reldate)
+		if err != nil {
+			state.logger.Error(err.Error())
+			continue
+		}
+		album.Title = title.String
+		album.BandName = bandname.String
+		album.UnixReleaseDate = reldate.Time.Unix()
+		album.Songs = make([]*proto.Song, int(nsongs.Int))
+		albums.Albums = append(albums.Albums, album)
+	}
+
+	albums.Type = proto.EntityType_ALBUM
+
+	return albums
+}
+
+func dbTableSongReq(state *ServerState, first, last uint32, filter string) *proto.TableAns {
+	filter = "%" + filter + "%"
+	sql := `select * from SongTable where title ilike $1 limit $2 offset $3;`
+	rows, err := state.pgxconn.Query(context.Background(), sql, filter, last-first+1, first)
+	if err != nil {
+		state.logger.Error(err.Error())
+		return nil
+	}
+	songs := &proto.TableAns{Songs: make([]*proto.Song, 0, last-first+1)}
+
+	for rows.Next() {
+		var length pgtype.Interval
+		var songname, bandname, title pgtype.Varchar
+		song := &proto.Song{}
+		err = rows.Scan(&songname, &length, &title, &bandname)
+		if err != nil {
+			state.logger.Error(err.Error())
+			continue
+		}
+
+		song.SongName = songname.String
+		song.BandName = bandname.String
+		song.AlbumName = title.String
+		song.LengthSec = int32(length.Microseconds / int64(math.Pow10(6)))
+		state.logger.Info("len", "len", song.LengthSec)
+
+		songs.Songs = append(songs.Songs, song)
+	}
+
+	songs.Type = proto.EntityType_SONG
+
+	return songs
 }
