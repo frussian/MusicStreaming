@@ -47,6 +47,8 @@ func connectToDB(state *ServerState) bool {
 	return true
 }
 
+//select pg_size_pretty(length(lo_get(data))::bigint) from song;
+
 func dbTableBandReq(state *ServerState, first, last uint32, filter string) *proto.TableAns {
 	filter = "%" + filter + "%"
 	sql := `select bandname, genre, foundingdate, terminationdate, img from band where bandname ilike $1 order by bandname limit $2 offset $3;`

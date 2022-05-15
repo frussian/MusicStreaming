@@ -28,6 +28,7 @@ type SongInfo struct {
 	index int
 	name string
 	hours, min, sec int
+	err error
 }
 
 func getSongInfo(path string) (int, int, int, error) {
@@ -74,22 +75,26 @@ func genOpus(name, path string) error {
 	return nil
 }
 
-func processSong(index int, name, path string) (SongInfo, error) {
+func processSong(songs chan <-SongInfo,index int, name, path string) {
 	hour, min, sec, err := getSongInfo(path)
 	if err != nil {
-		return SongInfo{}, err
+		songs <- SongInfo{err: err}
+		return
 	}
 	err = genOpus(name, path)
 	if err != nil {
-		return SongInfo{}, err
+		songs <- SongInfo{err: err}
+		return
 	}
-	return SongInfo{index, name, hour, min, sec}, nil
+	songs <- SongInfo{index, name, hour, min, sec, nil}
 }
 
 func processDir(dir string) ([]SongInfo, error) {
-	songInfos := make([]SongInfo, 0, 8)
+	songsChannel := make(chan SongInfo)
+	n := 0
 	err := filepath.Walk(dir, func(path string, info os.FileInfo, err error) error {
 		name := info.Name()
+		//TODO: use path.Ext
 		if strings.Contains(name, ".mp3") ||
 			strings.Contains(name, ".wav") {
 			indexStr := strings.Split(name, "_")[0]
@@ -97,14 +102,19 @@ func processDir(dir string) ([]SongInfo, error) {
 			if err != nil {
 				return errors.New(name + " should be prefixed with index")
 			}
-			info, err := processSong(int(index), name[len(indexStr)+1:len(name)-4], path)
-			if err != nil {
-				return err
-			}
-			songInfos = append(songInfos, info)
+			go processSong(songsChannel, int(index), name[len(indexStr)+1:len(name)-4], path)
+			n++
 		}
 		return nil
 	})
+	songInfos := make([]SongInfo, 0, n)
+	for i := 0; i < n; i++ {
+		info := <-songsChannel
+		if info.err != nil {
+			return nil, err
+		}
+		songInfos = append(songInfos, info)
+	}
 	return songInfos, err
 }
 
@@ -189,7 +199,7 @@ func addAlbum(conn *pgx.Conn) error {
 		return err
 	}
 
-	prompt.Label = "Enter album path"
+	prompt.Label = "Enter album path (with /)"
 	dir, err := prompt.Run()
 	if err != nil {
 		return err

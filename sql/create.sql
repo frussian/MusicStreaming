@@ -258,12 +258,14 @@ execute procedure album_insert_trig();
 --delete song trigger
 create or replace function song_delete_trig() returns trigger as $song_delete_trig$
 begin
-    if not exists(
+--     raise notice 'song %', old.data;
+    if (not exists(
             select 1 from Song
             where albumID = old.albumID
-        ) then
-        raise exception 'cannot delete song: album % must have at least 1 song', old.albumID;
+        ) and exists(select title from album a where a.albumID = old.albumID)) then
+        raise exception 'cannot delete song: album with id % must have at least 1 song', old.albumID;
     end if;
+    perform lo_unlink(old.data);
     return null;
 end;
 $song_delete_trig$ language plpgsql;
@@ -274,6 +276,8 @@ create constraint trigger song_delete_trig
     initially deferred
     for each row
 execute procedure song_delete_trig();
+
+
 --
 
 drop table if exists Concert cascade;
@@ -309,13 +313,13 @@ create constraint trigger band_concert_int_upd_trig
     for each row
     execute procedure band_concert_int_upd_trig();
 
-drop view AlbumTable;
+drop view if exists AlbumTable;
 create view AlbumTable as
     select title, (select bandname from band b where b.bandid = a.bandid),
 			(select count(*) from song s where s.albumid = a.albumid), releaseDate
     from album a order by title;
 
-drop view SongTable;
+drop view if exists SongTable;
 create view SongTable as
     select songname, length, a.title, (select bandname from band b
      where b.bandid = a.bandID) from song
