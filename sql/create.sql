@@ -325,3 +325,11 @@ create view SongTable as
      where b.bandid = a.bandID) from song
     join album a on a.albumID = song.albumID
     order by songname;
+
+drop view if exists BandConcert;
+create view BandConcert as
+    select b.bandID, c.concertID, c.description, c.capacity,
+           c.concertDate, c.location, c.concertTime
+    from Concert c
+    join bandconcertint bci on c.concertID = bci.concertid
+    join Band b on b.bandID = bci.bandID;

@@ -80,8 +80,10 @@ struct SimpleReqDefaultTypeInternal {
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SimpleReqDefaultTypeInternal _SimpleReq_default_instance_;
 PROTOBUF_CONSTEXPR StreamReq::StreamReq(
     ::_pbi::ConstantInitialized)
-  : objid_(int64_t{0})
-  , suggestedsize_(0){}
+  : reqstring_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
+  , suggestedsize_(0)
+  , type_(0)
+{}
 struct StreamReqDefaultTypeInternal {
   PROTOBUF_CONSTEXPR StreamReqDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -173,7 +175,6 @@ PROTOBUF_CONSTEXPR Band::Band(
   , description_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
   , unixfounddate_(int64_t{0})
   , unixtermdate_(int64_t{0})
-  , objid_(int64_t{0})
   , genre_(0)
 {}
 struct BandDefaultTypeInternal {
@@ -190,7 +191,6 @@ PROTOBUF_CONSTEXPR Song::Song(
   : songname_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
   , albumname_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
   , bandname_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , objid_(int64_t{0})
   , lengthsec_(0){}
 struct SongDefaultTypeInternal {
   PROTOBUF_CONSTEXPR SongDefaultTypeInternal()
@@ -221,8 +221,7 @@ PROTOBUF_CONSTEXPR Musician::Musician(
   : memberships_()
   , musname_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
   , bio_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , unixdateofbirth_(int64_t{0})
-  , objid_(int64_t{0}){}
+  , unixdateofbirth_(int64_t{0}){}
 struct MusicianDefaultTypeInternal {
   PROTOBUF_CONSTEXPR MusicianDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -285,8 +284,9 @@ const uint32_t TableStruct_messages_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::StreamReq, objid_),
+  PROTOBUF_FIELD_OFFSET(::StreamReq, reqstring_),
   PROTOBUF_FIELD_OFFSET(::StreamReq, suggestedsize_),
+  PROTOBUF_FIELD_OFFSET(::StreamReq, type_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::TableAns, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -351,7 +351,6 @@ const uint32_t TableStruct_messages_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   PROTOBUF_FIELD_OFFSET(::Band, unixfounddate_),
   PROTOBUF_FIELD_OFFSET(::Band, unixtermdate_),
   PROTOBUF_FIELD_OFFSET(::Band, description_),
-  PROTOBUF_FIELD_OFFSET(::Band, objid_),
   PROTOBUF_FIELD_OFFSET(::Band, albumnames_),
   PROTOBUF_FIELD_OFFSET(::Band, participants_),
   PROTOBUF_FIELD_OFFSET(::Band, concerts_),
@@ -365,7 +364,6 @@ const uint32_t TableStruct_messages_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   PROTOBUF_FIELD_OFFSET(::Song, lengthsec_),
   PROTOBUF_FIELD_OFFSET(::Song, albumname_),
   PROTOBUF_FIELD_OFFSET(::Song, bandname_),
-  PROTOBUF_FIELD_OFFSET(::Song, objid_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Album, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -385,7 +383,6 @@ const uint32_t TableStruct_messages_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   PROTOBUF_FIELD_OFFSET(::Musician, musname_),
   PROTOBUF_FIELD_OFFSET(::Musician, unixdateofbirth_),
   PROTOBUF_FIELD_OFFSET(::Musician, bio_),
-  PROTOBUF_FIELD_OFFSET(::Musician, objid_),
   PROTOBUF_FIELD_OFFSET(::Musician, memberships_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
@@ -394,15 +391,15 @@ static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protode
   { 24, -1, -1, sizeof(::TableReq)},
   { 34, -1, -1, sizeof(::SimpleReq)},
   { 42, -1, -1, sizeof(::StreamReq)},
-  { 50, -1, -1, sizeof(::TableAns)},
-  { 61, -1, -1, sizeof(::SimpleAns)},
-  { 74, -1, -1, sizeof(::StreamAns)},
-  { 82, -1, -1, sizeof(::Membership)},
-  { 92, -1, -1, sizeof(::Concert)},
-  { 103, -1, -1, sizeof(::Band)},
+  { 51, -1, -1, sizeof(::TableAns)},
+  { 62, -1, -1, sizeof(::SimpleAns)},
+  { 75, -1, -1, sizeof(::StreamAns)},
+  { 83, -1, -1, sizeof(::Membership)},
+  { 93, -1, -1, sizeof(::Concert)},
+  { 104, -1, -1, sizeof(::Band)},
   { 118, -1, -1, sizeof(::Song)},
-  { 129, -1, -1, sizeof(::Album)},
-  { 139, -1, -1, sizeof(::Musician)},
+  { 128, -1, -1, sizeof(::Album)},
+  { 138, -1, -1, sizeof(::Musician)},
 };
 
 static const ::_pb::Message* const file_default_instances[] = {
@@ -434,44 +431,43 @@ const char descriptor_table_protodef_messages_2eproto[] PROTOBUF_SECTION_VARIABL
   "q\022\r\n\005first\030\001 \001(\r\022\014\n\004last\030\002 \001(\r\022\016\n\006filter"
   "\030\003 \001(\t\022\031\n\004type\030\004 \001(\0162\013.EntityType\"9\n\tSim"
   "pleReq\022\021\n\treqString\030\001 \001(\t\022\031\n\004type\030\004 \001(\0162"
-  "\013.EntityType\"1\n\tStreamReq\022\r\n\005objId\030\001 \001(\003"
-  "\022\025\n\rsuggestedSize\030\002 \001(\005\"\205\001\n\010TableAns\022\024\n\005"
-  "bands\030\001 \003(\0132\005.Band\022\026\n\006albums\030\002 \003(\0132\006.Alb"
-  "um\022\032\n\010concerts\030\003 \003(\0132\010.Concert\022\024\n\005songs\030"
-  "\004 \003(\0132\005.Song\022\031\n\004type\030\005 \001(\0162\013.EntityType\""
-  "\270\001\n\tSimpleAns\022\025\n\004band\030\001 \001(\0132\005.BandH\000\022\027\n\005"
-  "album\030\002 \001(\0132\006.AlbumH\000\022\025\n\004song\030\003 \001(\0132\005.So"
-  "ngH\000\022\033\n\007concert\030\004 \001(\0132\010.ConcertH\000\022\035\n\010mus"
-  "ician\030\005 \001(\0132\t.MusicianH\000\022!\n\nmembership\030\006"
-  " \001(\0132\013.MembershipH\000B\005\n\003msg\"*\n\tStreamAns\022"
-  "\014\n\004data\030\001 \001(\014\022\017\n\007isFinal\030\002 \001(\010\"\\\n\nMember"
-  "ship\022\017\n\007musName\030\001 \001(\t\022\020\n\010bandName\030\002 \001(\t\022"
-  "\025\n\runixEntryDate\030\003 \001(\003\022\024\n\014unixQuitDate\030\004"
-  " \001(\003\"k\n\007Concert\022\020\n\010capacity\030\001 \001(\005\022\023\n\013des"
-  "cription\030\002 \001(\t\022\024\n\014unixDateTime\030\003 \001(\003\022\020\n\010"
-  "location\030\004 \001(\t\022\021\n\tbandNames\030\005 \003(\t\"\323\001\n\004Ba"
-  "nd\022\020\n\010bandName\030\001 \001(\t\022\025\n\005genre\030\002 \001(\0162\006.Ge"
-  "nre\022\025\n\runixFoundDate\030\003 \001(\003\022\024\n\014unixTermDa"
-  "te\030\004 \001(\003\022\023\n\013description\030\005 \001(\t\022\r\n\005objId\030\t"
-  " \001(\003\022\022\n\nalbumNames\030\006 \003(\t\022!\n\014participants"
-  "\030\007 \003(\0132\013.Membership\022\032\n\010concerts\030\010 \003(\0132\010."
-  "Concert\"_\n\004Song\022\020\n\010songName\030\001 \001(\t\022\021\n\tlen"
-  "gthSec\030\002 \001(\005\022\021\n\talbumName\030\003 \001(\t\022\020\n\010bandN"
-  "ame\030\004 \001(\t\022\r\n\005objId\030\005 \001(\003\"W\n\005Album\022\r\n\005tit"
-  "le\030\001 \001(\t\022\027\n\017unixReleaseDate\030\002 \001(\003\022\024\n\005son"
-  "gs\030\003 \003(\0132\005.Song\022\020\n\010bandName\030\004 \001(\t\"r\n\010Mus"
-  "ician\022\017\n\007musName\030\001 \001(\t\022\027\n\017unixDateOfBirt"
-  "h\030\002 \001(\003\022\013\n\003bio\030\003 \001(\t\022\r\n\005objId\030\005 \001(\003\022 \n\013m"
-  "emberships\030\004 \003(\0132\013.Membership*V\n\nEntityT"
-  "ype\022\010\n\004BAND\020\000\022\t\n\005ALBUM\020\001\022\010\n\004SONG\020\002\022\013\n\007CO"
-  "NCERT\020\003\022\014\n\010MUSICIAN\020\004\022\016\n\nMEMBERSHIP\020\005*C\n"
-  "\005Genre\022\010\n\004ROCK\020\000\022\017\n\013ALTERNATIVE\020\001\022\t\n\005IND"
-  "IE\020\002\022\t\n\005BLUES\020\003\022\t\n\005METAL\020\004B\tZ\007./protob\006p"
-  "roto3"
+  "\013.EntityType\"P\n\tStreamReq\022\021\n\treqString\030\001"
+  " \001(\t\022\025\n\rsuggestedSize\030\002 \001(\005\022\031\n\004type\030\003 \001("
+  "\0162\013.EntityType\"\205\001\n\010TableAns\022\024\n\005bands\030\001 \003"
+  "(\0132\005.Band\022\026\n\006albums\030\002 \003(\0132\006.Album\022\032\n\010con"
+  "certs\030\003 \003(\0132\010.Concert\022\024\n\005songs\030\004 \003(\0132\005.S"
+  "ong\022\031\n\004type\030\005 \001(\0162\013.EntityType\"\270\001\n\tSimpl"
+  "eAns\022\025\n\004band\030\001 \001(\0132\005.BandH\000\022\027\n\005album\030\002 \001"
+  "(\0132\006.AlbumH\000\022\025\n\004song\030\003 \001(\0132\005.SongH\000\022\033\n\007c"
+  "oncert\030\004 \001(\0132\010.ConcertH\000\022\035\n\010musician\030\005 \001"
+  "(\0132\t.MusicianH\000\022!\n\nmembership\030\006 \001(\0132\013.Me"
+  "mbershipH\000B\005\n\003msg\"*\n\tStreamAns\022\014\n\004data\030\001"
+  " \001(\014\022\017\n\007isFinal\030\002 \001(\010\"\\\n\nMembership\022\017\n\007m"
+  "usName\030\001 \001(\t\022\020\n\010bandName\030\002 \001(\t\022\025\n\runixEn"
+  "tryDate\030\003 \001(\003\022\024\n\014unixQuitDate\030\004 \001(\003\"k\n\007C"
+  "oncert\022\020\n\010capacity\030\001 \001(\005\022\023\n\013description\030"
+  "\002 \001(\t\022\024\n\014unixDateTime\030\003 \001(\003\022\020\n\010location\030"
+  "\004 \001(\t\022\021\n\tbandNames\030\005 \003(\t\"\304\001\n\004Band\022\020\n\010ban"
+  "dName\030\001 \001(\t\022\025\n\005genre\030\002 \001(\0162\006.Genre\022\025\n\run"
+  "ixFoundDate\030\003 \001(\003\022\024\n\014unixTermDate\030\004 \001(\003\022"
+  "\023\n\013description\030\005 \001(\t\022\022\n\nalbumNames\030\006 \003(\t"
+  "\022!\n\014participants\030\007 \003(\0132\013.Membership\022\032\n\010c"
+  "oncerts\030\010 \003(\0132\010.Concert\"P\n\004Song\022\020\n\010songN"
+  "ame\030\001 \001(\t\022\021\n\tlengthSec\030\002 \001(\005\022\021\n\talbumNam"
+  "e\030\003 \001(\t\022\020\n\010bandName\030\004 \001(\t\"W\n\005Album\022\r\n\005ti"
+  "tle\030\001 \001(\t\022\027\n\017unixReleaseDate\030\002 \001(\003\022\024\n\005so"
+  "ngs\030\003 \003(\0132\005.Song\022\020\n\010bandName\030\004 \001(\t\"c\n\010Mu"
+  "sician\022\017\n\007musName\030\001 \001(\t\022\027\n\017unixDateOfBir"
+  "th\030\002 \001(\003\022\013\n\003bio\030\003 \001(\t\022 \n\013memberships\030\004 \003"
+  "(\0132\013.Membership*V\n\nEntityType\022\010\n\004BAND\020\000\022"
+  "\t\n\005ALBUM\020\001\022\010\n\004SONG\020\002\022\013\n\007CONCERT\020\003\022\014\n\010MUS"
+  "ICIAN\020\004\022\016\n\nMEMBERSHIP\020\005*C\n\005Genre\022\010\n\004ROCK"
+  "\020\000\022\017\n\013ALTERNATIVE\020\001\022\t\n\005INDIE\020\002\022\t\n\005BLUES\020"
+  "\003\022\t\n\005METAL\020\004B\tZ\007./protob\006proto3"
   ;
 static ::_pbi::once_flag descriptor_table_messages_2eproto_once;
 const ::_pbi::DescriptorTable descriptor_table_messages_2eproto = {
-    false, false, 1765, descriptor_table_protodef_messages_2eproto,
+    false, false, 1751, descriptor_table_protodef_messages_2eproto,
     "messages.proto",
     &descriptor_table_messages_2eproto_once, nullptr, 0, 14,
     schemas, file_default_instances, TableStruct_messages_2eproto::offsets,
@@ -1853,17 +1849,29 @@ StreamReq::StreamReq(::PROTOBUF_NAMESPACE_ID::Arena* arena,
 StreamReq::StreamReq(const StreamReq& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&objid_, &from.objid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&suggestedsize_) -
-    reinterpret_cast<char*>(&objid_)) + sizeof(suggestedsize_));
+  reqstring_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    reqstring_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (!from._internal_reqstring().empty()) {
+    reqstring_.Set(from._internal_reqstring(), 
+      GetArenaForAllocation());
+  }
+  ::memcpy(&suggestedsize_, &from.suggestedsize_,
+    static_cast<size_t>(reinterpret_cast<char*>(&type_) -
+    reinterpret_cast<char*>(&suggestedsize_)) + sizeof(type_));
   // @@protoc_insertion_point(copy_constructor:StreamReq)
 }
 
 inline void StreamReq::SharedCtor() {
+reqstring_.InitDefault();
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  reqstring_.Set("", GetArenaForAllocation());
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 ::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&objid_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&suggestedsize_) -
-    reinterpret_cast<char*>(&objid_)) + sizeof(suggestedsize_));
+    reinterpret_cast<char*>(&suggestedsize_) - reinterpret_cast<char*>(this)),
+    0, static_cast<size_t>(reinterpret_cast<char*>(&type_) -
+    reinterpret_cast<char*>(&suggestedsize_)) + sizeof(type_));
 }
 
 StreamReq::~StreamReq() {
@@ -1877,6 +1885,7 @@ StreamReq::~StreamReq() {
 
 inline void StreamReq::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  reqstring_.Destroy();
 }
 
 void StreamReq::SetCachedSize(int size) const {
@@ -1889,9 +1898,10 @@ void StreamReq::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&objid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&suggestedsize_) -
-      reinterpret_cast<char*>(&objid_)) + sizeof(suggestedsize_));
+  reqstring_.ClearToEmpty();
+  ::memset(&suggestedsize_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&type_) -
+      reinterpret_cast<char*>(&suggestedsize_)) + sizeof(type_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1901,11 +1911,13 @@ const char* StreamReq::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx
     uint32_t tag;
     ptr = ::_pbi::ReadTag(ptr, &tag);
     switch (tag >> 3) {
-      // int64 objId = 1;
+      // string reqString = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          objid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 10)) {
+          auto str = _internal_mutable_reqstring();
+          ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
+          CHK_(::_pbi::VerifyUTF8(str, "StreamReq.reqString"));
         } else
           goto handle_unusual;
         continue;
@@ -1914,6 +1926,15 @@ const char* StreamReq::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
           suggestedsize_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
+        } else
+          goto handle_unusual;
+        continue;
+      // .EntityType type = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
+          uint64_t val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+          _internal_set_type(static_cast<::EntityType>(val));
         } else
           goto handle_unusual;
         continue;
@@ -1946,16 +1967,27 @@ uint8_t* StreamReq::_InternalSerialize(
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  // int64 objId = 1;
-  if (this->_internal_objid() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt64ToArray(1, this->_internal_objid(), target);
+  // string reqString = 1;
+  if (!this->_internal_reqstring().empty()) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::VerifyUtf8String(
+      this->_internal_reqstring().data(), static_cast<int>(this->_internal_reqstring().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::SERIALIZE,
+      "StreamReq.reqString");
+    target = stream->WriteStringMaybeAliased(
+        1, this->_internal_reqstring(), target);
   }
 
   // int32 suggestedSize = 2;
   if (this->_internal_suggestedsize() != 0) {
     target = stream->EnsureSpace(target);
     target = ::_pbi::WireFormatLite::WriteInt32ToArray(2, this->_internal_suggestedsize(), target);
+  }
+
+  // .EntityType type = 3;
+  if (this->_internal_type() != 0) {
+    target = stream->EnsureSpace(target);
+    target = ::_pbi::WireFormatLite::WriteEnumToArray(
+      3, this->_internal_type(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -1974,14 +2006,22 @@ size_t StreamReq::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // int64 objId = 1;
-  if (this->_internal_objid() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_objid());
+  // string reqString = 1;
+  if (!this->_internal_reqstring().empty()) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_reqstring());
   }
 
   // int32 suggestedSize = 2;
   if (this->_internal_suggestedsize() != 0) {
     total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_suggestedsize());
+  }
+
+  // .EntityType type = 3;
+  if (this->_internal_type() != 0) {
+    total_size += 1 +
+      ::_pbi::WireFormatLite::EnumSize(this->_internal_type());
   }
 
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
@@ -2006,11 +2046,14 @@ void StreamReq::MergeFrom(const StreamReq& from) {
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  if (from._internal_objid() != 0) {
-    _internal_set_objid(from._internal_objid());
+  if (!from._internal_reqstring().empty()) {
+    _internal_set_reqstring(from._internal_reqstring());
   }
   if (from._internal_suggestedsize() != 0) {
     _internal_set_suggestedsize(from._internal_suggestedsize());
+  }
+  if (from._internal_type() != 0) {
+    _internal_set_type(from._internal_type());
   }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
@@ -2028,13 +2071,19 @@ bool StreamReq::IsInitialized() const {
 
 void StreamReq::InternalSwap(StreamReq* other) {
   using std::swap;
+  auto* lhs_arena = GetArenaForAllocation();
+  auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
+      &reqstring_, lhs_arena,
+      &other->reqstring_, rhs_arena
+  );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(StreamReq, suggestedsize_)
-      + sizeof(StreamReq::suggestedsize_)
-      - PROTOBUF_FIELD_OFFSET(StreamReq, objid_)>(
-          reinterpret_cast<char*>(&objid_),
-          reinterpret_cast<char*>(&other->objid_));
+      PROTOBUF_FIELD_OFFSET(StreamReq, type_)
+      + sizeof(StreamReq::type_)
+      - PROTOBUF_FIELD_OFFSET(StreamReq, suggestedsize_)>(
+          reinterpret_cast<char*>(&suggestedsize_),
+          reinterpret_cast<char*>(&other->suggestedsize_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata StreamReq::GetMetadata() const {
@@ -3910,14 +3959,6 @@ const char* Band::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
         } else
           goto handle_unusual;
         continue;
-      // int64 objId = 9;
-      case 9:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 72)) {
-          objid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
-        } else
-          goto handle_unusual;
-        continue;
       default:
         goto handle_unusual;
     }  // switch
@@ -4012,12 +4053,6 @@ uint8_t* Band::_InternalSerialize(
         InternalWriteMessage(8, repfield, repfield.GetCachedSize(), target, stream);
   }
 
-  // int64 objId = 9;
-  if (this->_internal_objid() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt64ToArray(9, this->_internal_objid(), target);
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -4080,11 +4115,6 @@ size_t Band::ByteSizeLong() const {
     total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_unixtermdate());
   }
 
-  // int64 objId = 9;
-  if (this->_internal_objid() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_objid());
-  }
-
   // .Genre genre = 2;
   if (this->_internal_genre() != 0) {
     total_size += 1 +
@@ -4127,9 +4157,6 @@ void Band::MergeFrom(const Band& from) {
   }
   if (from._internal_unixtermdate() != 0) {
     _internal_set_unixtermdate(from._internal_unixtermdate());
-  }
-  if (from._internal_objid() != 0) {
-    _internal_set_objid(from._internal_objid());
   }
   if (from._internal_genre() != 0) {
     _internal_set_genre(from._internal_genre());
@@ -4217,9 +4244,7 @@ Song::Song(const Song& from)
     bandname_.Set(from._internal_bandname(), 
       GetArenaForAllocation());
   }
-  ::memcpy(&objid_, &from.objid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&lengthsec_) -
-    reinterpret_cast<char*>(&objid_)) + sizeof(lengthsec_));
+  lengthsec_ = from.lengthsec_;
   // @@protoc_insertion_point(copy_constructor:Song)
 }
 
@@ -4236,10 +4261,7 @@ bandname_.InitDefault();
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
   bandname_.Set("", GetArenaForAllocation());
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&objid_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&lengthsec_) -
-    reinterpret_cast<char*>(&objid_)) + sizeof(lengthsec_));
+lengthsec_ = 0;
 }
 
 Song::~Song() {
@@ -4271,9 +4293,7 @@ void Song::Clear() {
   songname_.ClearToEmpty();
   albumname_.ClearToEmpty();
   bandname_.ClearToEmpty();
-  ::memset(&objid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&lengthsec_) -
-      reinterpret_cast<char*>(&objid_)) + sizeof(lengthsec_));
+  lengthsec_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -4318,14 +4338,6 @@ const char* Song::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
           ptr = ::_pbi::InlineGreedyStringParser(str, ptr, ctx);
           CHK_(ptr);
           CHK_(::_pbi::VerifyUTF8(str, "Song.bandName"));
-        } else
-          goto handle_unusual;
-        continue;
-      // int64 objId = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
-          objid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
@@ -4394,12 +4406,6 @@ uint8_t* Song::_InternalSerialize(
         4, this->_internal_bandname(), target);
   }
 
-  // int64 objId = 5;
-  if (this->_internal_objid() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt64ToArray(5, this->_internal_objid(), target);
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -4435,11 +4441,6 @@ size_t Song::ByteSizeLong() const {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_bandname());
-  }
-
-  // int64 objId = 5;
-  if (this->_internal_objid() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_objid());
   }
 
   // int32 lengthSec = 2;
@@ -4478,9 +4479,6 @@ void Song::MergeFrom(const Song& from) {
   if (!from._internal_bandname().empty()) {
     _internal_set_bandname(from._internal_bandname());
   }
-  if (from._internal_objid() != 0) {
-    _internal_set_objid(from._internal_objid());
-  }
   if (from._internal_lengthsec() != 0) {
     _internal_set_lengthsec(from._internal_lengthsec());
   }
@@ -4515,12 +4513,7 @@ void Song::InternalSwap(Song* other) {
       &bandname_, lhs_arena,
       &other->bandname_, rhs_arena
   );
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Song, lengthsec_)
-      + sizeof(Song::lengthsec_)
-      - PROTOBUF_FIELD_OFFSET(Song, objid_)>(
-          reinterpret_cast<char*>(&objid_),
-          reinterpret_cast<char*>(&other->objid_));
+  swap(lengthsec_, other->lengthsec_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Song::GetMetadata() const {
@@ -4864,9 +4857,7 @@ Musician::Musician(const Musician& from)
     bio_.Set(from._internal_bio(), 
       GetArenaForAllocation());
   }
-  ::memcpy(&unixdateofbirth_, &from.unixdateofbirth_,
-    static_cast<size_t>(reinterpret_cast<char*>(&objid_) -
-    reinterpret_cast<char*>(&unixdateofbirth_)) + sizeof(objid_));
+  unixdateofbirth_ = from.unixdateofbirth_;
   // @@protoc_insertion_point(copy_constructor:Musician)
 }
 
@@ -4879,10 +4870,7 @@ bio_.InitDefault();
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
   bio_.Set("", GetArenaForAllocation());
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&unixdateofbirth_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&objid_) -
-    reinterpret_cast<char*>(&unixdateofbirth_)) + sizeof(objid_));
+unixdateofbirth_ = int64_t{0};
 }
 
 Musician::~Musician() {
@@ -4913,9 +4901,7 @@ void Musician::Clear() {
   memberships_.Clear();
   musname_.ClearToEmpty();
   bio_.ClearToEmpty();
-  ::memset(&unixdateofbirth_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&objid_) -
-      reinterpret_cast<char*>(&unixdateofbirth_)) + sizeof(objid_));
+  unixdateofbirth_ = int64_t{0};
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -4963,14 +4949,6 @@ const char* Musician::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx)
             CHK_(ptr);
             if (!ctx->DataAvailable(ptr)) break;
           } while (::PROTOBUF_NAMESPACE_ID::internal::ExpectTag<34>(ptr));
-        } else
-          goto handle_unusual;
-        continue;
-      // int64 objId = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 40)) {
-          objid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
-          CHK_(ptr);
         } else
           goto handle_unusual;
         continue;
@@ -5037,12 +5015,6 @@ uint8_t* Musician::_InternalSerialize(
         InternalWriteMessage(4, repfield, repfield.GetCachedSize(), target, stream);
   }
 
-  // int64 objId = 5;
-  if (this->_internal_objid() != 0) {
-    target = stream->EnsureSpace(target);
-    target = ::_pbi::WireFormatLite::WriteInt64ToArray(5, this->_internal_objid(), target);
-  }
-
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
     target = ::_pbi::WireFormat::InternalSerializeUnknownFieldsToArray(
         _internal_metadata_.unknown_fields<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(::PROTOBUF_NAMESPACE_ID::UnknownFieldSet::default_instance), target, stream);
@@ -5085,11 +5057,6 @@ size_t Musician::ByteSizeLong() const {
     total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_unixdateofbirth());
   }
 
-  // int64 objId = 5;
-  if (this->_internal_objid() != 0) {
-    total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_objid());
-  }
-
   return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
 }
 
@@ -5122,9 +5089,6 @@ void Musician::MergeFrom(const Musician& from) {
   if (from._internal_unixdateofbirth() != 0) {
     _internal_set_unixdateofbirth(from._internal_unixdateofbirth());
   }
-  if (from._internal_objid() != 0) {
-    _internal_set_objid(from._internal_objid());
-  }
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
@@ -5153,12 +5117,7 @@ void Musician::InternalSwap(Musician* other) {
       &bio_, lhs_arena,
       &other->bio_, rhs_arena
   );
-  ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Musician, objid_)
-      + sizeof(Musician::objid_)
-      - PROTOBUF_FIELD_OFFSET(Musician, unixdateofbirth_)>(
-          reinterpret_cast<char*>(&unixdateofbirth_),
-          reinterpret_cast<char*>(&other->unixdateofbirth_));
+  swap(unixdateofbirth_, other->unixdateofbirth_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Musician::GetMetadata() const {

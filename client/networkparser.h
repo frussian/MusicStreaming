@@ -18,6 +18,7 @@ public:
 public slots:
 	int requestTable(uint64_t reqId, int first, int last, QString filter,
 					 enum EntityType type);
+	int simpleRequest(uint64_t, QString name, enum EntityType type);
 private slots:
 	void connected();
 	void disconnected();
@@ -34,7 +35,8 @@ signals:
 private:
 	int handleSize();
 	int handlePkt();
-	void prepareReq(uint64_t reqId);
+	void prepareReq(Request &reqWrapper, uint64_t reqId);
+	int writeReqWrapper(Request &req);
 
 	std::set<uint64_t> requests;
 	QString host;

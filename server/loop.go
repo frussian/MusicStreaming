@@ -21,6 +21,16 @@ type Conn struct {
 //	swi
 //}
 
+func handleSimpleReq(conn *Conn, req *proto.SimpleReq) *proto.SimpleAns {
+	ans := &proto.SimpleAns{}
+	switch req.Type {
+	case proto.EntityType_BAND:
+		ans.Msg = dbSimpleBandReq(conn, req.ReqString)
+	}
+
+	return ans
+}
+
 func handleTableReq(conn *Conn, req *proto.TableReq) *proto.TableAns {
 	var ans *proto.TableAns
 	switch req.Type {
@@ -58,7 +68,9 @@ func handleMsg(conn *Conn, reqWrap *proto.Request) {
 	switch reqType := reqWrap.Msg.(type) {
 	case *proto.Request_SimpleReq: {
 		logger.Info("simple req msg")
-		msg.Cancel = true
+		//msg.Cancel = true
+		req := reqType.SimpleReq
+		msg.Msg = &proto.Answer_SimpleAns{SimpleAns: handleSimpleReq(conn, req)}
 	}
 	case *proto.Request_StreamReq: {
 		logger.Info("stream req msg")

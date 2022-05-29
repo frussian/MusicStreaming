@@ -132,8 +132,10 @@ void NetworkParser::readyRead()
 	}
 }
 
-void NetworkParser::prepareReq(uint64_t reqId)
+void NetworkParser::prepareReq(Request &reqWrapper, uint64_t reqId)
 {
+	reqWrapper.set_reqid(reqId);
+	reqWrapper.set_cancel(false);
 	requests.insert(reqId);
 	QTimer::singleShot(TIMEOUT_MS, this, [this, reqId](){
 		if (requests.find(reqId) != requests.end()) {
@@ -142,14 +144,21 @@ void NetworkParser::prepareReq(uint64_t reqId)
 	});
 }
 
+int NetworkParser::writeReqWrapper(Request &reqWrapper)
+{
+	uint32_t total = 4;
+	total += reqWrapper.ByteSizeLong();
+	char tmp[total];
+	*(uint32_t*)tmp = total-4;
+	reqWrapper.SerializeToArray(tmp + 4, total-4);
+	return socket->write(tmp, total);
+}
+
 int NetworkParser::requestTable(uint64_t reqId, int first, int last,
 								QString filter, EntityType type)
 {
-	prepareReq(reqId);
-
 	Request reqWrapper;
-	reqWrapper.set_cancel(false);
-	reqWrapper.set_reqid(reqId);
+	prepareReq(reqWrapper, reqId);
 
 	TableReq *req = new TableReq();
 	req->set_first(first);
@@ -157,11 +166,22 @@ int NetworkParser::requestTable(uint64_t reqId, int first, int last,
 	req->set_filter(filter.toStdString());
 	req->set_type(type);
 	reqWrapper.set_allocated_tablereq(req);
-	uint32_t total = 4;
-	total += reqWrapper.ByteSizeLong();
-	char tmp[total];
-	*(uint32_t*)tmp = total-4;
-	reqWrapper.SerializeToArray(tmp + 4, total-4);
-	socket->write(tmp, total);
-	return 0;
+
+	return writeReqWrapper(reqWrapper);
 }
+
+int NetworkParser::simpleRequest(uint64_t reqId, QString name, EntityType type)
+{
+	Request reqWrapper;
+	prepareReq(reqWrapper, reqId);
+
+	SimpleReq *req = new SimpleReq();
+	req->set_reqstring(name.toStdString());
+	req->set_type(type);
+	reqWrapper.set_allocated_simplereq(req);
+
+	return writeReqWrapper(reqWrapper);
+}
+
+
+

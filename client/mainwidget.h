@@ -23,12 +23,14 @@ signals:
 	void connectToHost(QString host, int port);
 	void requestTableParser(uint64_t reqId, int first, int last, QString filter,
 						   enum EntityType type);
+	void simpleRequestParser(uint64_t, QString name, enum EntityType type);
 private slots:
 	void clicked();
 	void tableClicked(int row, int column);
 	void tableScrolled(int value);
 	void searchChanged(QString filter);
 	void tableAns(uint64_t reqId, TableAns ans);
+	void simpleAns(uint64_t reqId, SimpleAns ans);
 	void parserConnected();
 	void reqFailed(uint64_t reqId);
 //	void simpleAns(uint64_t reqId, SimpleAns ans);
@@ -37,6 +39,7 @@ private:
 	struct Req {
 		int first;
 		int last;
+		QString name;
 	};
 
 	void initUI();
@@ -47,6 +50,7 @@ private:
 	void scrollTable(int id);
 	void requestTable(int first, int last, QString filter,
 					 enum EntityType type);
+	void simpleRequest(QString name, enum EntityType type);
 	void handleBandInsertion(Req&, TableAns*);
 	void handleAlbumInsertion(Req&, TableAns*);
 	void handleSongInsertion(Req&, TableAns*);

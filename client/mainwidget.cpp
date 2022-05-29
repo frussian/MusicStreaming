@@ -31,14 +31,21 @@ MainWidget::MainWidget(QThread *th, QWidget *parent) : QWidget(parent)
 {
 	qRegisterMetaType<uint64_t>("uint64_t");
 	qRegisterMetaType<TableAns>("TableAns");
+	qRegisterMetaType<SimpleAns>("SimpleAns");
+	qRegisterMetaType<StreamAns>("StreamAns");
 	qRegisterMetaType<EntityType>("EntityType");
 	parser = new NetworkParser(th);
 	initUI();
+
 	connect(parser, &NetworkParser::tableAns, this, &MainWidget::tableAns);
+	connect(parser, &NetworkParser::simpleAns, this, &MainWidget::simpleAns);
+
 	connect(parser, &NetworkParser::parserConnected, this, &MainWidget::parserConnected);
-	connect(parser, &NetworkParser::reqFailed, this, &MainWidget::reqFailed);
 	connect(this, &MainWidget::connectToHost, parser, &NetworkParser::connectToHost);
+
+	connect(parser, &NetworkParser::reqFailed, this, &MainWidget::reqFailed);
 	connect(this, &MainWidget::requestTableParser, parser, &NetworkParser::requestTable);
+	connect(this, &MainWidget::simpleRequestParser, parser, &NetworkParser::simpleRequest);
 
 	emit connectToHost("192.168.1.30", 3018);
 
@@ -192,6 +199,15 @@ void MainWidget::requestTable(int first, int last,
 	reqId++;
 }
 
+void MainWidget::simpleRequest(QString name, enum EntityType type)
+{
+	emit simpleRequestParser(reqId, name, type);
+	Req req;
+	req.name = name;
+	requests[reqId] = req;
+	reqId++;
+}
+
 void MainWidget::clicked()
 {
 	QObject *obj = sender();
@@ -221,10 +237,20 @@ void MainWidget::tableClicked(int row, int col)
 		if (col != 0) return;
 		QTableWidgetItem *item = table->item(row, 0);
 		if (!item) return;
-		QVariant var = item->data(dataRole);
-		Band b = var.value<Band>();
-		qDebug() << QString::fromStdString(b.bandname());
+//		QVariant var = item->data(dataRole);
+//		Band b = var.value<Band>();
+//		qDebug() << QString::fromStdString(b.bandname());
+		QString band = item->data(Qt::DisplayRole).toString();
+		simpleRequest(band, EntityType::BAND);
 		break;
+	}
+	case SONG_ID: {
+		if (col != 0) return;
+		QTableWidgetItem *item = table->item(row, 0);
+		if (!item) return;
+		QVariant var = item->data(Qt::DisplayRole);
+		QString song = var.toString();
+
 	}
 	}
 }
@@ -305,13 +331,13 @@ void MainWidget::handleBandInsertion(Req &req, TableAns *ans)
 
 		int64_t unix = band.unixfounddate();
 		if (unix) {
-			QDateTime found = QDateTime::fromSecsSinceEpoch(unix);
+			QDateTime found = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
 			item = new QTableWidgetItem(found.toString("yyyy"));
 			bands->setItem(i+req.first, 2, item);
 		}
 		unix = band.unixtermdate();
 		if (unix) {
-			QDateTime term = QDateTime::fromSecsSinceEpoch(unix);
+			QDateTime term = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
 			item = new QTableWidgetItem(term.toString("yyyy"));
 			bands->setItem(i+req.first, 3, item);
 		}
@@ -336,7 +362,7 @@ void MainWidget::handleAlbumInsertion(Req &req, TableAns *ans)
 
 		int64_t unix = album.unixreleasedate();
 		if (unix) {
-			QDateTime found = QDateTime::fromSecsSinceEpoch(unix);
+			QDateTime found = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
 			item = new QTableWidgetItem(found.toString("yyyy-MM-dd"));
 			albums->setItem(i+req.first, 2, item);
 		}
@@ -393,7 +419,7 @@ void MainWidget::handleConcertInsertion(Req &req, TableAns *ans)
 
 		int64_t unix = concert.unixdatetime();
 		if (unix) {
-			QDateTime t = QDateTime::fromSecsSinceEpoch(unix);
+			QDateTime t = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
 			item = new QTableWidgetItem(t.toString("dd-MM-yyyy hh:mm"));
 			concerts->setItem(i+req.first, 2, item);
 		}
@@ -457,7 +483,21 @@ void MainWidget::tableAns(uint64_t reqId, TableAns ans)
 
 }
 
-
+void MainWidget::simpleAns(uint64_t reqId, SimpleAns ans)
+{
+	requests.remove(reqId);
+	auto type = ans.msg_case();
+	switch (type) {
+	case SimpleAns::kBand: {
+		const Band &band = ans.band();
+		qDebug() << QString::fromStdString(band.bandname()) <<
+					band.albumnames_size() <<
+					band.participants_size() <<
+					band.concerts_size();
+		break;
+	}
+	}
+}
 
 
 

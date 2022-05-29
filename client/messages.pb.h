@@ -1092,16 +1092,22 @@ class StreamReq final :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kObjIdFieldNumber = 1,
+    kReqStringFieldNumber = 1,
     kSuggestedSizeFieldNumber = 2,
+    kTypeFieldNumber = 3,
   };
-  // int64 objId = 1;
-  void clear_objid();
-  int64_t objid() const;
-  void set_objid(int64_t value);
+  // string reqString = 1;
+  void clear_reqstring();
+  const std::string& reqstring() const;
+  template <typename ArgT0 = const std::string&, typename... ArgT>
+  void set_reqstring(ArgT0&& arg0, ArgT... args);
+  std::string* mutable_reqstring();
+  PROTOBUF_NODISCARD std::string* release_reqstring();
+  void set_allocated_reqstring(std::string* reqstring);
   private:
-  int64_t _internal_objid() const;
-  void _internal_set_objid(int64_t value);
+  const std::string& _internal_reqstring() const;
+  inline PROTOBUF_ALWAYS_INLINE void _internal_set_reqstring(const std::string& value);
+  std::string* _internal_mutable_reqstring();
   public:
 
   // int32 suggestedSize = 2;
@@ -1113,6 +1119,15 @@ class StreamReq final :
   void _internal_set_suggestedsize(int32_t value);
   public:
 
+  // .EntityType type = 3;
+  void clear_type();
+  ::EntityType type() const;
+  void set_type(::EntityType value);
+  private:
+  ::EntityType _internal_type() const;
+  void _internal_set_type(::EntityType value);
+  public:
+
   // @@protoc_insertion_point(class_scope:StreamReq)
  private:
   class _Internal;
@@ -1120,8 +1135,9 @@ class StreamReq final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  int64_t objid_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr reqstring_;
   int32_t suggestedsize_;
+  int type_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_messages_2eproto;
 };
@@ -2312,7 +2328,6 @@ class Band final :
     kDescriptionFieldNumber = 5,
     kUnixFoundDateFieldNumber = 3,
     kUnixTermDateFieldNumber = 4,
-    kObjIdFieldNumber = 9,
     kGenreFieldNumber = 2,
   };
   // repeated string albumNames = 6;
@@ -2421,15 +2436,6 @@ class Band final :
   void _internal_set_unixtermdate(int64_t value);
   public:
 
-  // int64 objId = 9;
-  void clear_objid();
-  int64_t objid() const;
-  void set_objid(int64_t value);
-  private:
-  int64_t _internal_objid() const;
-  void _internal_set_objid(int64_t value);
-  public:
-
   // .Genre genre = 2;
   void clear_genre();
   ::Genre genre() const;
@@ -2453,7 +2459,6 @@ class Band final :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr description_;
   int64_t unixfounddate_;
   int64_t unixtermdate_;
-  int64_t objid_;
   int genre_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_messages_2eproto;
@@ -2582,7 +2587,6 @@ class Song final :
     kSongNameFieldNumber = 1,
     kAlbumNameFieldNumber = 3,
     kBandNameFieldNumber = 4,
-    kObjIdFieldNumber = 5,
     kLengthSecFieldNumber = 2,
   };
   // string songName = 1;
@@ -2627,15 +2631,6 @@ class Song final :
   std::string* _internal_mutable_bandname();
   public:
 
-  // int64 objId = 5;
-  void clear_objid();
-  int64_t objid() const;
-  void set_objid(int64_t value);
-  private:
-  int64_t _internal_objid() const;
-  void _internal_set_objid(int64_t value);
-  public:
-
   // int32 lengthSec = 2;
   void clear_lengthsec();
   int32_t lengthsec() const;
@@ -2655,7 +2650,6 @@ class Song final :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr songname_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr albumname_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bandname_;
-  int64_t objid_;
   int32_t lengthsec_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_messages_2eproto;
@@ -2980,7 +2974,6 @@ class Musician final :
     kMusNameFieldNumber = 1,
     kBioFieldNumber = 3,
     kUnixDateOfBirthFieldNumber = 2,
-    kObjIdFieldNumber = 5,
   };
   // repeated .Membership memberships = 4;
   int memberships_size() const;
@@ -3037,15 +3030,6 @@ class Musician final :
   void _internal_set_unixdateofbirth(int64_t value);
   public:
 
-  // int64 objId = 5;
-  void clear_objid();
-  int64_t objid() const;
-  void set_objid(int64_t value);
-  private:
-  int64_t _internal_objid() const;
-  void _internal_set_objid(int64_t value);
-  public:
-
   // @@protoc_insertion_point(class_scope:Musician)
  private:
   class _Internal;
@@ -3057,7 +3041,6 @@ class Musician final :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr musname_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bio_;
   int64_t unixdateofbirth_;
-  int64_t objid_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   friend struct ::TableStruct_messages_2eproto;
 };
@@ -3810,24 +3793,54 @@ inline void SimpleReq::set_type(::EntityType value) {
 
 // StreamReq
 
-// int64 objId = 1;
-inline void StreamReq::clear_objid() {
-  objid_ = int64_t{0};
+// string reqString = 1;
+inline void StreamReq::clear_reqstring() {
+  reqstring_.ClearToEmpty();
 }
-inline int64_t StreamReq::_internal_objid() const {
-  return objid_;
+inline const std::string& StreamReq::reqstring() const {
+  // @@protoc_insertion_point(field_get:StreamReq.reqString)
+  return _internal_reqstring();
 }
-inline int64_t StreamReq::objid() const {
-  // @@protoc_insertion_point(field_get:StreamReq.objId)
-  return _internal_objid();
+template <typename ArgT0, typename... ArgT>
+inline PROTOBUF_ALWAYS_INLINE
+void StreamReq::set_reqstring(ArgT0&& arg0, ArgT... args) {
+ 
+ reqstring_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+  // @@protoc_insertion_point(field_set:StreamReq.reqString)
 }
-inline void StreamReq::_internal_set_objid(int64_t value) {
+inline std::string* StreamReq::mutable_reqstring() {
+  std::string* _s = _internal_mutable_reqstring();
+  // @@protoc_insertion_point(field_mutable:StreamReq.reqString)
+  return _s;
+}
+inline const std::string& StreamReq::_internal_reqstring() const {
+  return reqstring_.Get();
+}
+inline void StreamReq::_internal_set_reqstring(const std::string& value) {
   
-  objid_ = value;
+  reqstring_.Set(value, GetArenaForAllocation());
 }
-inline void StreamReq::set_objid(int64_t value) {
-  _internal_set_objid(value);
-  // @@protoc_insertion_point(field_set:StreamReq.objId)
+inline std::string* StreamReq::_internal_mutable_reqstring() {
+  
+  return reqstring_.Mutable(GetArenaForAllocation());
+}
+inline std::string* StreamReq::release_reqstring() {
+  // @@protoc_insertion_point(field_release:StreamReq.reqString)
+  return reqstring_.Release();
+}
+inline void StreamReq::set_allocated_reqstring(std::string* reqstring) {
+  if (reqstring != nullptr) {
+    
+  } else {
+    
+  }
+  reqstring_.SetAllocated(reqstring, GetArenaForAllocation());
+#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  if (reqstring_.IsDefault()) {
+    reqstring_.Set("", GetArenaForAllocation());
+  }
+#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  // @@protoc_insertion_point(field_set_allocated:StreamReq.reqString)
 }
 
 // int32 suggestedSize = 2;
@@ -3848,6 +3861,26 @@ inline void StreamReq::_internal_set_suggestedsize(int32_t value) {
 inline void StreamReq::set_suggestedsize(int32_t value) {
   _internal_set_suggestedsize(value);
   // @@protoc_insertion_point(field_set:StreamReq.suggestedSize)
+}
+
+// .EntityType type = 3;
+inline void StreamReq::clear_type() {
+  type_ = 0;
+}
+inline ::EntityType StreamReq::_internal_type() const {
+  return static_cast< ::EntityType >(type_);
+}
+inline ::EntityType StreamReq::type() const {
+  // @@protoc_insertion_point(field_get:StreamReq.type)
+  return _internal_type();
+}
+inline void StreamReq::_internal_set_type(::EntityType value) {
+  
+  type_ = value;
+}
+inline void StreamReq::set_type(::EntityType value) {
+  _internal_set_type(value);
+  // @@protoc_insertion_point(field_set:StreamReq.type)
 }
 
 // -------------------------------------------------------------------
@@ -5092,26 +5125,6 @@ inline void Band::set_allocated_description(std::string* description) {
   // @@protoc_insertion_point(field_set_allocated:Band.description)
 }
 
-// int64 objId = 9;
-inline void Band::clear_objid() {
-  objid_ = int64_t{0};
-}
-inline int64_t Band::_internal_objid() const {
-  return objid_;
-}
-inline int64_t Band::objid() const {
-  // @@protoc_insertion_point(field_get:Band.objId)
-  return _internal_objid();
-}
-inline void Band::_internal_set_objid(int64_t value) {
-  
-  objid_ = value;
-}
-inline void Band::set_objid(int64_t value) {
-  _internal_set_objid(value);
-  // @@protoc_insertion_point(field_set:Band.objId)
-}
-
 // repeated string albumNames = 6;
 inline int Band::_internal_albumnames_size() const {
   return albumnames_.size();
@@ -5441,26 +5454,6 @@ inline void Song::set_allocated_bandname(std::string* bandname) {
   // @@protoc_insertion_point(field_set_allocated:Song.bandName)
 }
 
-// int64 objId = 5;
-inline void Song::clear_objid() {
-  objid_ = int64_t{0};
-}
-inline int64_t Song::_internal_objid() const {
-  return objid_;
-}
-inline int64_t Song::objid() const {
-  // @@protoc_insertion_point(field_get:Song.objId)
-  return _internal_objid();
-}
-inline void Song::_internal_set_objid(int64_t value) {
-  
-  objid_ = value;
-}
-inline void Song::set_objid(int64_t value) {
-  _internal_set_objid(value);
-  // @@protoc_insertion_point(field_set:Song.objId)
-}
-
 // -------------------------------------------------------------------
 
 // Album
@@ -5747,26 +5740,6 @@ inline void Musician::set_allocated_bio(std::string* bio) {
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Musician.bio)
-}
-
-// int64 objId = 5;
-inline void Musician::clear_objid() {
-  objid_ = int64_t{0};
-}
-inline int64_t Musician::_internal_objid() const {
-  return objid_;
-}
-inline int64_t Musician::objid() const {
-  // @@protoc_insertion_point(field_get:Musician.objId)
-  return _internal_objid();
-}
-inline void Musician::_internal_set_objid(int64_t value) {
-  
-  objid_ = value;
-}
-inline void Musician::set_objid(int64_t value) {
-  _internal_set_objid(value);
-  // @@protoc_insertion_point(field_set:Musician.objId)
 }
 
 // repeated .Membership memberships = 4;

@@ -176,8 +176,8 @@ func (stream *Stream) handleCloseConn() {
 	stream.cb(stream.userCtx, evt)
 	stream.conn.Close()
 
-	stream.instance.logger.Info(fmt.Sprintf("%v", stream.instance.streams))
-	stream.instance.logger.Info(fmt.Sprintf("%p", stream))
+	//stream.instance.logger.Info(fmt.Sprintf("%v", stream.instance.streams))
+	//stream.instance.logger.Info(fmt.Sprintf("%p", stream))
 	stream.instance.removeStream(i)
 }
 
