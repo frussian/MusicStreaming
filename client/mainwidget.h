@@ -9,6 +9,7 @@ class QGroupBox;
 class QStackedWidget;
 class NetworkParser;
 class QLineEdit;
+class AudioPlayer;
 
 #include "messages.pb.h"
 
@@ -36,26 +37,35 @@ private:
 		int first;
 		int last;
 	};
+
 	void initUI();
 	void setupLeftPanel();
 	void setupSearch();
-	void setupPlayArea(QString stylesheet);
+//	void setupPlayArea(QString stylesheet);
 	void setupTables();
 	void requestTable(int first, int last, QString filter,
 					 enum EntityType type);
 	void handleBandInsertion(Req&, TableAns*);
 	void handleAlbumInsertion(Req&, TableAns*);
 	void handleSongInsertion(Req&, TableAns*);
+
+	static int dataRole;
+
 	QGroupBox *leftGroup;
 	QGroupBox *searchGroup;
 	QLineEdit *searchEdit;
-	QGroupBox *playGroup;
+//	QGroupBox *playGroup;
 	QStackedWidget *tables;
 	uint64_t reqId = 1;
 	QMap<uint64_t, Req> requests;
 	NetworkParser *parser;
+	AudioPlayer *player;
 };
 
 Q_DECLARE_METATYPE(uint64_t);
-Q_DECLARE_METATYPE(TableAns);
+Q_DECLARE_METATYPE(Song);
+Q_DECLARE_METATYPE(Album);
+Q_DECLARE_METATYPE(Band);
+Q_DECLARE_METATYPE(Concert);
+
 #endif // MAINWIDGET_H

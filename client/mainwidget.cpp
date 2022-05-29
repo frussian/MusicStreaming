@@ -16,26 +16,30 @@
 
 #include "mainwidget.h"
 #include "networkparser.h"
+#include "audioplayer.h"
 
 #define BAND_ID 0
 #define ALBUM_ID 1
 #define SONG_ID 2
 #define CONCERT_ID 3
 
+#define TABLE_GROW 3
+
+int MainWidget::dataRole = Qt::UserRole + 1;
+
 MainWidget::MainWidget(QThread *th, QWidget *parent) : QWidget(parent)
 {
 	qRegisterMetaType<uint64_t>("uint64_t");
 	qRegisterMetaType<TableAns>("TableAns");
 	qRegisterMetaType<EntityType>("EntityType");
-
-	initUI();
 	parser = new NetworkParser(th);
+	initUI();
 	connect(parser, &NetworkParser::tableAns, this, &MainWidget::tableAns);
 	connect(parser, &NetworkParser::parserConnected, this, &MainWidget::parserConnected);
 	connect(this, &MainWidget::connectToHost, parser, &NetworkParser::connectToHost);
 	connect(this, &MainWidget::requestTableParser, parser, &NetworkParser::requestTable);
 
-	emit connectToHost("192.168.43.56", 3018);
+	emit connectToHost("192.168.1.30", 3018);
 
 //	bool connected = parser->connectToHost("192.168.1.30", 3018);
 //	if (!connected) {
@@ -65,9 +69,10 @@ void MainWidget::initUI()
 	setupTables();
 	lay->addWidget(tables, 1, 1);
 
-	playGroup = new QGroupBox;
-	setupPlayArea(stylesheet);
-	lay->addWidget(playGroup, 2, 0, 1, 2);
+//	playGroup = new QGroupBox;
+	player = new AudioPlayer(stylesheet);
+//	playGroup->
+	lay->addWidget(player, 2, 0, 1, 2);
 
 	setLayout(lay);
 }
@@ -111,51 +116,51 @@ void MainWidget::setupSearch()
 			this, &MainWidget::searchChanged);
 }
 
-void MainWidget::setupPlayArea(QString stylesheet)
-{
-	QGridLayout *playLay = new QGridLayout;
+//void MainWidget::setupPlayArea(QString stylesheet)
+//{
+//	QGridLayout *playLay = new QGridLayout;
 
-//	QProgressBar *progress = new QProgressBar;
-//	progress->setMinimum(0);
-//	progress->setMaximum(60);
-//	progress->setValue(43);
-//	progress->setMaximumHeight(20);
-//	progress->setTextVisible(false);
-//	progress->setStyleSheet(customStyleSheet);
-//	playLay->addWidget(progress);
-	QSlider *playSlider = new QSlider(Qt::Horizontal);
-	playSlider->setMinimum(0);
-	playSlider->setMaximum(100);
-	playSlider->setValue(63);
-	playSlider->setStyleSheet(stylesheet);
+////	QProgressBar *progress = new QProgressBar;
+////	progress->setMinimum(0);
+////	progress->setMaximum(60);
+////	progress->setValue(43);
+////	progress->setMaximumHeight(20);
+////	progress->setTextVisible(false);
+////	progress->setStyleSheet(customStyleSheet);
+////	playLay->addWidget(progress);
+//	QSlider *playSlider = new QSlider(Qt::Horizontal);
+//	playSlider->setMinimum(0);
+//	playSlider->setMaximum(100);
+//	playSlider->setValue(63);
+//	playSlider->setStyleSheet(stylesheet);
 
-	QPushButton *playBtn = new QPushButton;
-//	playBtn->setFixedSize(70, 70);
-//	QRect rect(QPoint(), playBtn->size());
-//	rect.adjust(10, 10, -10, -10);
-//	QRegion region(rect,QRegion::Ellipse);
-	playBtn->setStyleSheet(stylesheet);
-//	playBtn->setMask(region);
-//	playBtn->setFixedSize(50, 50);
+//	QPushButton *playBtn = new QPushButton;
+////	playBtn->setFixedSize(70, 70);
+////	QRect rect(QPoint(), playBtn->size());
+////	rect.adjust(10, 10, -10, -10);
+////	QRegion region(rect,QRegion::Ellipse);
+//	playBtn->setStyleSheet(stylesheet);
+////	playBtn->setMask(region);
+////	playBtn->setFixedSize(50, 50);
 
-	QVBoxLayout *songInfoLay = new QVBoxLayout;
-	QPushButton *songNameBtn = new QPushButton("SongName");
-	songNameBtn->setProperty("isFlat", true);
-	songNameBtn->setStyleSheet("QPushButton { border: none; }");
-	QPushButton *bandNameBtn = new QPushButton("BandName");
-	bandNameBtn->setFlat(true);
-	songInfoLay->addWidget(songNameBtn);
-	songInfoLay->addWidget(bandNameBtn);
-	songInfoLay->addStretch();
-//	bandNameBtn->setStyleSheet("QPushButton { border: none; }");
+//	QVBoxLayout *songInfoLay = new QVBoxLayout;
+//	QPushButton *songNameBtn = new QPushButton("SongName");
+//	songNameBtn->setProperty("isFlat", true);
+//	songNameBtn->setStyleSheet("QPushButton { border: none; }");
+//	QPushButton *bandNameBtn = new QPushButton("BandName");
+//	bandNameBtn->setFlat(true);
+//	songInfoLay->addWidget(songNameBtn);
+//	songInfoLay->addWidget(bandNameBtn);
+//	songInfoLay->addStretch();
+////	bandNameBtn->setStyleSheet("QPushButton { border: none; }");
 
 
-	playLay->addWidget(playBtn, 0, 1);
-	playLay->setAlignment(playBtn, Qt::AlignCenter);
-	playLay->addWidget(playSlider, 1, 1);
-	playLay->addLayout(songInfoLay, 0, 0, 2, 1);
-	playGroup->setLayout(playLay);
-}
+//	playLay->addWidget(playBtn, 0, 1);
+//	playLay->setAlignment(playBtn, Qt::AlignCenter);
+//	playLay->addWidget(playSlider, 1, 1);
+//	playLay->addLayout(songInfoLay, 0, 0, 2, 1);
+//	playGroup->setLayout(playLay);
+//}
 
 void MainWidget::setupTables()
 {
@@ -247,7 +252,8 @@ void MainWidget::clicked()
 
 	this->tables->setCurrentIndex(id);
 	QString filter = searchEdit->text();
-	requestTable(0, 5, filter, EntityType(id));
+	tableScrolled(0);
+//	requestTable(0, 5, filter, EntityType(id));
 }
 
 void MainWidget::tableClicked(int row, int col)
@@ -276,7 +282,12 @@ void MainWidget::tableClicked(int row, int col)
 	switch (id) {
 	case BAND_ID: {
 		if (col != 0) return;
-
+		QTableWidgetItem *item = table->item(row, 0);
+		if (!item) return;
+		QVariant var = item->data(dataRole);
+		Band b = var.value<Band>();
+		qDebug() << QString::fromStdString(b.bandname());
+		break;
 	}
 	}
 }
@@ -293,8 +304,8 @@ void MainWidget::tableScrolled(int value)
 	int last = 0;
 	for (int i = 0; i < table->rowCount(); i++) {
 		int pos = table->rowViewportPosition(i);
-		if (0 <= pos && pos <= h) {
-			qDebug() << i+1 << "visible" << pos;
+		if (0 <= pos && pos <= h && !table->item(i, 0)) {
+			qDebug() << i+1 << "visible" << pos << table->item(i, 0);
 			if (first == -1) {
 				first = i;
 			}
@@ -304,10 +315,12 @@ void MainWidget::tableScrolled(int value)
 
 	}
 
+	if (first == -1) {
+		return;
+	}
+
 	qDebug() << "req" << first << last;
 	requestTable(first, last, searchEdit->text(), EntityType(id));
-
-//	table->rowViewportPosition(i);
 }
 
 void MainWidget::searchChanged(QString filter)
@@ -331,12 +344,13 @@ QString getGenre(enum Genre genre)
 void MainWidget::handleBandInsertion(Req &req, TableAns *ans)
 {
 	QTableWidget *bands = dynamic_cast<QTableWidget*>(tables->widget(BAND_ID));
-	bands->clearContents();
+//	bands->clearContents();
 	for (int i = 0; i < ans->bands_size(); i++) {
 		Band band = ans->bands(i);
 
 		const std::string &name = band.bandname();
 		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(name));
+		item->setData(dataRole, QVariant::fromValue(band));
 		bands->setItem(i+req.first, 0, item);
 
 		QString genre = getGenre(band.genre());
@@ -361,12 +375,13 @@ void MainWidget::handleBandInsertion(Req &req, TableAns *ans)
 void MainWidget::handleAlbumInsertion(Req &req, TableAns *ans)
 {
 	QTableWidget *albums = dynamic_cast<QTableWidget*>(tables->widget(ALBUM_ID));
-	albums->clearContents();
+//	albums->clearContents();
 	for (int i = 0; i < ans->albums_size(); i++) {
 		Album album = ans->albums(i);
 
 		const std::string &albumname = album.title();
 		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(albumname));
+		item->setData(dataRole, QVariant::fromValue(album));
 		albums->setItem(i+req.first, 0, item);
 
 		const std::string &bandname = album.bandname();
@@ -389,12 +404,13 @@ void MainWidget::handleAlbumInsertion(Req &req, TableAns *ans)
 void MainWidget::handleSongInsertion(Req &req, TableAns *ans)
 {
 	QTableWidget *songs = dynamic_cast<QTableWidget*>(tables->widget(SONG_ID));
-	songs->clearContents();
+//	songs->clearContents();
 	for (int i = 0; i < ans->songs_size(); i++) {
 		Song song = ans->songs(i);
 
 		const std::string &songname = song.songname();
 		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(songname));
+		item->setData(dataRole, QVariant::fromValue(song));
 		songs->setItem(i+req.first, 0, item);
 
 		const std::string &albumname = song.albumname();
@@ -419,6 +435,7 @@ void MainWidget::parserConnected()
 
 void MainWidget::tableAns(uint64_t reqId, TableAns ans)
 {
+	int id = -1;
 	switch(ans.type()) {
 	case EntityType::BAND: {
 		QMap<uint64_t, Req>::iterator req = requests.find(reqId);
@@ -426,6 +443,7 @@ void MainWidget::tableAns(uint64_t reqId, TableAns ans)
 			qWarning() << "unknown req id" << reqId;
 			return;
 		}
+		id = BAND_ID;
 		handleBandInsertion(req.value(), &ans);
 		requests.erase(req);
 		break;
@@ -436,6 +454,7 @@ void MainWidget::tableAns(uint64_t reqId, TableAns ans)
 			qWarning() << "unknown req id" << reqId;
 			return;
 		}
+		id = ALBUM_ID;
 		handleAlbumInsertion(req.value(), &ans);
 		requests.erase(req);
 		break;
@@ -446,10 +465,19 @@ void MainWidget::tableAns(uint64_t reqId, TableAns ans)
 			qWarning() << "unknown req id" << reqId;
 			return;
 		}
+		id = SONG_ID;
 		handleSongInsertion(req.value(), &ans);
 		requests.erase(req);
 		break;
 	}
+	}
+
+	if (id == -1) return;
+
+	QTableWidget *table = dynamic_cast<QTableWidget*>(tables->widget(id));
+	int last = table->rowCount()-1;
+	if (table->item(last, 0)) {
+		table->setRowCount(last+1+TABLE_GROW);
 	}
 
 }
