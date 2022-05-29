@@ -4,6 +4,8 @@
 #include <QThread>
 #include <QTimer>
 
+#define TIMEOUT_MS 3000
+
 NetworkParser::NetworkParser(QThread *th):
 	QObject(th), state(0)
 {
@@ -84,6 +86,9 @@ int NetworkParser::handlePkt()
 	Answer ans;
 	ans.ParseFromArray(buf.data(), pktlen);
 	Answer::MsgCase msgType = ans.msg_case();
+
+	requests.erase(ans.reqid());
+
 	switch (msgType) {
 	case Answer::kTableAns: {
 		TableAns t = ans.tableans();
@@ -127,9 +132,21 @@ void NetworkParser::readyRead()
 	}
 }
 
+void NetworkParser::prepareReq(uint64_t reqId)
+{
+	requests.insert(reqId);
+	QTimer::singleShot(TIMEOUT_MS, this, [this, reqId](){
+		if (requests.find(reqId) != requests.end()) {
+			emit reqFailed(reqId);
+		}
+	});
+}
+
 int NetworkParser::requestTable(uint64_t reqId, int first, int last,
 								QString filter, EntityType type)
 {
+	prepareReq(reqId);
+
 	Request reqWrapper;
 	reqWrapper.set_cancel(false);
 	reqWrapper.set_reqid(reqId);

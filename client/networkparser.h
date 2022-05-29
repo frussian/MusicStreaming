@@ -2,8 +2,10 @@
 #define NETWORKPARSER_H
 
 #include <QObject>
-#include "messages.pb.h"
 #include <QAbstractSocket>
+#include <set>
+
+#include "messages.pb.h"
 
 class QTcpSocket;
 
@@ -28,10 +30,13 @@ signals:
 	void simpleAns(uint64_t reqId, SimpleAns ans);
 	void streamAns(uint64_t reqId, StreamAns);
 	void parserConnected();
+	void reqFailed(uint64_t reqId);
 private:
 	int handleSize();
 	int handlePkt();
+	void prepareReq(uint64_t reqId);
 
+	std::set<uint64_t> requests;
 	QString host;
 	int port;
 	bool isConnected = false;

@@ -30,6 +30,7 @@ private slots:
 	void searchChanged(QString filter);
 	void tableAns(uint64_t reqId, TableAns ans);
 	void parserConnected();
+	void reqFailed(uint64_t reqId);
 //	void simpleAns(uint64_t reqId, SimpleAns ans);
 //	void streamAns(uint64_t reqId, StreamAns ans);
 private:
@@ -43,11 +44,13 @@ private:
 	void setupSearch();
 //	void setupPlayArea(QString stylesheet);
 	void setupTables();
+	void scrollTable(int id);
 	void requestTable(int first, int last, QString filter,
 					 enum EntityType type);
 	void handleBandInsertion(Req&, TableAns*);
 	void handleAlbumInsertion(Req&, TableAns*);
 	void handleSongInsertion(Req&, TableAns*);
+	void handleConcertInsertion(Req&, TableAns*);
 
 	static int dataRole;
 

@@ -66,7 +66,7 @@ insert into Concert(capacity, description, concertdate, location, concerttime) v
     (25000, 'Damaged Justice Tour, North American Leg II', '1989-08-29',
      'SEATTLE, WASHINGTON, UNITED STATES, SEATTLE CENTER COLISEUM', '19:00'),
     (10000, 'Damage Inc. Tour European Leg #3', '1987-02-01',
-     'ZÜRICH, SWITZERLAND, SPORTZENTRUM', '20:00'),
+     'ZURICH, SWITZERLAND, SPORTZENTRUM', '20:00'),
     (5000, 'Guns N'' Roses performs live at the Ritz in New York, NY on February 2nd 1988.',
      '1988-02-02', 'New York, New York, UNITED STATE, RITZ', '21:00'),
     (40000, 'Use Your Illusion World Tour', '1992-12-08',

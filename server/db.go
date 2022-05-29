@@ -9,6 +9,7 @@ import (
 	log "gopkg.in/inconshreveable/log15.v2"
 	"math"
 	"musicplatform/proto"
+	"time"
 )
 
 type EntityType int32
@@ -149,4 +150,41 @@ func dbTableSongReq(state *ServerState, first, last uint32, filter string) *prot
 	songs.Type = proto.EntityType_SONG
 
 	return songs
+}
+
+func dbTableConcertReq(state *ServerState, first, last uint32, filter string) *proto.TableAns {
+	filter = "%" + filter + "%"
+	sql := `select description, capacity, concertDate, location, concertTime from Concert where location ilike $1 limit $2 offset $3;`
+	rows, err := state.pgxconn.Query(context.Background(), sql, filter, last-first+1, first)
+	if err != nil {
+		state.logger.Error(err.Error())
+		return nil
+	}
+	concerts := &proto.TableAns{Concerts: make([]*proto.Concert, 0, last-first+1)}
+
+	for rows.Next() {
+		var date pgtype.Date
+		var concertTime pgtype.Time
+		var location pgtype.Varchar
+		var description pgtype.Text
+		var capacity pgtype.Int4
+		concert := &proto.Concert{}
+		err = rows.Scan(&description, &capacity, &date, &location, &concertTime)
+		if err != nil {
+			state.logger.Error(err.Error())
+			continue
+		}
+		concert.Description = description.String
+		concert.Capacity = int32(capacity.Int)
+		concert.Location = location.String
+		msec := concertTime.Microseconds
+		timemsec := time.Microsecond * time.Duration(msec)
+		concert.UnixDateTime = date.Time.Add(timemsec).Unix()
+
+		concerts.Concerts = append(concerts.Concerts, concert)
+	}
+
+	concerts.Type = proto.EntityType_CONCERT
+
+	return concerts
 }

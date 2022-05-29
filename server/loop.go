@@ -31,7 +31,7 @@ func handleTableReq(conn *Conn, req *proto.TableReq) *proto.TableAns {
 	case proto.EntityType_SONG:
 		ans = dbTableSongReq(conn.stateSrv, req.First, req.Last, req.Filter)
 	case proto.EntityType_CONCERT:
-		//ans = dbTableConcertReq(conn.stateSrv, req.First, req.Last, req.Filter)
+		ans = dbTableConcertReq(conn.stateSrv, req.First, req.Last, req.Filter)
 	}
 
 	return ans
