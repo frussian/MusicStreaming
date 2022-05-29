@@ -25,6 +25,7 @@ signals:
 private slots:
 	void clicked();
 	void tableClicked(int row, int column);
+	void tableScrolled(int value);
 	void searchChanged(QString filter);
 	void tableAns(uint64_t reqId, TableAns ans);
 	void parserConnected();

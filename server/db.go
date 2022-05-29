@@ -119,7 +119,7 @@ func dbTableAlbumReq(state *ServerState, first, last uint32, filter string) *pro
 
 func dbTableSongReq(state *ServerState, first, last uint32, filter string) *proto.TableAns {
 	filter = "%" + filter + "%"
-	sql := `select * from SongTable where title ilike $1 limit $2 offset $3;`
+	sql := `select * from SongTable where songname ilike $1 limit $2 offset $3;`
 	rows, err := state.pgxconn.Query(context.Background(), sql, filter, last-first+1, first)
 	if err != nil {
 		state.logger.Error(err.Error())

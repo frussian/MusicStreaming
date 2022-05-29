@@ -12,6 +12,7 @@
 #include <QStackedWidget>
 #include <QHeaderView>
 #include <QDateTime>
+#include <QScrollBar>
 
 #include "mainwidget.h"
 #include "networkparser.h"
@@ -34,7 +35,7 @@ MainWidget::MainWidget(QThread *th, QWidget *parent) : QWidget(parent)
 	connect(this, &MainWidget::connectToHost, parser, &NetworkParser::connectToHost);
 	connect(this, &MainWidget::requestTableParser, parser, &NetworkParser::requestTable);
 
-	emit connectToHost("192.168.1.30", 3018);
+	emit connectToHost("192.168.43.56", 3018);
 
 //	bool connected = parser->connectToHost("192.168.1.30", 3018);
 //	if (!connected) {
@@ -159,6 +160,7 @@ void MainWidget::setupPlayArea(QString stylesheet)
 void MainWidget::setupTables()
 {
 	tables = new QStackedWidget;
+	int rowNum = 10;
 
 	QTableWidget *bands = new QTableWidget();
 	QStringList cols;
@@ -166,11 +168,11 @@ void MainWidget::setupTables()
 	cols.append("Genre");
 	cols.append("Founding date");
 	cols.append("Termination date");
-	bands->setRowCount(5);
+	bands->setRowCount(rowNum);
 	bands->setColumnCount(cols.length());
 	bands->setHorizontalHeaderLabels(cols);
-	bands->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	bands->setEditTriggers(QAbstractItemView::NoEditTriggers);
+//	bands->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+//	bands->setEditTriggers(QAbstractItemView::NoEditTriggers);
 //	bands->horizontalHeader()->setVisible(true);
 //	bands->verticalHeader()->setVisible(false);
 
@@ -180,11 +182,11 @@ void MainWidget::setupTables()
 	cols.append("Release date");
 	cols.append("Songs");
 	QTableWidget *albums = new QTableWidget;
-	albums->setRowCount(5);
+	albums->setRowCount(rowNum);
 	albums->setColumnCount(cols.length());
 	albums->setHorizontalHeaderLabels(cols);
-	albums->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	albums->setEditTriggers(QAbstractItemView::NoEditTriggers);
+//	albums->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+//	albums->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 	cols.clear();
 	cols.append("Song");
@@ -192,11 +194,11 @@ void MainWidget::setupTables()
 	cols.append("Band");
 	cols.append("Length");
 	QTableWidget *songs = new QTableWidget;
-	songs->setRowCount(5);
+	songs->setRowCount(rowNum);
 	songs->setColumnCount(cols.length());
 	songs->setHorizontalHeaderLabels(cols);
-	songs->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
-	songs->setEditTriggers(QAbstractItemView::NoEditTriggers);
+//	songs->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+//	songs->setEditTriggers(QAbstractItemView::NoEditTriggers);
 
 	tables->addWidget(bands);
 	tables->addWidget(albums);
@@ -208,12 +210,30 @@ void MainWidget::setupTables()
 		QTableWidget *w = dynamic_cast<QTableWidget*>(tables->widget(i));
 		w->setProperty("index", i);
 		connect(w, &QTableWidget::cellDoubleClicked, this, &MainWidget::tableClicked);
+		w->verticalScrollBar()->setProperty("index", i);
+		connect(w->verticalScrollBar(), &QScrollBar::valueChanged,
+				this, &MainWidget::tableScrolled);
+		w->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+		w->setEditTriggers(QAbstractItemView::NoEditTriggers);
+//		w->setVerticalScrollMode(QAbstractItemView::ScrollMode::ScrollPerPixel);
 	}
 }
 
 void MainWidget::requestTable(int first, int last,
 							 QString filter, enum EntityType type)
 {
+	for (auto old: requests) {
+		if (old.first <= first && first <= old.last) {
+			first = old.last;
+		}
+		if (old.first <= last && last <= old.last) {
+			last = old.first;
+		}
+	}
+	if (first > last) {
+		qDebug() << "req already exists";
+		return;
+	}
 	emit requestTableParser(reqId, first, last, filter, type);
 	requests[reqId] = Req{first, last};
 	reqId++;
@@ -235,12 +255,59 @@ void MainWidget::tableClicked(int row, int col)
 	QObject *obj = sender();
 	int id = obj->property("index").toInt();
 	QTableWidget *table = dynamic_cast<QTableWidget*>(tables->widget(id));
+	auto item = table->item(row, col);
+	if (item) {
+		qDebug() << table->visualItemRect(item);
+	} else {
+		qDebug() << "null";
+	}
+//	table->viewport();
+//	for (int i = 0; i < table->rowCount(); i++) {
+//		qDebug() << "row" << table->rowViewportPosition(i);
+//		for (int j = 0; j < table->columnCount(); j++) {
+//			auto item = table->item(i, j);
+//			if (item) {
+//				qDebug() << table->visualItemRect(item);
+//			} else {
+//				qDebug() << "null";
+//			}
+//		}
+//	}
 	switch (id) {
 	case BAND_ID: {
 		if (col != 0) return;
 
 	}
 	}
+}
+
+void MainWidget::tableScrolled(int value)
+{
+	qDebug() << value;
+	QObject *obj = sender();
+	int id = obj->property("index").toInt();
+	QTableWidget *table = dynamic_cast<QTableWidget*>(tables->widget(id));
+	int h = table->viewport()->height();
+	qDebug() << h;
+	int first = -1;
+	int last = 0;
+	for (int i = 0; i < table->rowCount(); i++) {
+		int pos = table->rowViewportPosition(i);
+		if (0 <= pos && pos <= h) {
+			qDebug() << i+1 << "visible" << pos;
+			if (first == -1) {
+				first = i;
+			}
+			last = i;
+		}
+//		qDebug() << "row" << i << table->rowViewportPosition(i);
+
+	}
+
+	qDebug() << "req" << first << last;
+	requestTable(first, last, searchEdit->text(), EntityType(id));
+
+//	table->rowViewportPosition(i);
 }
 
 void MainWidget::searchChanged(QString filter)

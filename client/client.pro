@@ -15,8 +15,8 @@ SOURCES += \
     mainwindow.cpp \
     networkparser.cpp \
     networkthread.cpp \
-	oggdecoder.cpp \
-	messages.pb.cc
+    oggdecoder.cpp \
+    messages.pb.cc
 
 HEADERS += \
     audioplayer.h \
@@ -24,8 +24,8 @@ HEADERS += \
     mainwindow.h \
     networkparser.h \
     networkthread.h \
-	oggdecoder.h \
-	messages.pb.h
+    oggdecoder.h \
+    messages.pb.h
 
 FORMS += \
     mainwindow.ui

@@ -161,7 +161,7 @@ func servCB(userCtx interface{}, evt tcpbuf.Event) tcpbuf.RetType {
 		if evt.Addr == nil {
 			logger.Error("invalid address")
 		} else {
-			logger.Error("error listening", "host", evt.Addr.String())
+			logger.Error(evt.Err.Error(), "host", evt.Addr.String())
 		}
 	case tcpbuf.LISTENING:
 		logger.Info("listening on", "host", evt.Addr.String())
