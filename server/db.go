@@ -175,7 +175,7 @@ func dbTableConcertReq(state *ServerState, first, last uint32, filter string) *p
 			continue
 		}
 		concert.Description = description.String
-		concert.Capacity = int32(capacity.Int)
+		concert.Capacity = capacity.Int
 		concert.Location = location.String
 		msec := concertTime.Microseconds
 		timemsec := time.Microsecond * time.Duration(msec)

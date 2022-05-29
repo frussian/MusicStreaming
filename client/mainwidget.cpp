@@ -452,6 +452,7 @@ void MainWidget::tableAns(uint64_t reqId, TableAns ans)
 	int last = table->rowCount()-1;
 	if (table->item(last, 0)) {
 		table->setRowCount(last+1+TABLE_GROW);
+		scrollTable(id);  //load new rows if visible
 	}
 
 }
