@@ -7,6 +7,7 @@ import (
 	"github.com/jackc/pgx/v4"
 	"github.com/jackc/pgx/v4/log/log15adapter"
 	log "gopkg.in/inconshreveable/log15.v2"
+	"io"
 	"math"
 	"musicplatform/proto"
 	"time"
@@ -294,4 +295,78 @@ func dbSimpleBandReq(conn *Conn, req string) *proto.SimpleAns_Band {
 
 	ans := &proto.SimpleAns_Band{Band: band}
 	return ans
+}
+
+func dbGetObjId(conn *Conn, req *proto.StreamReq) int {
+	sql := ""
+	switch req.Type {
+	case proto.EntityType_SONG: {
+		sql = `select data from song where songname=$1`
+	}
+	default: {
+		conn.stateSrv.logger.Warn("stream request not supported", "type", req.Type)
+		return -1
+	}
+	}
+
+	row := conn.stateSrv.pgxconn.QueryRow(context.Background(), sql, req.ReqString)
+	var id pgtype.OIDValue
+
+	err := row.Scan(&id)
+	if err != nil {
+		conn.stateSrv.logger.Error(err.Error())
+		return -1
+	}
+	if id.Status == pgtype.Null {
+		return -1
+	}
+	return int(id.Uint)
+}
+
+func dbGetChunk(conn *Conn, stream *Stream) []byte {
+	tx, err := conn.stateSrv.pgxconn.Begin(context.Background())
+	if err != nil {
+		conn.stateSrv.logger.Error(err.Error())
+		return nil
+	}
+
+	los := tx.LargeObjects()
+
+	lo, err := los.Open(context.Background(), uint32(stream.objId), pgx.LargeObjectModeRead)
+	if err != nil {
+		conn.stateSrv.logger.Error(err.Error())
+		return nil
+	}
+
+	_, err = lo.Seek(int64(stream.offset), 0)
+	if err != nil {
+		conn.stateSrv.logger.Error(err.Error())
+		return nil
+	}
+
+	chunk := make([]byte, stream.size)
+
+	n, err := lo.Read(chunk)
+	if err == io.EOF {
+		return nil
+	}
+	if err != nil {
+		conn.stateSrv.logger.Error(err.Error())
+		return nil
+	}
+	chunk = chunk[:n]
+
+	err = lo.Close()
+	if err != nil {
+		conn.stateSrv.logger.Error(err.Error())
+		return nil
+	}
+
+	err = tx.Commit(context.Background())
+	if err != nil {
+		conn.stateSrv.logger.Error(err.Error())
+		return nil
+	}
+
+	return chunk
 }

@@ -5,13 +5,22 @@
 #include <QSlider>
 #include <QPushButton>
 #include <QGroupBox>
+#include <QThread>
+
 #include "audioplayer.h"
+#include "oggdecoder.h"
 
 AudioPlayer::AudioPlayer(QString stylesheet, QWidget *parent)
 	: QWidget(parent)
 {
 	initUI(stylesheet);
-	buf = new QByteArray();
+
+	qDebug() << QThread::currentThread();
+
+	decoder = new OggDecoder(this);
+	QThread *th = new QThread;
+	decoder->moveToThread(th);
+	th->start();
 
 	format.setSampleRate(48000);
 	format.setChannelCount(2);
@@ -26,16 +35,19 @@ AudioPlayer::AudioPlayer(QString stylesheet, QWidget *parent)
 	}
 
 	audio = new QAudioOutput(format);
+	audio->setVolume(0.001);
 	audio->setBufferSize(16000);
 	dev = audio->start();
 
 	audio->setNotifyInterval(30);
 	audio->resume();
 
-	qDebug() << "Construct";
-
 	connect(audio, SIGNAL(stateChanged(QAudio::State)), this, SLOT(handleStateChange(QAudio::State)));
 	connect(audio, SIGNAL(notify()), this, SLOT(notify()));
+	connect(decoder, SIGNAL(decoded(QByteArray)), this, SLOT(writeToBuf(QByteArray)));
+
+	connect(this, SIGNAL(decode()), decoder, SLOT(decode()));
+	connect(this, SIGNAL(writeOpus(QByteArray)), decoder, SLOT(writeOpus(QByteArray)));
 }
 
 void AudioPlayer::initUI(QString stylesheet)
@@ -113,21 +125,29 @@ void AudioPlayer::notify()
 {
 //	qDebug() << audio->bytesFree();
 //	decode();
+//	if (decoder->availableForDec() > 0) decoder->decode();
+	emit decode();
 	tryWriting();
 }
 
 void AudioPlayer::writeToBuf(QByteArray pcm)
 {
 //	qDebug() << pcm.length();
-	buf->append(pcm);
+	buf.append(pcm);
 	tryWriting();
+}
+
+void AudioPlayer::writeOpusData(QByteArray opus)
+{
+	emit writeOpus(opus);
+//	decoder->writeOpus(opus);
 }
 
 int AudioPlayer::tryWriting()
 {
-	int bytesToWrite = std::min(audio->bytesFree(), buf->length());
+	int bytesToWrite = std::min(audio->bytesFree(), buf.length());
 	if (!bytesToWrite) return 0;
-	dev->write(buf->data(), bytesToWrite);
-	buf->remove(0, bytesToWrite);
+	dev->write(buf.data(), bytesToWrite);
+	buf.remove(0, bytesToWrite);
 	return bytesToWrite;
 }

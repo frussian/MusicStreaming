@@ -10,11 +10,38 @@ import (
 	"time"
 )
 
+type Stream struct {
+	reqId uint64
+	//bytes [][]byte
+	offset int
+	size int
+	objId int
+}
+
 type Conn struct {
 	state int
 	lenBytes uint32
 	messages *deque.Deque
 	stateSrv *ServerState
+	streams []*Stream
+}
+
+func findStream(conn *Conn, reqId uint64) *Stream {
+	for _, stream := range conn.streams {
+		if stream.reqId == reqId {
+			return stream
+		}
+	}
+	return nil
+}
+
+func removeStream(conn *Conn, stream *Stream) {
+	for i, s := range conn.streams {
+		if s.reqId == stream.reqId {
+			conn.streams = append(conn.streams[:i], conn.streams[i+1:]...)
+			break
+		}
+	}
 }
 
 //func handleState(conn *Conn, data []byte) tcpbuf.RetType {
@@ -74,7 +101,34 @@ func handleMsg(conn *Conn, reqWrap *proto.Request) {
 	}
 	case *proto.Request_StreamReq: {
 		logger.Info("stream req msg")
-		msg.Cancel = true
+		//msg.Cancel = true
+		stream := findStream(conn, reqWrap.ReqId)
+		if stream != nil {
+			if reqWrap.Cancel {
+				logger.Info("cancelling request", "reqId", stream.reqId)
+				removeStream(conn, stream)
+			} else {
+				logger.Warn("unexpected stream without cancel", "reqId", stream.reqId)
+				msg.Msg = &proto.Answer_StreamAns{StreamAns: &proto.StreamAns{IsFinal: true}}
+				msg.Cancel = true
+			}
+		} else {
+			req := reqType.StreamReq
+			objId := dbGetObjId(conn, req)
+			if objId < 0 {
+				logger.Warn("cannot locate objId", "reqId", reqWrap.ReqId, "entity type", req.Type)
+				msg.Msg = &proto.Answer_StreamAns{StreamAns: &proto.StreamAns{IsFinal: true}}
+				msg.Cancel = true
+				break
+			}
+			stream = &Stream{
+				reqId:  reqWrap.ReqId,
+				offset: 0,
+				size: int(req.SuggestedSize),
+				objId:  objId,
+			}
+			conn.streams = append(conn.streams, stream)
+		}
 	}
 	case *proto.Request_TableReq: {
 		req := reqType.TableReq
@@ -83,6 +137,10 @@ func handleMsg(conn *Conn, reqWrap *proto.Request) {
 			req.GetLast(), req.GetFilter()))
 		msg.Msg = &proto.Answer_TableAns{TableAns: handleTableReq(conn, req)}
 	}
+	}
+
+	if msg.Msg == nil {
+		return
 	}
 
 	bytes, err := protobuf.Marshal(msg)
@@ -116,21 +174,22 @@ func handleReqState(conn *Conn, data []byte) tcpbuf.RetType {
 	return tcpbuf.RetType(lenBytes)
 }
 
-func handleWrite(conn *Conn, data []byte) tcpbuf.RetType {
-	state := conn.stateSrv
-	logger := state.logger
+func writeReadyPkts(conn *Conn, data []byte) (int, []byte) {
 	total := 0
+	logger := conn.stateSrv.logger
+
 	for conn.messages.Len() != 0 {
 		curr := uint32(4)
 		msg, ok := conn.messages.Front().([]byte)
 		if !ok {
 			logger.Error("not bytes in queue")
-			return tcpbuf.RetType(total)
+			conn.messages.PopFront()
+			continue
 		}
 		curr += uint32(len(msg))
 		logger.Info("", "msglen", curr)
 		if total + int(curr) > len(data) {
-			return tcpbuf.RetType(total)
+			return total, data
 		}
 		binary.LittleEndian.PutUint32(data[:4], curr-4)
 		copy(data[4:], msg)
@@ -138,6 +197,46 @@ func handleWrite(conn *Conn, data []byte) tcpbuf.RetType {
 		total += int(curr)
 		conn.messages.PopFront()
 	}
+
+	return total, data
+}
+
+func processStream(conn *Conn, stream *Stream) {
+
+}
+
+func processStreams(conn *Conn) int {
+	for _, stream := range conn.streams {
+		chunk := dbGetChunk(conn, stream)
+
+		stream.offset += len(chunk)
+
+		isFinal := len(chunk) < stream.size
+		msg := &proto.Answer{}
+		msg.ReqId = stream.reqId
+		msg.Msg = &proto.Answer_StreamAns{
+			StreamAns: &proto.StreamAns{IsFinal: isFinal, Data: chunk},
+		}
+
+		bytes, err := protobuf.Marshal(msg)
+		if err != nil {
+			conn.stateSrv.logger.Error("cannot marshal msg", "reqId", stream.reqId)
+			return -1
+		}
+		if isFinal {
+			removeStream(conn, stream)
+		}
+		conn.messages.PushBack(bytes)  //TODO: push front
+	}
+
+	return 0
+}
+
+func handleWrite(conn *Conn, data []byte) tcpbuf.RetType {
+	total := 0
+	processStreams(conn)
+	wr, data := writeReadyPkts(conn, data)
+	total += wr
 	return tcpbuf.RetType(total)
 }
 
@@ -179,7 +278,7 @@ func servCB(userCtx interface{}, evt tcpbuf.Event) tcpbuf.RetType {
 		logger.Info("listening on", "host", evt.Addr.String())
 	case tcpbuf.NEW_CONN:
 		logger.Info("new conn", "remote", evt.Addr.String())
-		evt.Instance.AcceptStream(&Conn{0, 0, deque.New(10) , state}, streamCB)
+		evt.Instance.AcceptStream(&Conn{0, 0, deque.New(10) , state, nil}, streamCB)
 	}
 	return tcpbuf.OK
 }

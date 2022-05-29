@@ -18,6 +18,8 @@
 #include "networkparser.h"
 #include "audioplayer.h"
 
+#include <iostream>
+
 #define BAND_ID 0
 #define ALBUM_ID 1
 #define SONG_ID 2
@@ -39,6 +41,7 @@ MainWidget::MainWidget(QThread *th, QWidget *parent) : QWidget(parent)
 
 	connect(parser, &NetworkParser::tableAns, this, &MainWidget::tableAns);
 	connect(parser, &NetworkParser::simpleAns, this, &MainWidget::simpleAns);
+	connect(parser, &NetworkParser::streamAns, this, &MainWidget::streamAns);
 
 	connect(parser, &NetworkParser::parserConnected, this, &MainWidget::parserConnected);
 	connect(this, &MainWidget::connectToHost, parser, &NetworkParser::connectToHost);
@@ -46,6 +49,7 @@ MainWidget::MainWidget(QThread *th, QWidget *parent) : QWidget(parent)
 	connect(parser, &NetworkParser::reqFailed, this, &MainWidget::reqFailed);
 	connect(this, &MainWidget::requestTableParser, parser, &NetworkParser::requestTable);
 	connect(this, &MainWidget::simpleRequestParser, parser, &NetworkParser::simpleRequest);
+	connect(this, &MainWidget::streamRequestParser, parser, &NetworkParser::streamRequest);
 
 	emit connectToHost("192.168.1.30", 3018);
 
@@ -195,7 +199,7 @@ void MainWidget::requestTable(int first, int last,
 		return;
 	}
 	emit requestTableParser(reqId, first, last, filter, type);
-	requests[reqId] = Req{first, last};
+	requests[reqId] = Req{first, last, "", type};
 	reqId++;
 }
 
@@ -204,6 +208,17 @@ void MainWidget::simpleRequest(QString name, enum EntityType type)
 	emit simpleRequestParser(reqId, name, type);
 	Req req;
 	req.name = name;
+	req.type = type;
+	requests[reqId] = req;
+	reqId++;
+}
+
+void MainWidget::streamRequest(QString name, uint32_t size, enum EntityType type)
+{
+	emit streamRequestParser(reqId, name, size, type);
+	Req req;
+	req.name = name;
+	req.type = type;
 	requests[reqId] = req;
 	reqId++;
 }
@@ -250,7 +265,8 @@ void MainWidget::tableClicked(int row, int col)
 		if (!item) return;
 		QVariant var = item->data(Qt::DisplayRole);
 		QString song = var.toString();
-
+		qDebug() << song;
+		streamRequest(song, 8192, EntityType::SONG);
 	}
 	}
 }
@@ -499,7 +515,37 @@ void MainWidget::simpleAns(uint64_t reqId, SimpleAns ans)
 	}
 }
 
+void MainWidget::streamAns(uint64_t reqId, StreamAns ans)
+{
+	QMap<uint64_t, Req>::iterator req = requests.find(reqId);
+	if (req == requests.end()) {
+		qWarning() << "unknown req id" << reqId;
+		return;
+	}
 
+	const std::string &data = ans.data();
+//	qDebug() << "data size" << data.size();
+	switch (req.value().type) {
+	case EntityType::SONG: {
+		if (data.size() != 0) {
+//			qDebug() << data.;
+//			qDebug() << data.at(0) << data.at(1);
+//			printf("%d %d\n", data.at(0), data.at(1));
+			//QByteArray::fromRawData?
+			player->writeOpusData(QByteArray(data.data(), data.size()));
+		}
+
+		if (ans.isfinal()) {
+			requests.remove(reqId);
+			qDebug() << "end of transfer";
+		}
+		break;
+	}
+	default: {
+		qDebug() << "unsupported stream type" << req.value().type;
+	}
+	}
+}
 
 
 

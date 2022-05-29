@@ -107,6 +107,7 @@ int NetworkParser::handlePkt()
 	}
 	case Answer::MSG_NOT_SET: {
 		qDebug() << "Parser error: msg was not set";
+		qDebug() << QString::fromStdString(ans.DebugString());
 		break;
 	}
 	}
@@ -117,7 +118,7 @@ int NetworkParser::handlePkt()
 
 void NetworkParser::readyRead()
 {
-	qDebug() << "ready to read" << socket->bytesAvailable();
+//	qDebug() << "ready to read" << socket->bytesAvailable();
 	int read = -1;
 	buf.append(socket->readAll());
 	while (buf.size() != 0 && read != 0) {
@@ -167,6 +168,8 @@ int NetworkParser::requestTable(uint64_t reqId, int first, int last,
 	req->set_type(type);
 	reqWrapper.set_allocated_tablereq(req);
 
+	qDebug() << "table req" << reqId;
+
 	return writeReqWrapper(reqWrapper);
 }
 
@@ -180,8 +183,24 @@ int NetworkParser::simpleRequest(uint64_t reqId, QString name, EntityType type)
 	req->set_type(type);
 	reqWrapper.set_allocated_simplereq(req);
 
+	qDebug() << "simple req" << reqId;
+
 	return writeReqWrapper(reqWrapper);
 }
 
+int NetworkParser::streamRequest(uint64_t reqId, QString name, uint32_t size, enum EntityType type)
+{
+	Request reqWrapper;
+	prepareReq(reqWrapper, reqId);
 
+	StreamReq *req = new StreamReq();
+	req->set_reqstring(name.toStdString());
+	req->set_suggestedsize(size);
+	req->set_type(type);
+	reqWrapper.set_allocated_streamreq(req);
+
+	qDebug() << "stream req" << reqId;
+
+	return writeReqWrapper(reqWrapper);
+}
 

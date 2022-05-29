@@ -18,7 +18,8 @@ public:
 public slots:
 	int requestTable(uint64_t reqId, int first, int last, QString filter,
 					 enum EntityType type);
-	int simpleRequest(uint64_t, QString name, enum EntityType type);
+	int simpleRequest(uint64_t reqId, QString name, enum EntityType type);
+	int streamRequest(uint64_t reqId, QString name, uint32_t size, enum EntityType type);
 private slots:
 	void connected();
 	void disconnected();

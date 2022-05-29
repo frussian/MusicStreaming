@@ -23,7 +23,8 @@ signals:
 	void connectToHost(QString host, int port);
 	void requestTableParser(uint64_t reqId, int first, int last, QString filter,
 						   enum EntityType type);
-	void simpleRequestParser(uint64_t, QString name, enum EntityType type);
+	void simpleRequestParser(uint64_t reqId, QString name, enum EntityType type);
+	void streamRequestParser(uint64_t reqId, QString name, uint32_t size, enum EntityType type);
 private slots:
 	void clicked();
 	void tableClicked(int row, int column);
@@ -31,6 +32,7 @@ private slots:
 	void searchChanged(QString filter);
 	void tableAns(uint64_t reqId, TableAns ans);
 	void simpleAns(uint64_t reqId, SimpleAns ans);
+	void streamAns(uint64_t reqId, StreamAns ans);
 	void parserConnected();
 	void reqFailed(uint64_t reqId);
 //	void simpleAns(uint64_t reqId, SimpleAns ans);
@@ -40,6 +42,7 @@ private:
 		int first;
 		int last;
 		QString name;
+		enum EntityType type;
 	};
 
 	void initUI();
@@ -48,9 +51,12 @@ private:
 //	void setupPlayArea(QString stylesheet);
 	void setupTables();
 	void scrollTable(int id);
+
 	void requestTable(int first, int last, QString filter,
 					 enum EntityType type);
 	void simpleRequest(QString name, enum EntityType type);
+	void streamRequest(QString name, uint32_t size, enum EntityType type);
+
 	void handleBandInsertion(Req&, TableAns*);
 	void handleAlbumInsertion(Req&, TableAns*);
 	void handleSongInsertion(Req&, TableAns*);
