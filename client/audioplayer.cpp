@@ -6,18 +6,21 @@
 #include <QPushButton>
 #include <QGroupBox>
 #include <QThread>
+#include <QTimer>
 
 #include "audioplayer.h"
 #include "oggdecoder.h"
 
-AudioPlayer::AudioPlayer(QString stylesheet, QObject *parent)
+#define AUDIO_BUFFER_SIZE 32000
+
+AudioPlayer::AudioPlayer(QObject *parent)
 	: QObject(parent)
 {
-//	initUI(stylesheet);
-
 	qDebug() << QThread::currentThread();
 
 	decoder = new OggDecoder(this);
+
+	state = NOT_ACTIVE;
 
 	QThread *th = new QThread;
 	moveToThread(th);
@@ -36,12 +39,16 @@ AudioPlayer::AudioPlayer(QString stylesheet, QObject *parent)
 	}
 
 	audio = new QAudioOutput(format);
-	audio->setBufferSize(32000);
+	audio->setBufferSize(AUDIO_BUFFER_SIZE);
 	dev = audio->start();
 	qDebug() << "buffer size" << audio->bufferSize();
 
 	audio->setNotifyInterval(30);
-	audio->resume();
+
+	checkBytesTimer = new QTimer;
+	checkBytesTimer->moveToThread(th);
+	checkBytesTimer->setInterval(100);
+	connect(checkBytesTimer, &QTimer::timeout, this, &AudioPlayer::checkBytes);
 
 	connect(audio, SIGNAL(stateChanged(QAudio::State)), this, SLOT(handleStateChange(QAudio::State)));
 	connect(audio, SIGNAL(notify()), this, SLOT(notify()));
@@ -49,53 +56,7 @@ AudioPlayer::AudioPlayer(QString stylesheet, QObject *parent)
 
 	connect(this, SIGNAL(decode()), decoder, SLOT(decode()));
 	connect(this, SIGNAL(writeOpus(QByteArray)), decoder, SLOT(writeOpus(QByteArray)));
-}
-
-void AudioPlayer::initUI(QString stylesheet)
-{
-	QGridLayout *playLay = new QGridLayout;
-
-//	QProgressBar *progress = new QProgressBar;
-//	progress->setMinimum(0);
-//	progress->setMaximum(60);
-//	progress->setValue(43);
-//	progress->setMaximumHeight(20);
-//	progress->setTextVisible(false);
-//	progress->setStyleSheet(customStyleSheet);
-//	playLay->addWidget(progress);
-	QSlider *playSlider = new QSlider(Qt::Horizontal);
-	playSlider->setMinimum(0);
-	playSlider->setMaximum(100);
-	playSlider->setValue(63);
-	playSlider->setStyleSheet(stylesheet);
-
-	QPushButton *playBtn = new QPushButton;
-//	playBtn->setFixedSize(70, 70);
-//	QRect rect(QPoint(), playBtn->size());
-//	rect.adjust(10, 10, -10, -10);
-//	QRegion region(rect,QRegion::Ellipse);
-	playBtn->setStyleSheet(stylesheet);
-//	playBtn->setMask(region);
-//	playBtn->setFixedSize(50, 50);
-
-	QVBoxLayout *songInfoLay = new QVBoxLayout;
-	QPushButton *songNameBtn = new QPushButton("SongName");
-	songNameBtn->setProperty("isFlat", true);
-	songNameBtn->setStyleSheet("QPushButton { border: none; }");
-	QPushButton *bandNameBtn = new QPushButton("BandName");
-	bandNameBtn->setFlat(true);
-	songInfoLay->addWidget(songNameBtn);
-	songInfoLay->addWidget(bandNameBtn);
-	songInfoLay->addStretch();
-//	bandNameBtn->setStyleSheet("QPushButton { border: none; }");
-
-
-	playLay->addWidget(playBtn, 0, 1);
-	playLay->setAlignment(playBtn, Qt::AlignCenter);
-	playLay->addWidget(playSlider, 1, 1);
-	playLay->addLayout(songInfoLay, 0, 0, 2, 1);
-
-//	setLayout(playLay);
+	connect(this, SIGNAL(decReset()), decoder, SLOT(reset()));
 }
 
 void AudioPlayer::handleStateChange(QAudio::State state)
@@ -125,13 +86,23 @@ void AudioPlayer::handleStateChange(QAudio::State state)
 		}
 }
 
+#define MSEC_100_LEFT 20000
+
 void AudioPlayer::notify()
 {
-//	qDebug() << audio->bytesFree();
-//	decode();
-//	if (decoder->availableForDec() > 0) decoder->decode();
-//	emit decode();
 	tryWriting();
+}
+
+void AudioPlayer::checkBytes()
+{
+	if (state == ACTIVE && buf.length() < MSEC_100_LEFT) {
+//		qDebug() << "decoding";
+		emit decode();
+		QTimer::singleShot(0, this, SLOT(checkBytes()));
+	} else {
+//		qDebug() << "enough bytes";
+		emit processedUSecs(audio->processedUSecs());
+	}
 }
 
 void AudioPlayer::writeToBuf(QByteArray pcm)
@@ -147,11 +118,33 @@ void AudioPlayer::writeOpusData(QByteArray opus)
 //	decoder->writeOpus(opus);
 }
 
+void AudioPlayer::start(bool clear)
+{
+	qDebug() << "start player";
+	state = ACTIVE;
+	if (clear) {
+		audio->reset();
+		audio->setBufferSize(AUDIO_BUFFER_SIZE);
+		dev = audio->start();
+		buf.clear();
+		emit decReset();
+	}
+	audio->resume();
+	checkBytesTimer->start();
+}
+
+void AudioPlayer::stop(bool /*clear*/)
+{
+	state = STOPPED;
+	audio->suspend();
+	checkBytesTimer->stop();
+}
+
 int AudioPlayer::tryWriting()
 {
 	int bytesToWrite = std::min(audio->bytesFree(), buf.length());
 	if (!bytesToWrite) return 0;
-	qDebug() << "writing to dev" << bytesToWrite << audio->bytesFree() << buf.length();
+//	qDebug() << "writing to dev" << bytesToWrite << audio->bytesFree() << buf.length();
 	dev->write(buf.data(), bytesToWrite);
 	buf.remove(0, bytesToWrite);
 	return bytesToWrite;

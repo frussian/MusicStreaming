@@ -20,6 +20,7 @@ public slots:
 					 enum EntityType type);
 	int simpleRequest(uint64_t reqId, QString name, enum EntityType type);
 	int streamRequest(uint64_t reqId, QString name, uint32_t size, enum EntityType type);
+	int cancelStreamReq(uint64_t reqId);
 private slots:
 	void connected();
 	void disconnected();
@@ -36,7 +37,7 @@ signals:
 private:
 	int handleSize();
 	int handlePkt();
-	void prepareReq(Request &reqWrapper, uint64_t reqId);
+	void prepareReq(Request &reqWrapper, uint64_t reqId, bool cancel);
 	int writeReqWrapper(Request &req);
 
 	std::set<uint64_t> requests;

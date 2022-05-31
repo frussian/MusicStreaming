@@ -133,10 +133,10 @@ void NetworkParser::readyRead()
 	}
 }
 
-void NetworkParser::prepareReq(Request &reqWrapper, uint64_t reqId)
+void NetworkParser::prepareReq(Request &reqWrapper, uint64_t reqId, bool cancel)
 {
 	reqWrapper.set_reqid(reqId);
-	reqWrapper.set_cancel(false);
+	reqWrapper.set_cancel(cancel);
 	requests.insert(reqId);
 	QTimer::singleShot(TIMEOUT_MS, this, [this, reqId](){
 		if (requests.find(reqId) != requests.end()) {
@@ -159,7 +159,7 @@ int NetworkParser::requestTable(uint64_t reqId, int first, int last,
 								QString filter, EntityType type)
 {
 	Request reqWrapper;
-	prepareReq(reqWrapper, reqId);
+	prepareReq(reqWrapper, reqId, false);
 
 	TableReq *req = new TableReq();
 	req->set_first(first);
@@ -176,7 +176,7 @@ int NetworkParser::requestTable(uint64_t reqId, int first, int last,
 int NetworkParser::simpleRequest(uint64_t reqId, QString name, EntityType type)
 {
 	Request reqWrapper;
-	prepareReq(reqWrapper, reqId);
+	prepareReq(reqWrapper, reqId, false);
 
 	SimpleReq *req = new SimpleReq();
 	req->set_reqstring(name.toStdString());
@@ -191,7 +191,7 @@ int NetworkParser::simpleRequest(uint64_t reqId, QString name, EntityType type)
 int NetworkParser::streamRequest(uint64_t reqId, QString name, uint32_t size, enum EntityType type)
 {
 	Request reqWrapper;
-	prepareReq(reqWrapper, reqId);
+	prepareReq(reqWrapper, reqId, false);
 
 	StreamReq *req = new StreamReq();
 	req->set_reqstring(name.toStdString());
@@ -203,4 +203,21 @@ int NetworkParser::streamRequest(uint64_t reqId, QString name, uint32_t size, en
 
 	return writeReqWrapper(reqWrapper);
 }
+
+int NetworkParser::cancelStreamReq(uint64_t reqId)
+{
+	Request reqWrapper;
+	prepareReq(reqWrapper, reqId, true);
+
+	StreamReq *req = new StreamReq;
+	reqWrapper.set_allocated_streamreq(req);
+
+	qDebug() << "cancel stream req" << reqId;
+
+	return writeReqWrapper(reqWrapper);
+}
+
+
+
+
 

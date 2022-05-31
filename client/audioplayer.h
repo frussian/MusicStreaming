@@ -5,30 +5,44 @@
 #include <QAudioOutput>
 #include <QWidget>
 
+class QTimer;
 class OggDecoder;
 
 class AudioPlayer : public QObject
 {
 	Q_OBJECT
 public:
-	explicit AudioPlayer(QString stylesheet, QObject *parent = nullptr);
+	explicit AudioPlayer(QObject *parent = nullptr);
 
 signals:
 	void writeOpus(QByteArray opus);
 	void decode();
+	void decReset();
+	void processedUSecs(quint64 usecs);
 public slots:
+	void writeOpusData(QByteArray opus);
+	void start(bool clear);
+	void stop(bool clear);
+private slots:
 	void handleStateChange(QAudio::State state);
 	void notify();
 	void writeToBuf(QByteArray pcm);
-	void writeOpusData(QByteArray opus);
+	void checkBytes();
 private:
-	void initUI(QString stylesheet);
+	enum State {
+		NOT_ACTIVE,
+		STOPPED,
+		ACTIVE,
+	};
+
 	int tryWriting();
 	QAudioFormat format;
 	QAudioOutput *audio;
 	QIODevice *dev;
 	QByteArray buf;
 	OggDecoder *decoder;
+	QTimer *checkBytesTimer;
+	State state;
 };
 
 #endif // AUDIOPLAYER_H

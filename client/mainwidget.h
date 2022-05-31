@@ -10,6 +10,8 @@ class QStackedWidget;
 class NetworkParser;
 class QLineEdit;
 class AudioPlayer;
+class QPushButton;
+class QSlider;
 
 #include "messages.pb.h"
 
@@ -25,6 +27,9 @@ signals:
 						   enum EntityType type);
 	void simpleRequestParser(uint64_t reqId, QString name, enum EntityType type);
 	void streamRequestParser(uint64_t reqId, QString name, uint32_t size, enum EntityType type);
+	void cancelStreamRequestParser(uint64_t reqId);
+	void startPlayer(bool clear);
+	void stopPlayer(bool clear);
 private slots:
 	void clicked();
 	void tableClicked(int row, int column);
@@ -35,6 +40,8 @@ private slots:
 	void streamAns(uint64_t reqId, StreamAns ans);
 	void parserConnected();
 	void reqFailed(uint64_t reqId);
+	void playPressed(bool checked);
+	void processedUSecs(quint64);
 //	void simpleAns(uint64_t reqId, SimpleAns ans);
 //	void streamAns(uint64_t reqId, StreamAns ans);
 private:
@@ -48,7 +55,7 @@ private:
 	void initUI();
 	void setupLeftPanel();
 	void setupSearch();
-//	void setupPlayArea(QString stylesheet);
+	void setupPlayArea(QString stylesheet);
 	void setupTables();
 	void scrollTable(int id);
 
@@ -66,10 +73,15 @@ private:
 
 	QGroupBox *leftGroup;
 	QGroupBox *searchGroup;
+	QGroupBox *playGroup;
 	QLineEdit *searchEdit;
+	QPushButton *songNameBtn;
+	QPushButton *bandNameBtn;
+	QSlider *playSlider;
 //	QGroupBox *playGroup;
 	QStackedWidget *tables;
 	uint64_t reqId = 1;
+	uint64_t currSongReqId = 0;
 	QMap<uint64_t, Req> requests;
 	NetworkParser *parser;
 	AudioPlayer *player;

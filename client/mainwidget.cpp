@@ -13,6 +13,7 @@
 #include <QHeaderView>
 #include <QDateTime>
 #include <QScrollBar>
+#include <QGroupBox>
 
 #include "mainwidget.h"
 #include "networkparser.h"
@@ -37,6 +38,8 @@ MainWidget::MainWidget(QThread *th, QWidget *parent) : QWidget(parent)
 	qRegisterMetaType<StreamAns>("StreamAns");
 	qRegisterMetaType<EntityType>("EntityType");
 	parser = new NetworkParser(th);
+	player = new AudioPlayer;
+
 	initUI();
 
 	connect(parser, &NetworkParser::tableAns, this, &MainWidget::tableAns);
@@ -50,6 +53,10 @@ MainWidget::MainWidget(QThread *th, QWidget *parent) : QWidget(parent)
 	connect(this, &MainWidget::requestTableParser, parser, &NetworkParser::requestTable);
 	connect(this, &MainWidget::simpleRequestParser, parser, &NetworkParser::simpleRequest);
 	connect(this, &MainWidget::streamRequestParser, parser, &NetworkParser::streamRequest);
+	connect(this, &MainWidget::cancelStreamRequestParser, parser, &NetworkParser::cancelStreamReq);
+
+	connect(this, &MainWidget::startPlayer, player, &AudioPlayer::start);
+	connect(this, &MainWidget::stopPlayer, player, &AudioPlayer::stop);
 
 	emit connectToHost("192.168.1.30", 3018);
 
@@ -81,10 +88,10 @@ void MainWidget::initUI()
 	setupTables();
 	lay->addWidget(tables, 1, 1);
 
-//	playGroup = new QGroupBox;
-	player = new AudioPlayer(stylesheet);
-//	playGroup->
-//	lay->addWidget(player, 2, 0, 1, 2);
+	playGroup = new QGroupBox;
+	setupPlayArea(stylesheet);
+	lay->addWidget(playGroup, 2, 0, 1, 2);
+
 
 	setLayout(lay);
 }
@@ -127,6 +134,71 @@ void MainWidget::setupSearch()
 
 	connect(searchEdit, &QLineEdit::textChanged,
 			this, &MainWidget::searchChanged);
+}
+
+void MainWidget::setupPlayArea(QString stylesheet)
+{
+	QGridLayout *playLay = new QGridLayout;
+
+//	QProgressBar *progress = new QProgressBar;
+//	progress->setMinimum(0);
+//	progress->setMaximum(60);
+//	progress->setValue(43);
+//	progress->setMaximumHeight(20);
+//	progress->setTextVisible(false);
+//	progress->setStyleSheet(customStyleSheet);
+//	playLay->addWidget(progress);
+	playSlider = new QSlider(Qt::Horizontal);
+	playSlider->setMinimum(0);
+	playSlider->setMaximum(100);
+	playSlider->setValue(0);
+	playSlider->setStyleSheet(stylesheet);
+
+	QPushButton *playBtn = new QPushButton;
+//	playBtn->setFixedSize(70, 70);
+//	QRect rect(QPoint(), playBtn->size());
+//	rect.adjust(10, 10, -10, -10);
+//	QRegion region(rect,QRegion::Ellipse);
+	playBtn->setStyleSheet(stylesheet);
+//	playBtn->setMask(region);
+//	playBtn->setFixedSize(50, 50);
+
+	playBtn->setCheckable(true);
+	connect(playBtn, &QPushButton::toggled, this, &MainWidget::playPressed);
+
+	QVBoxLayout *songInfoLay = new QVBoxLayout;
+	songNameBtn = new QPushButton("");
+	songNameBtn->setProperty("isFlat", true);
+	songNameBtn->setStyleSheet("QPushButton { border: none; }");
+	bandNameBtn = new QPushButton("");
+	bandNameBtn->setFlat(true);
+	songInfoLay->addWidget(songNameBtn);
+	songInfoLay->addWidget(bandNameBtn);
+	songInfoLay->addStretch();
+//	bandNameBtn->setStyleSheet("QPushButton { border: none; }");
+
+	playLay->addWidget(playBtn, 0, 1);
+	playLay->setAlignment(playBtn, Qt::AlignCenter);
+	playLay->addWidget(playSlider, 1, 1);
+	playLay->addLayout(songInfoLay, 0, 0, 2, 1);
+
+	playGroup->setLayout(playLay);
+}
+
+void MainWidget::playPressed(bool checked)
+{
+	if (!checked) {
+		qDebug() << "start";
+		emit startPlayer(false);
+	} else {
+		qDebug() << "stop";
+		emit stopPlayer(false);
+	}
+}
+
+void MainWidget::processedUSecs(quint64 usecs)
+{
+
 }
 
 void MainWidget::setupTables()
@@ -215,6 +287,12 @@ void MainWidget::simpleRequest(QString name, enum EntityType type)
 
 void MainWidget::streamRequest(QString name, uint32_t size, enum EntityType type)
 {
+	if (type == SONG) {
+		if (currSongReqId != 0) {
+			emit cancelStreamRequestParser(currSongReqId);
+		}
+		currSongReqId = reqId;
+	}
 	emit streamRequestParser(reqId, name, size, type);
 	Req req;
 	req.name = name;
@@ -241,11 +319,6 @@ void MainWidget::tableClicked(int row, int col)
 	int id = obj->property("index").toInt();
 	QTableWidget *table = dynamic_cast<QTableWidget*>(tables->widget(id));
 	auto item = table->item(row, col);
-	if (item) {
-		qDebug() << table->visualItemRect(item);
-	} else {
-		qDebug() << "null";
-	}
 
 	switch (id) {
 	case BAND_ID: {
@@ -254,7 +327,6 @@ void MainWidget::tableClicked(int row, int col)
 		if (!item) return;
 //		QVariant var = item->data(dataRole);
 //		Band b = var.value<Band>();
-//		qDebug() << QString::fromStdString(b.bandname());
 		QString band = item->data(Qt::DisplayRole).toString();
 		simpleRequest(band, EntityType::BAND);
 		break;
@@ -265,8 +337,14 @@ void MainWidget::tableClicked(int row, int col)
 		if (!item) return;
 		QVariant var = item->data(Qt::DisplayRole);
 		QString song = var.toString();
-		qDebug() << song;
+
+		item = table->item(row, 2);
+		QString band = item->data(Qt::DisplayRole).toString();
+
 		streamRequest(song, 8192, EntityType::SONG);
+		emit startPlayer(true);
+		songNameBtn->setText(song);
+		bandNameBtn->setText(band);
 	}
 	}
 }
@@ -283,19 +361,16 @@ void MainWidget::scrollTable(int id)
 {
 	QTableWidget *table = dynamic_cast<QTableWidget*>(tables->widget(id));
 	int h = table->viewport()->height();
-	qDebug() << h;
 	int first = -1;
 	int last = 0;
 	for (int i = 0; i < table->rowCount(); i++) {
 		int pos = table->rowViewportPosition(i);
 		if (0 <= pos && pos <= h && !table->item(i, 0)) {
-			qDebug() << i+1 << "visible" << pos << table->item(i, 0);
 			if (first == -1) {
 				first = i;
 			}
 			last = i;
 		}
-//		qDebug() << "row" << i << table->rowViewportPosition(i);
 
 	}
 
@@ -303,7 +378,6 @@ void MainWidget::scrollTable(int id)
 		return;
 	}
 
-	qDebug() << "req" << first << last;
 	requestTable(first, last, searchEdit->text(), EntityType(id));
 }
 
@@ -421,8 +495,6 @@ void MainWidget::handleConcertInsertion(Req &req, TableAns *ans)
 //	songs->clearContents();
 	for (int i = 0; i < ans->concerts_size(); i++) {
 		Concert concert = ans->concerts(i);
-		qDebug() << concert.description().data();
-		qDebug() << concert.location().data();
 
 		const std::string &descr = concert.description();
 		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(descr));
@@ -527,6 +599,11 @@ void MainWidget::streamAns(uint64_t reqId, StreamAns ans)
 //	qDebug() << "data size" << data.size();
 	switch (req.value().type) {
 	case EntityType::SONG: {
+		if (currSongReqId != reqId) {
+			qDebug() << "got old request";
+			requests.remove(reqId);
+			return; //got old request
+		}
 		if (data.size() != 0) {
 //			qDebug() << data.;
 //			qDebug() << data.at(0) << data.at(1);
@@ -537,6 +614,7 @@ void MainWidget::streamAns(uint64_t reqId, StreamAns ans)
 
 		if (ans.isfinal()) {
 			requests.remove(reqId);
+			currSongReqId = 0;
 			qDebug() << "end of transfer";
 		}
 		break;

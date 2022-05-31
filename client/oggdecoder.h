@@ -17,6 +17,7 @@ public slots:
 	int init(QByteArray encoded); //first portion
 	int availableForDec();
 	int decode();
+	void reset();
 //	int startDecoding();
 signals:
 	void decoded(QByteArray pcm);
@@ -26,8 +27,6 @@ private:
 	int offset = 0;
 	QByteArray opus;
 	AudioPlayer *player;
-	QFile file;
-	QFile out;
 };
 
 #endif // OGGDECODER_H

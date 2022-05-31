@@ -35,7 +35,7 @@ int OggDecoder::init(QByteArray data)
 	cbs.seek = NULL;
 	cbs.tell = NULL;
 	cbs.read = oggRead;
-	cbs.close = NULL;  //free fileptr
+	cbs.close = NULL;  //free
 
 	offset = 0;
 	opus.clear();
@@ -51,9 +51,8 @@ int OggDecoder::init(QByteArray data)
 	if (err) qDebug() << "init error" << err;
 	else qDebug() << "success init";
 	op_set_dither_enabled(dec, false);
-	qDebug() << op_channel_count(dec, -1) << op_bitrate_instant(dec);
 
-	QTimer::singleShot(0, this, SLOT(decode()));
+//	QTimer::singleShot(0, this, SLOT(decode()));
 
 	return err;
 }
@@ -66,16 +65,17 @@ int OggDecoder::availableForDec()
 int OggDecoder::decode()
 {
 	int r;
-	if (!dec) return 0;
 	int n = 960 * 6;
 	opus_int16 pcm[n];  //TODO: выделять один раз
 
+	if (!dec) return 0;
+
 	if (availableForDec() == 0) {
-		qDebug() << "not available for decoding";
+//		qDebug() << "not available for decoding";
 		return 0;
 	}
 
-	QTimer::singleShot(0, this, &OggDecoder::decode);
+//	QTimer::singleShot(0, this, &OggDecoder::decode);  //for continuous decoding
 
 	r = op_read_stereo(dec, pcm, n);
 	if (r < 0) {
@@ -88,7 +88,7 @@ int OggDecoder::decode()
 
 	int bytes = r * 2 * sizeof(opus_int16);
 
-	qDebug() << bytes << "decoded";
+//	qDebug() << bytes << "decoded";
 	QByteArray pcmArr((char*)pcm, bytes);
 	emit decoded(pcmArr);  //TODO: maybe make it a direct call
 
@@ -105,13 +105,22 @@ int OggDecoder::writeOpus(QByteArray newOpus)
 	}
 
 	opus.append(newOpus);
-	return decode();
+//	return decode();
+	return 0;
+}
+
+void OggDecoder::reset()
+{
+	opus.clear();
+	if (dec) op_free(dec);
+	dec = nullptr;
+	offset = 0;
 }
 
 int OggDecoder::oggRead(void *ptr, unsigned char *data, int len)
 {
 	OggDecoder *decoder = (OggDecoder*)ptr;
-	qDebug() << "reading" << len;
+//	qDebug() << "reading" << len;
 	int offset = decoder->offset;
 	int size = decoder->opus.size();
 	unsigned char *opus = (unsigned char*)decoder->opus.data();
