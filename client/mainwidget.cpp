@@ -84,7 +84,7 @@ void MainWidget::initUI()
 //	playGroup = new QGroupBox;
 	player = new AudioPlayer(stylesheet);
 //	playGroup->
-	lay->addWidget(player, 2, 0, 1, 2);
+//	lay->addWidget(player, 2, 0, 1, 2);
 
 	setLayout(lay);
 }

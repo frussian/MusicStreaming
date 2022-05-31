@@ -10,16 +10,17 @@
 #include "audioplayer.h"
 #include "oggdecoder.h"
 
-AudioPlayer::AudioPlayer(QString stylesheet, QWidget *parent)
-	: QWidget(parent)
+AudioPlayer::AudioPlayer(QString stylesheet, QObject *parent)
+	: QObject(parent)
 {
-	initUI(stylesheet);
+//	initUI(stylesheet);
 
 	qDebug() << QThread::currentThread();
 
 	decoder = new OggDecoder(this);
+
 	QThread *th = new QThread;
-	decoder->moveToThread(th);
+	moveToThread(th);
 	th->start();
 
 	format.setSampleRate(48000);
@@ -27,7 +28,7 @@ AudioPlayer::AudioPlayer(QString stylesheet, QWidget *parent)
 	format.setSampleSize(16);
 	format.setCodec("audio/pcm");
 	format.setByteOrder(QAudioFormat::LittleEndian);
-	format.setSampleType(QAudioFormat::UnSignedInt);
+	format.setSampleType(QAudioFormat::SignedInt);
 
 	QAudioDeviceInfo info(QAudioDeviceInfo::defaultOutputDevice());
 	if (!info.isFormatSupported(format)) {
@@ -35,9 +36,9 @@ AudioPlayer::AudioPlayer(QString stylesheet, QWidget *parent)
 	}
 
 	audio = new QAudioOutput(format);
-	audio->setVolume(0.001);
-	audio->setBufferSize(16000);
+	audio->setBufferSize(32000);
 	dev = audio->start();
+	qDebug() << "buffer size" << audio->bufferSize();
 
 	audio->setNotifyInterval(30);
 	audio->resume();
@@ -94,24 +95,27 @@ void AudioPlayer::initUI(QString stylesheet)
 	playLay->addWidget(playSlider, 1, 1);
 	playLay->addLayout(songInfoLay, 0, 0, 2, 1);
 
-	setLayout(playLay);
+//	setLayout(playLay);
 }
 
 void AudioPlayer::handleStateChange(QAudio::State state)
 {
+	qDebug() << state << "state";
 	switch (state) {
 		case QAudio::IdleState:
 				// Finished playing (no more data)
 //				audio->stop();
 //				delete audio;
-//		qDebug() << "Idle";
+		qDebug() << "Idle";
 //		decode();
 		break;
 		case QAudio::StoppedState:
 			// Stopped for other reasons
 			qDebug() << "Stopped";
+//			emit decode();
 			if (audio->error() != QAudio::NoError) {
 				// Error handling
+				qDebug() << audio->error();
 			}
 			break;
 		default:
@@ -126,7 +130,7 @@ void AudioPlayer::notify()
 //	qDebug() << audio->bytesFree();
 //	decode();
 //	if (decoder->availableForDec() > 0) decoder->decode();
-	emit decode();
+//	emit decode();
 	tryWriting();
 }
 
@@ -147,6 +151,7 @@ int AudioPlayer::tryWriting()
 {
 	int bytesToWrite = std::min(audio->bytesFree(), buf.length());
 	if (!bytesToWrite) return 0;
+	qDebug() << "writing to dev" << bytesToWrite << audio->bytesFree() << buf.length();
 	dev->write(buf.data(), bytesToWrite);
 	buf.remove(0, bytesToWrite);
 	return bytesToWrite;

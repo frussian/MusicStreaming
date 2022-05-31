@@ -1,6 +1,8 @@
 #ifndef OGGDECODER_H
 #define OGGDECODER_H
+
 #include <QWidget>
+#include <QFile>
 
 struct OggOpusFile;
 class AudioPlayer;
@@ -24,6 +26,8 @@ private:
 	int offset = 0;
 	QByteArray opus;
 	AudioPlayer *player;
+	QFile file;
+	QFile out;
 };
 
 #endif // OGGDECODER_H

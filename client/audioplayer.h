@@ -7,11 +7,11 @@
 
 class OggDecoder;
 
-class AudioPlayer : public QWidget
+class AudioPlayer : public QObject
 {
 	Q_OBJECT
 public:
-	explicit AudioPlayer(QString stylesheet, QWidget *parent = nullptr);
+	explicit AudioPlayer(QString stylesheet, QObject *parent = nullptr);
 
 signals:
 	void writeOpus(QByteArray opus);

@@ -2,11 +2,13 @@
 #include <QFile>
 #include <QVector>
 #include <QThread>
+#include <QTimer>
 
 #include "oggdecoder.h"
 #include "opus.h"
 #include "opusfile.h"
 #include "audioplayer.h"
+
 
 #define FRAME_SIZE 960
 #define SAMPLE_RATE 48000
@@ -20,7 +22,9 @@ OggDecoder::OggDecoder(AudioPlayer *player, QObject *parent):
 	QObject(parent)
 {
 	this->player = player;
-//	dec = op_open_file(file.toStdString().data(), nullptr);
+	auto th = new QThread;
+	moveToThread(th);
+	th->start();
 }
 
 int OggDecoder::init(QByteArray data)
@@ -42,10 +46,14 @@ int OggDecoder::init(QByteArray data)
 	if (dec) {
 		//TODO: free opus or reinit
 	}
-
+	err = 0;
 	dec = op_open_callbacks(this, &cbs, nullptr, 0, &err);
 	if (err) qDebug() << "init error" << err;
 	else qDebug() << "success init";
+	op_set_dither_enabled(dec, false);
+	qDebug() << op_channel_count(dec, -1) << op_bitrate_instant(dec);
+
+	QTimer::singleShot(0, this, SLOT(decode()));
 
 	return err;
 }
@@ -57,13 +65,17 @@ int OggDecoder::availableForDec()
 
 int OggDecoder::decode()
 {
-	int n = 960 * 6;
-	opus_int16 pcm[n];
 	int r;
+	if (!dec) return 0;
+	int n = 960 * 6;
+	opus_int16 pcm[n];  //TODO: выделять один раз
 
-	if (availableForDec() == 0) return 0;
+	if (availableForDec() == 0) {
+		qDebug() << "not available for decoding";
+		return 0;
+	}
 
-//	qDebug() << QThread::currentThread();
+	QTimer::singleShot(0, this, &OggDecoder::decode);
 
 	r = op_read_stereo(dec, pcm, n);
 	if (r < 0) {
@@ -76,8 +88,7 @@ int OggDecoder::decode()
 
 	int bytes = r * 2 * sizeof(opus_int16);
 
-//	qDebug() << bytes << "decoded";
-//	player->writeToBuf(QByteArray::fromRawData((char*)pcm, bytes));
+	qDebug() << bytes << "decoded";
 	QByteArray pcmArr((char*)pcm, bytes);
 	emit decoded(pcmArr);  //TODO: maybe make it a direct call
 
@@ -94,31 +105,15 @@ int OggDecoder::writeOpus(QByteArray newOpus)
 	}
 
 	opus.append(newOpus);
-
 	return decode();
 }
-
-//int OggDecoder::startDecoding()
-//{
-//	unsigned long sum = 0;
-//	qDebug() << QThread::currentThreadId() << "dec id";
-//	while(1) {
-//		int r = decode(nullptr);
-//		if (r < 0) return r;
-//		if (r == 0) return sum;
-//		sum += r;
-////		if (sum > 50000) return sum;
-//	}
-//	return sum;
-//}
 
 int OggDecoder::oggRead(void *ptr, unsigned char *data, int len)
 {
 	OggDecoder *decoder = (OggDecoder*)ptr;
-//	qDebug() << "reading" << len;
+	qDebug() << "reading" << len;
 	int offset = decoder->offset;
 	int size = decoder->opus.size();
-//	qDebug() << "offset" << offset << "size" << size;
 	unsigned char *opus = (unsigned char*)decoder->opus.data();
 
 	if (offset == size) return 0;
@@ -126,8 +121,6 @@ int OggDecoder::oggRead(void *ptr, unsigned char *data, int len)
 	if (offset + len > size) {
 		len = size - offset;
 	}
-
-//	qDebug() << "read" << len;
 
 	memcpy(data, opus + offset, len);
 	decoder->offset += len;
