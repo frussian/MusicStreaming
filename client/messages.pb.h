@@ -250,9 +250,11 @@ class Request final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const Request& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const Request& from);
+  void MergeFrom( const Request& from) {
+    Request::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -261,10 +263,10 @@ class Request final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(Request* other);
@@ -382,18 +384,21 @@ class Request final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  uint64_t reqid_;
-  bool cancel_;
-  union MsgUnion {
-    constexpr MsgUnion() : _constinit_{} {}
-      ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
-    ::TableReq* tablereq_;
-    ::SimpleReq* simplereq_;
-    ::StreamReq* streamreq_;
-  } msg_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  uint32_t _oneof_case_[1];
+  struct Impl_ {
+    uint64_t reqid_;
+    bool cancel_;
+    union MsgUnion {
+      constexpr MsgUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      ::TableReq* tablereq_;
+      ::SimpleReq* simplereq_;
+      ::StreamReq* streamreq_;
+    } msg_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    uint32_t _oneof_case_[1];
 
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -485,9 +490,11 @@ class Answer final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const Answer& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const Answer& from);
+  void MergeFrom( const Answer& from) {
+    Answer::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -496,10 +503,10 @@ class Answer final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(Answer* other);
@@ -617,18 +624,21 @@ class Answer final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  uint64_t reqid_;
-  bool cancel_;
-  union MsgUnion {
-    constexpr MsgUnion() : _constinit_{} {}
-      ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
-    ::TableAns* tableans_;
-    ::SimpleAns* simpleans_;
-    ::StreamAns* streamans_;
-  } msg_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  uint32_t _oneof_case_[1];
+  struct Impl_ {
+    uint64_t reqid_;
+    bool cancel_;
+    union MsgUnion {
+      constexpr MsgUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      ::TableAns* tableans_;
+      ::SimpleAns* simpleans_;
+      ::StreamAns* streamans_;
+    } msg_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    uint32_t _oneof_case_[1];
 
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -713,9 +723,11 @@ class TableReq final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const TableReq& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const TableReq& from);
+  void MergeFrom( const TableReq& from) {
+    TableReq::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -724,10 +736,10 @@ class TableReq final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(TableReq* other);
@@ -805,11 +817,14 @@ class TableReq final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr filter_;
-  uint32_t first_;
-  uint32_t last_;
-  int type_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr filter_;
+    uint32_t first_;
+    uint32_t last_;
+    int type_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -894,9 +909,11 @@ class SimpleReq final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const SimpleReq& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const SimpleReq& from);
+  void MergeFrom( const SimpleReq& from) {
+    SimpleReq::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -905,10 +922,10 @@ class SimpleReq final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(SimpleReq* other);
@@ -966,9 +983,12 @@ class SimpleReq final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr reqstring_;
-  int type_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr reqstring_;
+    int type_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -1053,9 +1073,11 @@ class StreamReq final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const StreamReq& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const StreamReq& from);
+  void MergeFrom( const StreamReq& from) {
+    StreamReq::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -1064,10 +1086,10 @@ class StreamReq final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(StreamReq* other);
@@ -1135,10 +1157,13 @@ class StreamReq final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr reqstring_;
-  int32_t suggestedsize_;
-  int type_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr reqstring_;
+    int32_t suggestedsize_;
+    int type_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -1223,9 +1248,11 @@ class TableAns final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const TableAns& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const TableAns& from);
+  void MergeFrom( const TableAns& from) {
+    TableAns::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -1234,10 +1261,10 @@ class TableAns final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(TableAns* other);
@@ -1356,12 +1383,15 @@ class TableAns final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Band > bands_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Album > albums_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Concert > concerts_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Song > songs_;
-  int type_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Band > bands_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Album > albums_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Concert > concerts_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Song > songs_;
+    int type_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -1456,9 +1486,11 @@ class SimpleAns final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const SimpleAns& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const SimpleAns& from);
+  void MergeFrom( const SimpleAns& from) {
+    SimpleAns::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -1467,10 +1499,10 @@ class SimpleAns final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(SimpleAns* other);
@@ -1628,19 +1660,22 @@ class SimpleAns final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  union MsgUnion {
-    constexpr MsgUnion() : _constinit_{} {}
-      ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
-    ::Band* band_;
-    ::Album* album_;
-    ::Song* song_;
-    ::Concert* concert_;
-    ::Musician* musician_;
-    ::Membership* membership_;
-  } msg_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
-  uint32_t _oneof_case_[1];
+  struct Impl_ {
+    union MsgUnion {
+      constexpr MsgUnion() : _constinit_{} {}
+        ::PROTOBUF_NAMESPACE_ID::internal::ConstantInitialized _constinit_;
+      ::Band* band_;
+      ::Album* album_;
+      ::Song* song_;
+      ::Concert* concert_;
+      ::Musician* musician_;
+      ::Membership* membership_;
+    } msg_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+    uint32_t _oneof_case_[1];
 
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -1725,9 +1760,11 @@ class StreamAns final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const StreamAns& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const StreamAns& from);
+  void MergeFrom( const StreamAns& from) {
+    StreamAns::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -1736,10 +1773,10 @@ class StreamAns final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(StreamAns* other);
@@ -1797,9 +1834,12 @@ class StreamAns final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
-  bool isfinal_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr data_;
+    bool isfinal_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -1884,9 +1924,11 @@ class Membership final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const Membership& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const Membership& from);
+  void MergeFrom( const Membership& from) {
+    Membership::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -1895,10 +1937,10 @@ class Membership final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(Membership* other);
@@ -1981,11 +2023,14 @@ class Membership final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr musname_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bandname_;
-  int64_t unixentrydate_;
-  int64_t unixquitdate_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr musname_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bandname_;
+    int64_t unixentrydate_;
+    int64_t unixquitdate_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -2070,9 +2115,11 @@ class Concert final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const Concert& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const Concert& from);
+  void MergeFrom( const Concert& from) {
+    Concert::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -2081,10 +2128,10 @@ class Concert final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(Concert* other);
@@ -2192,12 +2239,15 @@ class Concert final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> bandnames_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr description_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr location_;
-  int64_t unixdatetime_;
-  int32_t capacity_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> bandnames_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr description_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr location_;
+    int64_t unixdatetime_;
+    int32_t capacity_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -2282,9 +2332,11 @@ class Band final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const Band& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const Band& from);
+  void MergeFrom( const Band& from) {
+    Band::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -2293,10 +2345,10 @@ class Band final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(Band* other);
@@ -2452,15 +2504,18 @@ class Band final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> albumnames_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Membership > participants_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Concert > concerts_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bandname_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr description_;
-  int64_t unixfounddate_;
-  int64_t unixtermdate_;
-  int genre_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string> albumnames_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Membership > participants_;
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Concert > concerts_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bandname_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr description_;
+    int64_t unixfounddate_;
+    int64_t unixtermdate_;
+    int genre_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -2545,9 +2600,11 @@ class Song final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const Song& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const Song& from);
+  void MergeFrom( const Song& from) {
+    Song::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -2556,10 +2613,10 @@ class Song final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(Song* other);
@@ -2647,11 +2704,14 @@ class Song final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr songname_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr albumname_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bandname_;
-  int32_t lengthsec_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr songname_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr albumname_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bandname_;
+    int32_t lengthsec_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -2736,9 +2796,11 @@ class Album final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const Album& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const Album& from);
+  void MergeFrom( const Album& from) {
+    Album::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -2747,10 +2809,10 @@ class Album final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(Album* other);
@@ -2842,11 +2904,14 @@ class Album final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Song > songs_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr title_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bandname_;
-  int64_t unixreleasedate_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Song > songs_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr title_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bandname_;
+    int64_t unixreleasedate_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // -------------------------------------------------------------------
@@ -2931,9 +2996,11 @@ class Musician final :
   using ::PROTOBUF_NAMESPACE_ID::Message::CopyFrom;
   void CopyFrom(const Musician& from);
   using ::PROTOBUF_NAMESPACE_ID::Message::MergeFrom;
-  void MergeFrom(const Musician& from);
+  void MergeFrom( const Musician& from) {
+    Musician::MergeImpl(*this, from);
+  }
   private:
-  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to, const ::PROTOBUF_NAMESPACE_ID::Message& from);
+  static void MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg);
   public:
   PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
   bool IsInitialized() const final;
@@ -2942,10 +3009,10 @@ class Musician final :
   const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
   uint8_t* _InternalSerialize(
       uint8_t* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
-  int GetCachedSize() const final { return _cached_size_.Get(); }
+  int GetCachedSize() const final { return _impl_._cached_size_.Get(); }
 
   private:
-  void SharedCtor();
+  void SharedCtor(::PROTOBUF_NAMESPACE_ID::Arena* arena, bool is_message_owned);
   void SharedDtor();
   void SetCachedSize(int size) const final;
   void InternalSwap(Musician* other);
@@ -3037,11 +3104,14 @@ class Musician final :
   template <typename T> friend class ::PROTOBUF_NAMESPACE_ID::Arena::InternalHelper;
   typedef void InternalArenaConstructable_;
   typedef void DestructorSkippable_;
-  ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Membership > memberships_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr musname_;
-  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bio_;
-  int64_t unixdateofbirth_;
-  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  struct Impl_ {
+    ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Membership > memberships_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr musname_;
+    ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr bio_;
+    int64_t unixdateofbirth_;
+    mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  };
+  union { Impl_ _impl_; };
   friend struct ::TableStruct_messages_2eproto;
 };
 // ===================================================================
@@ -3057,10 +3127,10 @@ class Musician final :
 
 // uint64 reqId = 1;
 inline void Request::clear_reqid() {
-  reqid_ = uint64_t{0u};
+  _impl_.reqid_ = uint64_t{0u};
 }
 inline uint64_t Request::_internal_reqid() const {
-  return reqid_;
+  return _impl_.reqid_;
 }
 inline uint64_t Request::reqid() const {
   // @@protoc_insertion_point(field_get:Request.reqId)
@@ -3068,7 +3138,7 @@ inline uint64_t Request::reqid() const {
 }
 inline void Request::_internal_set_reqid(uint64_t value) {
   
-  reqid_ = value;
+  _impl_.reqid_ = value;
 }
 inline void Request::set_reqid(uint64_t value) {
   _internal_set_reqid(value);
@@ -3077,10 +3147,10 @@ inline void Request::set_reqid(uint64_t value) {
 
 // bool cancel = 3;
 inline void Request::clear_cancel() {
-  cancel_ = false;
+  _impl_.cancel_ = false;
 }
 inline bool Request::_internal_cancel() const {
-  return cancel_;
+  return _impl_.cancel_;
 }
 inline bool Request::cancel() const {
   // @@protoc_insertion_point(field_get:Request.cancel)
@@ -3088,7 +3158,7 @@ inline bool Request::cancel() const {
 }
 inline void Request::_internal_set_cancel(bool value) {
   
-  cancel_ = value;
+  _impl_.cancel_ = value;
 }
 inline void Request::set_cancel(bool value) {
   _internal_set_cancel(value);
@@ -3103,12 +3173,12 @@ inline bool Request::has_tablereq() const {
   return _internal_has_tablereq();
 }
 inline void Request::set_has_tablereq() {
-  _oneof_case_[0] = kTableReq;
+  _impl_._oneof_case_[0] = kTableReq;
 }
 inline void Request::clear_tablereq() {
   if (_internal_has_tablereq()) {
     if (GetArenaForAllocation() == nullptr) {
-      delete msg_.tablereq_;
+      delete _impl_.msg_.tablereq_;
     }
     clear_has_msg();
   }
@@ -3117,11 +3187,11 @@ inline ::TableReq* Request::release_tablereq() {
   // @@protoc_insertion_point(field_release:Request.tableReq)
   if (_internal_has_tablereq()) {
     clear_has_msg();
-    ::TableReq* temp = msg_.tablereq_;
+    ::TableReq* temp = _impl_.msg_.tablereq_;
     if (GetArenaForAllocation() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    msg_.tablereq_ = nullptr;
+    _impl_.msg_.tablereq_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -3129,7 +3199,7 @@ inline ::TableReq* Request::release_tablereq() {
 }
 inline const ::TableReq& Request::_internal_tablereq() const {
   return _internal_has_tablereq()
-      ? *msg_.tablereq_
+      ? *_impl_.msg_.tablereq_
       : reinterpret_cast< ::TableReq&>(::_TableReq_default_instance_);
 }
 inline const ::TableReq& Request::tablereq() const {
@@ -3140,8 +3210,8 @@ inline ::TableReq* Request::unsafe_arena_release_tablereq() {
   // @@protoc_insertion_point(field_unsafe_arena_release:Request.tableReq)
   if (_internal_has_tablereq()) {
     clear_has_msg();
-    ::TableReq* temp = msg_.tablereq_;
-    msg_.tablereq_ = nullptr;
+    ::TableReq* temp = _impl_.msg_.tablereq_;
+    _impl_.msg_.tablereq_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -3151,7 +3221,7 @@ inline void Request::unsafe_arena_set_allocated_tablereq(::TableReq* tablereq) {
   clear_msg();
   if (tablereq) {
     set_has_tablereq();
-    msg_.tablereq_ = tablereq;
+    _impl_.msg_.tablereq_ = tablereq;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Request.tableReq)
 }
@@ -3159,9 +3229,9 @@ inline ::TableReq* Request::_internal_mutable_tablereq() {
   if (!_internal_has_tablereq()) {
     clear_msg();
     set_has_tablereq();
-    msg_.tablereq_ = CreateMaybeMessage< ::TableReq >(GetArenaForAllocation());
+    _impl_.msg_.tablereq_ = CreateMaybeMessage< ::TableReq >(GetArenaForAllocation());
   }
-  return msg_.tablereq_;
+  return _impl_.msg_.tablereq_;
 }
 inline ::TableReq* Request::mutable_tablereq() {
   ::TableReq* _msg = _internal_mutable_tablereq();
@@ -3177,12 +3247,12 @@ inline bool Request::has_simplereq() const {
   return _internal_has_simplereq();
 }
 inline void Request::set_has_simplereq() {
-  _oneof_case_[0] = kSimpleReq;
+  _impl_._oneof_case_[0] = kSimpleReq;
 }
 inline void Request::clear_simplereq() {
   if (_internal_has_simplereq()) {
     if (GetArenaForAllocation() == nullptr) {
-      delete msg_.simplereq_;
+      delete _impl_.msg_.simplereq_;
     }
     clear_has_msg();
   }
@@ -3191,11 +3261,11 @@ inline ::SimpleReq* Request::release_simplereq() {
   // @@protoc_insertion_point(field_release:Request.simpleReq)
   if (_internal_has_simplereq()) {
     clear_has_msg();
-    ::SimpleReq* temp = msg_.simplereq_;
+    ::SimpleReq* temp = _impl_.msg_.simplereq_;
     if (GetArenaForAllocation() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    msg_.simplereq_ = nullptr;
+    _impl_.msg_.simplereq_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -3203,7 +3273,7 @@ inline ::SimpleReq* Request::release_simplereq() {
 }
 inline const ::SimpleReq& Request::_internal_simplereq() const {
   return _internal_has_simplereq()
-      ? *msg_.simplereq_
+      ? *_impl_.msg_.simplereq_
       : reinterpret_cast< ::SimpleReq&>(::_SimpleReq_default_instance_);
 }
 inline const ::SimpleReq& Request::simplereq() const {
@@ -3214,8 +3284,8 @@ inline ::SimpleReq* Request::unsafe_arena_release_simplereq() {
   // @@protoc_insertion_point(field_unsafe_arena_release:Request.simpleReq)
   if (_internal_has_simplereq()) {
     clear_has_msg();
-    ::SimpleReq* temp = msg_.simplereq_;
-    msg_.simplereq_ = nullptr;
+    ::SimpleReq* temp = _impl_.msg_.simplereq_;
+    _impl_.msg_.simplereq_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -3225,7 +3295,7 @@ inline void Request::unsafe_arena_set_allocated_simplereq(::SimpleReq* simplereq
   clear_msg();
   if (simplereq) {
     set_has_simplereq();
-    msg_.simplereq_ = simplereq;
+    _impl_.msg_.simplereq_ = simplereq;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Request.simpleReq)
 }
@@ -3233,9 +3303,9 @@ inline ::SimpleReq* Request::_internal_mutable_simplereq() {
   if (!_internal_has_simplereq()) {
     clear_msg();
     set_has_simplereq();
-    msg_.simplereq_ = CreateMaybeMessage< ::SimpleReq >(GetArenaForAllocation());
+    _impl_.msg_.simplereq_ = CreateMaybeMessage< ::SimpleReq >(GetArenaForAllocation());
   }
-  return msg_.simplereq_;
+  return _impl_.msg_.simplereq_;
 }
 inline ::SimpleReq* Request::mutable_simplereq() {
   ::SimpleReq* _msg = _internal_mutable_simplereq();
@@ -3251,12 +3321,12 @@ inline bool Request::has_streamreq() const {
   return _internal_has_streamreq();
 }
 inline void Request::set_has_streamreq() {
-  _oneof_case_[0] = kStreamReq;
+  _impl_._oneof_case_[0] = kStreamReq;
 }
 inline void Request::clear_streamreq() {
   if (_internal_has_streamreq()) {
     if (GetArenaForAllocation() == nullptr) {
-      delete msg_.streamreq_;
+      delete _impl_.msg_.streamreq_;
     }
     clear_has_msg();
   }
@@ -3265,11 +3335,11 @@ inline ::StreamReq* Request::release_streamreq() {
   // @@protoc_insertion_point(field_release:Request.streamReq)
   if (_internal_has_streamreq()) {
     clear_has_msg();
-    ::StreamReq* temp = msg_.streamreq_;
+    ::StreamReq* temp = _impl_.msg_.streamreq_;
     if (GetArenaForAllocation() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    msg_.streamreq_ = nullptr;
+    _impl_.msg_.streamreq_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -3277,7 +3347,7 @@ inline ::StreamReq* Request::release_streamreq() {
 }
 inline const ::StreamReq& Request::_internal_streamreq() const {
   return _internal_has_streamreq()
-      ? *msg_.streamreq_
+      ? *_impl_.msg_.streamreq_
       : reinterpret_cast< ::StreamReq&>(::_StreamReq_default_instance_);
 }
 inline const ::StreamReq& Request::streamreq() const {
@@ -3288,8 +3358,8 @@ inline ::StreamReq* Request::unsafe_arena_release_streamreq() {
   // @@protoc_insertion_point(field_unsafe_arena_release:Request.streamReq)
   if (_internal_has_streamreq()) {
     clear_has_msg();
-    ::StreamReq* temp = msg_.streamreq_;
-    msg_.streamreq_ = nullptr;
+    ::StreamReq* temp = _impl_.msg_.streamreq_;
+    _impl_.msg_.streamreq_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -3299,7 +3369,7 @@ inline void Request::unsafe_arena_set_allocated_streamreq(::StreamReq* streamreq
   clear_msg();
   if (streamreq) {
     set_has_streamreq();
-    msg_.streamreq_ = streamreq;
+    _impl_.msg_.streamreq_ = streamreq;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Request.streamReq)
 }
@@ -3307,9 +3377,9 @@ inline ::StreamReq* Request::_internal_mutable_streamreq() {
   if (!_internal_has_streamreq()) {
     clear_msg();
     set_has_streamreq();
-    msg_.streamreq_ = CreateMaybeMessage< ::StreamReq >(GetArenaForAllocation());
+    _impl_.msg_.streamreq_ = CreateMaybeMessage< ::StreamReq >(GetArenaForAllocation());
   }
-  return msg_.streamreq_;
+  return _impl_.msg_.streamreq_;
 }
 inline ::StreamReq* Request::mutable_streamreq() {
   ::StreamReq* _msg = _internal_mutable_streamreq();
@@ -3321,10 +3391,10 @@ inline bool Request::has_msg() const {
   return msg_case() != MSG_NOT_SET;
 }
 inline void Request::clear_has_msg() {
-  _oneof_case_[0] = MSG_NOT_SET;
+  _impl_._oneof_case_[0] = MSG_NOT_SET;
 }
 inline Request::MsgCase Request::msg_case() const {
-  return Request::MsgCase(_oneof_case_[0]);
+  return Request::MsgCase(_impl_._oneof_case_[0]);
 }
 // -------------------------------------------------------------------
 
@@ -3332,10 +3402,10 @@ inline Request::MsgCase Request::msg_case() const {
 
 // uint64 reqId = 1;
 inline void Answer::clear_reqid() {
-  reqid_ = uint64_t{0u};
+  _impl_.reqid_ = uint64_t{0u};
 }
 inline uint64_t Answer::_internal_reqid() const {
-  return reqid_;
+  return _impl_.reqid_;
 }
 inline uint64_t Answer::reqid() const {
   // @@protoc_insertion_point(field_get:Answer.reqId)
@@ -3343,7 +3413,7 @@ inline uint64_t Answer::reqid() const {
 }
 inline void Answer::_internal_set_reqid(uint64_t value) {
   
-  reqid_ = value;
+  _impl_.reqid_ = value;
 }
 inline void Answer::set_reqid(uint64_t value) {
   _internal_set_reqid(value);
@@ -3352,10 +3422,10 @@ inline void Answer::set_reqid(uint64_t value) {
 
 // bool cancel = 2;
 inline void Answer::clear_cancel() {
-  cancel_ = false;
+  _impl_.cancel_ = false;
 }
 inline bool Answer::_internal_cancel() const {
-  return cancel_;
+  return _impl_.cancel_;
 }
 inline bool Answer::cancel() const {
   // @@protoc_insertion_point(field_get:Answer.cancel)
@@ -3363,7 +3433,7 @@ inline bool Answer::cancel() const {
 }
 inline void Answer::_internal_set_cancel(bool value) {
   
-  cancel_ = value;
+  _impl_.cancel_ = value;
 }
 inline void Answer::set_cancel(bool value) {
   _internal_set_cancel(value);
@@ -3378,12 +3448,12 @@ inline bool Answer::has_tableans() const {
   return _internal_has_tableans();
 }
 inline void Answer::set_has_tableans() {
-  _oneof_case_[0] = kTableAns;
+  _impl_._oneof_case_[0] = kTableAns;
 }
 inline void Answer::clear_tableans() {
   if (_internal_has_tableans()) {
     if (GetArenaForAllocation() == nullptr) {
-      delete msg_.tableans_;
+      delete _impl_.msg_.tableans_;
     }
     clear_has_msg();
   }
@@ -3392,11 +3462,11 @@ inline ::TableAns* Answer::release_tableans() {
   // @@protoc_insertion_point(field_release:Answer.tableAns)
   if (_internal_has_tableans()) {
     clear_has_msg();
-    ::TableAns* temp = msg_.tableans_;
+    ::TableAns* temp = _impl_.msg_.tableans_;
     if (GetArenaForAllocation() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    msg_.tableans_ = nullptr;
+    _impl_.msg_.tableans_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -3404,7 +3474,7 @@ inline ::TableAns* Answer::release_tableans() {
 }
 inline const ::TableAns& Answer::_internal_tableans() const {
   return _internal_has_tableans()
-      ? *msg_.tableans_
+      ? *_impl_.msg_.tableans_
       : reinterpret_cast< ::TableAns&>(::_TableAns_default_instance_);
 }
 inline const ::TableAns& Answer::tableans() const {
@@ -3415,8 +3485,8 @@ inline ::TableAns* Answer::unsafe_arena_release_tableans() {
   // @@protoc_insertion_point(field_unsafe_arena_release:Answer.tableAns)
   if (_internal_has_tableans()) {
     clear_has_msg();
-    ::TableAns* temp = msg_.tableans_;
-    msg_.tableans_ = nullptr;
+    ::TableAns* temp = _impl_.msg_.tableans_;
+    _impl_.msg_.tableans_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -3426,7 +3496,7 @@ inline void Answer::unsafe_arena_set_allocated_tableans(::TableAns* tableans) {
   clear_msg();
   if (tableans) {
     set_has_tableans();
-    msg_.tableans_ = tableans;
+    _impl_.msg_.tableans_ = tableans;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Answer.tableAns)
 }
@@ -3434,9 +3504,9 @@ inline ::TableAns* Answer::_internal_mutable_tableans() {
   if (!_internal_has_tableans()) {
     clear_msg();
     set_has_tableans();
-    msg_.tableans_ = CreateMaybeMessage< ::TableAns >(GetArenaForAllocation());
+    _impl_.msg_.tableans_ = CreateMaybeMessage< ::TableAns >(GetArenaForAllocation());
   }
-  return msg_.tableans_;
+  return _impl_.msg_.tableans_;
 }
 inline ::TableAns* Answer::mutable_tableans() {
   ::TableAns* _msg = _internal_mutable_tableans();
@@ -3452,12 +3522,12 @@ inline bool Answer::has_simpleans() const {
   return _internal_has_simpleans();
 }
 inline void Answer::set_has_simpleans() {
-  _oneof_case_[0] = kSimpleAns;
+  _impl_._oneof_case_[0] = kSimpleAns;
 }
 inline void Answer::clear_simpleans() {
   if (_internal_has_simpleans()) {
     if (GetArenaForAllocation() == nullptr) {
-      delete msg_.simpleans_;
+      delete _impl_.msg_.simpleans_;
     }
     clear_has_msg();
   }
@@ -3466,11 +3536,11 @@ inline ::SimpleAns* Answer::release_simpleans() {
   // @@protoc_insertion_point(field_release:Answer.simpleAns)
   if (_internal_has_simpleans()) {
     clear_has_msg();
-    ::SimpleAns* temp = msg_.simpleans_;
+    ::SimpleAns* temp = _impl_.msg_.simpleans_;
     if (GetArenaForAllocation() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    msg_.simpleans_ = nullptr;
+    _impl_.msg_.simpleans_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -3478,7 +3548,7 @@ inline ::SimpleAns* Answer::release_simpleans() {
 }
 inline const ::SimpleAns& Answer::_internal_simpleans() const {
   return _internal_has_simpleans()
-      ? *msg_.simpleans_
+      ? *_impl_.msg_.simpleans_
       : reinterpret_cast< ::SimpleAns&>(::_SimpleAns_default_instance_);
 }
 inline const ::SimpleAns& Answer::simpleans() const {
@@ -3489,8 +3559,8 @@ inline ::SimpleAns* Answer::unsafe_arena_release_simpleans() {
   // @@protoc_insertion_point(field_unsafe_arena_release:Answer.simpleAns)
   if (_internal_has_simpleans()) {
     clear_has_msg();
-    ::SimpleAns* temp = msg_.simpleans_;
-    msg_.simpleans_ = nullptr;
+    ::SimpleAns* temp = _impl_.msg_.simpleans_;
+    _impl_.msg_.simpleans_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -3500,7 +3570,7 @@ inline void Answer::unsafe_arena_set_allocated_simpleans(::SimpleAns* simpleans)
   clear_msg();
   if (simpleans) {
     set_has_simpleans();
-    msg_.simpleans_ = simpleans;
+    _impl_.msg_.simpleans_ = simpleans;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Answer.simpleAns)
 }
@@ -3508,9 +3578,9 @@ inline ::SimpleAns* Answer::_internal_mutable_simpleans() {
   if (!_internal_has_simpleans()) {
     clear_msg();
     set_has_simpleans();
-    msg_.simpleans_ = CreateMaybeMessage< ::SimpleAns >(GetArenaForAllocation());
+    _impl_.msg_.simpleans_ = CreateMaybeMessage< ::SimpleAns >(GetArenaForAllocation());
   }
-  return msg_.simpleans_;
+  return _impl_.msg_.simpleans_;
 }
 inline ::SimpleAns* Answer::mutable_simpleans() {
   ::SimpleAns* _msg = _internal_mutable_simpleans();
@@ -3526,12 +3596,12 @@ inline bool Answer::has_streamans() const {
   return _internal_has_streamans();
 }
 inline void Answer::set_has_streamans() {
-  _oneof_case_[0] = kStreamAns;
+  _impl_._oneof_case_[0] = kStreamAns;
 }
 inline void Answer::clear_streamans() {
   if (_internal_has_streamans()) {
     if (GetArenaForAllocation() == nullptr) {
-      delete msg_.streamans_;
+      delete _impl_.msg_.streamans_;
     }
     clear_has_msg();
   }
@@ -3540,11 +3610,11 @@ inline ::StreamAns* Answer::release_streamans() {
   // @@protoc_insertion_point(field_release:Answer.streamAns)
   if (_internal_has_streamans()) {
     clear_has_msg();
-    ::StreamAns* temp = msg_.streamans_;
+    ::StreamAns* temp = _impl_.msg_.streamans_;
     if (GetArenaForAllocation() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    msg_.streamans_ = nullptr;
+    _impl_.msg_.streamans_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -3552,7 +3622,7 @@ inline ::StreamAns* Answer::release_streamans() {
 }
 inline const ::StreamAns& Answer::_internal_streamans() const {
   return _internal_has_streamans()
-      ? *msg_.streamans_
+      ? *_impl_.msg_.streamans_
       : reinterpret_cast< ::StreamAns&>(::_StreamAns_default_instance_);
 }
 inline const ::StreamAns& Answer::streamans() const {
@@ -3563,8 +3633,8 @@ inline ::StreamAns* Answer::unsafe_arena_release_streamans() {
   // @@protoc_insertion_point(field_unsafe_arena_release:Answer.streamAns)
   if (_internal_has_streamans()) {
     clear_has_msg();
-    ::StreamAns* temp = msg_.streamans_;
-    msg_.streamans_ = nullptr;
+    ::StreamAns* temp = _impl_.msg_.streamans_;
+    _impl_.msg_.streamans_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -3574,7 +3644,7 @@ inline void Answer::unsafe_arena_set_allocated_streamans(::StreamAns* streamans)
   clear_msg();
   if (streamans) {
     set_has_streamans();
-    msg_.streamans_ = streamans;
+    _impl_.msg_.streamans_ = streamans;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:Answer.streamAns)
 }
@@ -3582,9 +3652,9 @@ inline ::StreamAns* Answer::_internal_mutable_streamans() {
   if (!_internal_has_streamans()) {
     clear_msg();
     set_has_streamans();
-    msg_.streamans_ = CreateMaybeMessage< ::StreamAns >(GetArenaForAllocation());
+    _impl_.msg_.streamans_ = CreateMaybeMessage< ::StreamAns >(GetArenaForAllocation());
   }
-  return msg_.streamans_;
+  return _impl_.msg_.streamans_;
 }
 inline ::StreamAns* Answer::mutable_streamans() {
   ::StreamAns* _msg = _internal_mutable_streamans();
@@ -3596,10 +3666,10 @@ inline bool Answer::has_msg() const {
   return msg_case() != MSG_NOT_SET;
 }
 inline void Answer::clear_has_msg() {
-  _oneof_case_[0] = MSG_NOT_SET;
+  _impl_._oneof_case_[0] = MSG_NOT_SET;
 }
 inline Answer::MsgCase Answer::msg_case() const {
-  return Answer::MsgCase(_oneof_case_[0]);
+  return Answer::MsgCase(_impl_._oneof_case_[0]);
 }
 // -------------------------------------------------------------------
 
@@ -3607,10 +3677,10 @@ inline Answer::MsgCase Answer::msg_case() const {
 
 // uint32 first = 1;
 inline void TableReq::clear_first() {
-  first_ = 0u;
+  _impl_.first_ = 0u;
 }
 inline uint32_t TableReq::_internal_first() const {
-  return first_;
+  return _impl_.first_;
 }
 inline uint32_t TableReq::first() const {
   // @@protoc_insertion_point(field_get:TableReq.first)
@@ -3618,7 +3688,7 @@ inline uint32_t TableReq::first() const {
 }
 inline void TableReq::_internal_set_first(uint32_t value) {
   
-  first_ = value;
+  _impl_.first_ = value;
 }
 inline void TableReq::set_first(uint32_t value) {
   _internal_set_first(value);
@@ -3627,10 +3697,10 @@ inline void TableReq::set_first(uint32_t value) {
 
 // uint32 last = 2;
 inline void TableReq::clear_last() {
-  last_ = 0u;
+  _impl_.last_ = 0u;
 }
 inline uint32_t TableReq::_internal_last() const {
-  return last_;
+  return _impl_.last_;
 }
 inline uint32_t TableReq::last() const {
   // @@protoc_insertion_point(field_get:TableReq.last)
@@ -3638,7 +3708,7 @@ inline uint32_t TableReq::last() const {
 }
 inline void TableReq::_internal_set_last(uint32_t value) {
   
-  last_ = value;
+  _impl_.last_ = value;
 }
 inline void TableReq::set_last(uint32_t value) {
   _internal_set_last(value);
@@ -3647,7 +3717,7 @@ inline void TableReq::set_last(uint32_t value) {
 
 // string filter = 3;
 inline void TableReq::clear_filter() {
-  filter_.ClearToEmpty();
+  _impl_.filter_.ClearToEmpty();
 }
 inline const std::string& TableReq::filter() const {
   // @@protoc_insertion_point(field_get:TableReq.filter)
@@ -3657,7 +3727,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void TableReq::set_filter(ArgT0&& arg0, ArgT... args) {
  
- filter_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.filter_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:TableReq.filter)
 }
 inline std::string* TableReq::mutable_filter() {
@@ -3666,19 +3736,19 @@ inline std::string* TableReq::mutable_filter() {
   return _s;
 }
 inline const std::string& TableReq::_internal_filter() const {
-  return filter_.Get();
+  return _impl_.filter_.Get();
 }
 inline void TableReq::_internal_set_filter(const std::string& value) {
   
-  filter_.Set(value, GetArenaForAllocation());
+  _impl_.filter_.Set(value, GetArenaForAllocation());
 }
 inline std::string* TableReq::_internal_mutable_filter() {
   
-  return filter_.Mutable(GetArenaForAllocation());
+  return _impl_.filter_.Mutable(GetArenaForAllocation());
 }
 inline std::string* TableReq::release_filter() {
   // @@protoc_insertion_point(field_release:TableReq.filter)
-  return filter_.Release();
+  return _impl_.filter_.Release();
 }
 inline void TableReq::set_allocated_filter(std::string* filter) {
   if (filter != nullptr) {
@@ -3686,10 +3756,10 @@ inline void TableReq::set_allocated_filter(std::string* filter) {
   } else {
     
   }
-  filter_.SetAllocated(filter, GetArenaForAllocation());
+  _impl_.filter_.SetAllocated(filter, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (filter_.IsDefault()) {
-    filter_.Set("", GetArenaForAllocation());
+  if (_impl_.filter_.IsDefault()) {
+    _impl_.filter_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:TableReq.filter)
@@ -3697,10 +3767,10 @@ inline void TableReq::set_allocated_filter(std::string* filter) {
 
 // .EntityType type = 4;
 inline void TableReq::clear_type() {
-  type_ = 0;
+  _impl_.type_ = 0;
 }
 inline ::EntityType TableReq::_internal_type() const {
-  return static_cast< ::EntityType >(type_);
+  return static_cast< ::EntityType >(_impl_.type_);
 }
 inline ::EntityType TableReq::type() const {
   // @@protoc_insertion_point(field_get:TableReq.type)
@@ -3708,7 +3778,7 @@ inline ::EntityType TableReq::type() const {
 }
 inline void TableReq::_internal_set_type(::EntityType value) {
   
-  type_ = value;
+  _impl_.type_ = value;
 }
 inline void TableReq::set_type(::EntityType value) {
   _internal_set_type(value);
@@ -3721,7 +3791,7 @@ inline void TableReq::set_type(::EntityType value) {
 
 // string reqString = 1;
 inline void SimpleReq::clear_reqstring() {
-  reqstring_.ClearToEmpty();
+  _impl_.reqstring_.ClearToEmpty();
 }
 inline const std::string& SimpleReq::reqstring() const {
   // @@protoc_insertion_point(field_get:SimpleReq.reqString)
@@ -3731,7 +3801,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void SimpleReq::set_reqstring(ArgT0&& arg0, ArgT... args) {
  
- reqstring_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.reqstring_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:SimpleReq.reqString)
 }
 inline std::string* SimpleReq::mutable_reqstring() {
@@ -3740,19 +3810,19 @@ inline std::string* SimpleReq::mutable_reqstring() {
   return _s;
 }
 inline const std::string& SimpleReq::_internal_reqstring() const {
-  return reqstring_.Get();
+  return _impl_.reqstring_.Get();
 }
 inline void SimpleReq::_internal_set_reqstring(const std::string& value) {
   
-  reqstring_.Set(value, GetArenaForAllocation());
+  _impl_.reqstring_.Set(value, GetArenaForAllocation());
 }
 inline std::string* SimpleReq::_internal_mutable_reqstring() {
   
-  return reqstring_.Mutable(GetArenaForAllocation());
+  return _impl_.reqstring_.Mutable(GetArenaForAllocation());
 }
 inline std::string* SimpleReq::release_reqstring() {
   // @@protoc_insertion_point(field_release:SimpleReq.reqString)
-  return reqstring_.Release();
+  return _impl_.reqstring_.Release();
 }
 inline void SimpleReq::set_allocated_reqstring(std::string* reqstring) {
   if (reqstring != nullptr) {
@@ -3760,10 +3830,10 @@ inline void SimpleReq::set_allocated_reqstring(std::string* reqstring) {
   } else {
     
   }
-  reqstring_.SetAllocated(reqstring, GetArenaForAllocation());
+  _impl_.reqstring_.SetAllocated(reqstring, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (reqstring_.IsDefault()) {
-    reqstring_.Set("", GetArenaForAllocation());
+  if (_impl_.reqstring_.IsDefault()) {
+    _impl_.reqstring_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:SimpleReq.reqString)
@@ -3771,10 +3841,10 @@ inline void SimpleReq::set_allocated_reqstring(std::string* reqstring) {
 
 // .EntityType type = 4;
 inline void SimpleReq::clear_type() {
-  type_ = 0;
+  _impl_.type_ = 0;
 }
 inline ::EntityType SimpleReq::_internal_type() const {
-  return static_cast< ::EntityType >(type_);
+  return static_cast< ::EntityType >(_impl_.type_);
 }
 inline ::EntityType SimpleReq::type() const {
   // @@protoc_insertion_point(field_get:SimpleReq.type)
@@ -3782,7 +3852,7 @@ inline ::EntityType SimpleReq::type() const {
 }
 inline void SimpleReq::_internal_set_type(::EntityType value) {
   
-  type_ = value;
+  _impl_.type_ = value;
 }
 inline void SimpleReq::set_type(::EntityType value) {
   _internal_set_type(value);
@@ -3795,7 +3865,7 @@ inline void SimpleReq::set_type(::EntityType value) {
 
 // string reqString = 1;
 inline void StreamReq::clear_reqstring() {
-  reqstring_.ClearToEmpty();
+  _impl_.reqstring_.ClearToEmpty();
 }
 inline const std::string& StreamReq::reqstring() const {
   // @@protoc_insertion_point(field_get:StreamReq.reqString)
@@ -3805,7 +3875,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void StreamReq::set_reqstring(ArgT0&& arg0, ArgT... args) {
  
- reqstring_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.reqstring_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:StreamReq.reqString)
 }
 inline std::string* StreamReq::mutable_reqstring() {
@@ -3814,19 +3884,19 @@ inline std::string* StreamReq::mutable_reqstring() {
   return _s;
 }
 inline const std::string& StreamReq::_internal_reqstring() const {
-  return reqstring_.Get();
+  return _impl_.reqstring_.Get();
 }
 inline void StreamReq::_internal_set_reqstring(const std::string& value) {
   
-  reqstring_.Set(value, GetArenaForAllocation());
+  _impl_.reqstring_.Set(value, GetArenaForAllocation());
 }
 inline std::string* StreamReq::_internal_mutable_reqstring() {
   
-  return reqstring_.Mutable(GetArenaForAllocation());
+  return _impl_.reqstring_.Mutable(GetArenaForAllocation());
 }
 inline std::string* StreamReq::release_reqstring() {
   // @@protoc_insertion_point(field_release:StreamReq.reqString)
-  return reqstring_.Release();
+  return _impl_.reqstring_.Release();
 }
 inline void StreamReq::set_allocated_reqstring(std::string* reqstring) {
   if (reqstring != nullptr) {
@@ -3834,10 +3904,10 @@ inline void StreamReq::set_allocated_reqstring(std::string* reqstring) {
   } else {
     
   }
-  reqstring_.SetAllocated(reqstring, GetArenaForAllocation());
+  _impl_.reqstring_.SetAllocated(reqstring, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (reqstring_.IsDefault()) {
-    reqstring_.Set("", GetArenaForAllocation());
+  if (_impl_.reqstring_.IsDefault()) {
+    _impl_.reqstring_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:StreamReq.reqString)
@@ -3845,10 +3915,10 @@ inline void StreamReq::set_allocated_reqstring(std::string* reqstring) {
 
 // int32 suggestedSize = 2;
 inline void StreamReq::clear_suggestedsize() {
-  suggestedsize_ = 0;
+  _impl_.suggestedsize_ = 0;
 }
 inline int32_t StreamReq::_internal_suggestedsize() const {
-  return suggestedsize_;
+  return _impl_.suggestedsize_;
 }
 inline int32_t StreamReq::suggestedsize() const {
   // @@protoc_insertion_point(field_get:StreamReq.suggestedSize)
@@ -3856,7 +3926,7 @@ inline int32_t StreamReq::suggestedsize() const {
 }
 inline void StreamReq::_internal_set_suggestedsize(int32_t value) {
   
-  suggestedsize_ = value;
+  _impl_.suggestedsize_ = value;
 }
 inline void StreamReq::set_suggestedsize(int32_t value) {
   _internal_set_suggestedsize(value);
@@ -3865,10 +3935,10 @@ inline void StreamReq::set_suggestedsize(int32_t value) {
 
 // .EntityType type = 3;
 inline void StreamReq::clear_type() {
-  type_ = 0;
+  _impl_.type_ = 0;
 }
 inline ::EntityType StreamReq::_internal_type() const {
-  return static_cast< ::EntityType >(type_);
+  return static_cast< ::EntityType >(_impl_.type_);
 }
 inline ::EntityType StreamReq::type() const {
   // @@protoc_insertion_point(field_get:StreamReq.type)
@@ -3876,7 +3946,7 @@ inline ::EntityType StreamReq::type() const {
 }
 inline void StreamReq::_internal_set_type(::EntityType value) {
   
-  type_ = value;
+  _impl_.type_ = value;
 }
 inline void StreamReq::set_type(::EntityType value) {
   _internal_set_type(value);
@@ -3889,32 +3959,32 @@ inline void StreamReq::set_type(::EntityType value) {
 
 // repeated .Band bands = 1;
 inline int TableAns::_internal_bands_size() const {
-  return bands_.size();
+  return _impl_.bands_.size();
 }
 inline int TableAns::bands_size() const {
   return _internal_bands_size();
 }
 inline void TableAns::clear_bands() {
-  bands_.Clear();
+  _impl_.bands_.Clear();
 }
 inline ::Band* TableAns::mutable_bands(int index) {
   // @@protoc_insertion_point(field_mutable:TableAns.bands)
-  return bands_.Mutable(index);
+  return _impl_.bands_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Band >*
 TableAns::mutable_bands() {
   // @@protoc_insertion_point(field_mutable_list:TableAns.bands)
-  return &bands_;
+  return &_impl_.bands_;
 }
 inline const ::Band& TableAns::_internal_bands(int index) const {
-  return bands_.Get(index);
+  return _impl_.bands_.Get(index);
 }
 inline const ::Band& TableAns::bands(int index) const {
   // @@protoc_insertion_point(field_get:TableAns.bands)
   return _internal_bands(index);
 }
 inline ::Band* TableAns::_internal_add_bands() {
-  return bands_.Add();
+  return _impl_.bands_.Add();
 }
 inline ::Band* TableAns::add_bands() {
   ::Band* _add = _internal_add_bands();
@@ -3924,37 +3994,37 @@ inline ::Band* TableAns::add_bands() {
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Band >&
 TableAns::bands() const {
   // @@protoc_insertion_point(field_list:TableAns.bands)
-  return bands_;
+  return _impl_.bands_;
 }
 
 // repeated .Album albums = 2;
 inline int TableAns::_internal_albums_size() const {
-  return albums_.size();
+  return _impl_.albums_.size();
 }
 inline int TableAns::albums_size() const {
   return _internal_albums_size();
 }
 inline void TableAns::clear_albums() {
-  albums_.Clear();
+  _impl_.albums_.Clear();
 }
 inline ::Album* TableAns::mutable_albums(int index) {
   // @@protoc_insertion_point(field_mutable:TableAns.albums)
-  return albums_.Mutable(index);
+  return _impl_.albums_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Album >*
 TableAns::mutable_albums() {
   // @@protoc_insertion_point(field_mutable_list:TableAns.albums)
-  return &albums_;
+  return &_impl_.albums_;
 }
 inline const ::Album& TableAns::_internal_albums(int index) const {
-  return albums_.Get(index);
+  return _impl_.albums_.Get(index);
 }
 inline const ::Album& TableAns::albums(int index) const {
   // @@protoc_insertion_point(field_get:TableAns.albums)
   return _internal_albums(index);
 }
 inline ::Album* TableAns::_internal_add_albums() {
-  return albums_.Add();
+  return _impl_.albums_.Add();
 }
 inline ::Album* TableAns::add_albums() {
   ::Album* _add = _internal_add_albums();
@@ -3964,37 +4034,37 @@ inline ::Album* TableAns::add_albums() {
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Album >&
 TableAns::albums() const {
   // @@protoc_insertion_point(field_list:TableAns.albums)
-  return albums_;
+  return _impl_.albums_;
 }
 
 // repeated .Concert concerts = 3;
 inline int TableAns::_internal_concerts_size() const {
-  return concerts_.size();
+  return _impl_.concerts_.size();
 }
 inline int TableAns::concerts_size() const {
   return _internal_concerts_size();
 }
 inline void TableAns::clear_concerts() {
-  concerts_.Clear();
+  _impl_.concerts_.Clear();
 }
 inline ::Concert* TableAns::mutable_concerts(int index) {
   // @@protoc_insertion_point(field_mutable:TableAns.concerts)
-  return concerts_.Mutable(index);
+  return _impl_.concerts_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Concert >*
 TableAns::mutable_concerts() {
   // @@protoc_insertion_point(field_mutable_list:TableAns.concerts)
-  return &concerts_;
+  return &_impl_.concerts_;
 }
 inline const ::Concert& TableAns::_internal_concerts(int index) const {
-  return concerts_.Get(index);
+  return _impl_.concerts_.Get(index);
 }
 inline const ::Concert& TableAns::concerts(int index) const {
   // @@protoc_insertion_point(field_get:TableAns.concerts)
   return _internal_concerts(index);
 }
 inline ::Concert* TableAns::_internal_add_concerts() {
-  return concerts_.Add();
+  return _impl_.concerts_.Add();
 }
 inline ::Concert* TableAns::add_concerts() {
   ::Concert* _add = _internal_add_concerts();
@@ -4004,37 +4074,37 @@ inline ::Concert* TableAns::add_concerts() {
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Concert >&
 TableAns::concerts() const {
   // @@protoc_insertion_point(field_list:TableAns.concerts)
-  return concerts_;
+  return _impl_.concerts_;
 }
 
 // repeated .Song songs = 4;
 inline int TableAns::_internal_songs_size() const {
-  return songs_.size();
+  return _impl_.songs_.size();
 }
 inline int TableAns::songs_size() const {
   return _internal_songs_size();
 }
 inline void TableAns::clear_songs() {
-  songs_.Clear();
+  _impl_.songs_.Clear();
 }
 inline ::Song* TableAns::mutable_songs(int index) {
   // @@protoc_insertion_point(field_mutable:TableAns.songs)
-  return songs_.Mutable(index);
+  return _impl_.songs_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Song >*
 TableAns::mutable_songs() {
   // @@protoc_insertion_point(field_mutable_list:TableAns.songs)
-  return &songs_;
+  return &_impl_.songs_;
 }
 inline const ::Song& TableAns::_internal_songs(int index) const {
-  return songs_.Get(index);
+  return _impl_.songs_.Get(index);
 }
 inline const ::Song& TableAns::songs(int index) const {
   // @@protoc_insertion_point(field_get:TableAns.songs)
   return _internal_songs(index);
 }
 inline ::Song* TableAns::_internal_add_songs() {
-  return songs_.Add();
+  return _impl_.songs_.Add();
 }
 inline ::Song* TableAns::add_songs() {
   ::Song* _add = _internal_add_songs();
@@ -4044,15 +4114,15 @@ inline ::Song* TableAns::add_songs() {
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Song >&
 TableAns::songs() const {
   // @@protoc_insertion_point(field_list:TableAns.songs)
-  return songs_;
+  return _impl_.songs_;
 }
 
 // .EntityType type = 5;
 inline void TableAns::clear_type() {
-  type_ = 0;
+  _impl_.type_ = 0;
 }
 inline ::EntityType TableAns::_internal_type() const {
-  return static_cast< ::EntityType >(type_);
+  return static_cast< ::EntityType >(_impl_.type_);
 }
 inline ::EntityType TableAns::type() const {
   // @@protoc_insertion_point(field_get:TableAns.type)
@@ -4060,7 +4130,7 @@ inline ::EntityType TableAns::type() const {
 }
 inline void TableAns::_internal_set_type(::EntityType value) {
   
-  type_ = value;
+  _impl_.type_ = value;
 }
 inline void TableAns::set_type(::EntityType value) {
   _internal_set_type(value);
@@ -4079,12 +4149,12 @@ inline bool SimpleAns::has_band() const {
   return _internal_has_band();
 }
 inline void SimpleAns::set_has_band() {
-  _oneof_case_[0] = kBand;
+  _impl_._oneof_case_[0] = kBand;
 }
 inline void SimpleAns::clear_band() {
   if (_internal_has_band()) {
     if (GetArenaForAllocation() == nullptr) {
-      delete msg_.band_;
+      delete _impl_.msg_.band_;
     }
     clear_has_msg();
   }
@@ -4093,11 +4163,11 @@ inline ::Band* SimpleAns::release_band() {
   // @@protoc_insertion_point(field_release:SimpleAns.band)
   if (_internal_has_band()) {
     clear_has_msg();
-    ::Band* temp = msg_.band_;
+    ::Band* temp = _impl_.msg_.band_;
     if (GetArenaForAllocation() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    msg_.band_ = nullptr;
+    _impl_.msg_.band_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -4105,7 +4175,7 @@ inline ::Band* SimpleAns::release_band() {
 }
 inline const ::Band& SimpleAns::_internal_band() const {
   return _internal_has_band()
-      ? *msg_.band_
+      ? *_impl_.msg_.band_
       : reinterpret_cast< ::Band&>(::_Band_default_instance_);
 }
 inline const ::Band& SimpleAns::band() const {
@@ -4116,8 +4186,8 @@ inline ::Band* SimpleAns::unsafe_arena_release_band() {
   // @@protoc_insertion_point(field_unsafe_arena_release:SimpleAns.band)
   if (_internal_has_band()) {
     clear_has_msg();
-    ::Band* temp = msg_.band_;
-    msg_.band_ = nullptr;
+    ::Band* temp = _impl_.msg_.band_;
+    _impl_.msg_.band_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -4127,7 +4197,7 @@ inline void SimpleAns::unsafe_arena_set_allocated_band(::Band* band) {
   clear_msg();
   if (band) {
     set_has_band();
-    msg_.band_ = band;
+    _impl_.msg_.band_ = band;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:SimpleAns.band)
 }
@@ -4135,9 +4205,9 @@ inline ::Band* SimpleAns::_internal_mutable_band() {
   if (!_internal_has_band()) {
     clear_msg();
     set_has_band();
-    msg_.band_ = CreateMaybeMessage< ::Band >(GetArenaForAllocation());
+    _impl_.msg_.band_ = CreateMaybeMessage< ::Band >(GetArenaForAllocation());
   }
-  return msg_.band_;
+  return _impl_.msg_.band_;
 }
 inline ::Band* SimpleAns::mutable_band() {
   ::Band* _msg = _internal_mutable_band();
@@ -4153,12 +4223,12 @@ inline bool SimpleAns::has_album() const {
   return _internal_has_album();
 }
 inline void SimpleAns::set_has_album() {
-  _oneof_case_[0] = kAlbum;
+  _impl_._oneof_case_[0] = kAlbum;
 }
 inline void SimpleAns::clear_album() {
   if (_internal_has_album()) {
     if (GetArenaForAllocation() == nullptr) {
-      delete msg_.album_;
+      delete _impl_.msg_.album_;
     }
     clear_has_msg();
   }
@@ -4167,11 +4237,11 @@ inline ::Album* SimpleAns::release_album() {
   // @@protoc_insertion_point(field_release:SimpleAns.album)
   if (_internal_has_album()) {
     clear_has_msg();
-    ::Album* temp = msg_.album_;
+    ::Album* temp = _impl_.msg_.album_;
     if (GetArenaForAllocation() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    msg_.album_ = nullptr;
+    _impl_.msg_.album_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -4179,7 +4249,7 @@ inline ::Album* SimpleAns::release_album() {
 }
 inline const ::Album& SimpleAns::_internal_album() const {
   return _internal_has_album()
-      ? *msg_.album_
+      ? *_impl_.msg_.album_
       : reinterpret_cast< ::Album&>(::_Album_default_instance_);
 }
 inline const ::Album& SimpleAns::album() const {
@@ -4190,8 +4260,8 @@ inline ::Album* SimpleAns::unsafe_arena_release_album() {
   // @@protoc_insertion_point(field_unsafe_arena_release:SimpleAns.album)
   if (_internal_has_album()) {
     clear_has_msg();
-    ::Album* temp = msg_.album_;
-    msg_.album_ = nullptr;
+    ::Album* temp = _impl_.msg_.album_;
+    _impl_.msg_.album_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -4201,7 +4271,7 @@ inline void SimpleAns::unsafe_arena_set_allocated_album(::Album* album) {
   clear_msg();
   if (album) {
     set_has_album();
-    msg_.album_ = album;
+    _impl_.msg_.album_ = album;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:SimpleAns.album)
 }
@@ -4209,9 +4279,9 @@ inline ::Album* SimpleAns::_internal_mutable_album() {
   if (!_internal_has_album()) {
     clear_msg();
     set_has_album();
-    msg_.album_ = CreateMaybeMessage< ::Album >(GetArenaForAllocation());
+    _impl_.msg_.album_ = CreateMaybeMessage< ::Album >(GetArenaForAllocation());
   }
-  return msg_.album_;
+  return _impl_.msg_.album_;
 }
 inline ::Album* SimpleAns::mutable_album() {
   ::Album* _msg = _internal_mutable_album();
@@ -4227,12 +4297,12 @@ inline bool SimpleAns::has_song() const {
   return _internal_has_song();
 }
 inline void SimpleAns::set_has_song() {
-  _oneof_case_[0] = kSong;
+  _impl_._oneof_case_[0] = kSong;
 }
 inline void SimpleAns::clear_song() {
   if (_internal_has_song()) {
     if (GetArenaForAllocation() == nullptr) {
-      delete msg_.song_;
+      delete _impl_.msg_.song_;
     }
     clear_has_msg();
   }
@@ -4241,11 +4311,11 @@ inline ::Song* SimpleAns::release_song() {
   // @@protoc_insertion_point(field_release:SimpleAns.song)
   if (_internal_has_song()) {
     clear_has_msg();
-    ::Song* temp = msg_.song_;
+    ::Song* temp = _impl_.msg_.song_;
     if (GetArenaForAllocation() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    msg_.song_ = nullptr;
+    _impl_.msg_.song_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -4253,7 +4323,7 @@ inline ::Song* SimpleAns::release_song() {
 }
 inline const ::Song& SimpleAns::_internal_song() const {
   return _internal_has_song()
-      ? *msg_.song_
+      ? *_impl_.msg_.song_
       : reinterpret_cast< ::Song&>(::_Song_default_instance_);
 }
 inline const ::Song& SimpleAns::song() const {
@@ -4264,8 +4334,8 @@ inline ::Song* SimpleAns::unsafe_arena_release_song() {
   // @@protoc_insertion_point(field_unsafe_arena_release:SimpleAns.song)
   if (_internal_has_song()) {
     clear_has_msg();
-    ::Song* temp = msg_.song_;
-    msg_.song_ = nullptr;
+    ::Song* temp = _impl_.msg_.song_;
+    _impl_.msg_.song_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -4275,7 +4345,7 @@ inline void SimpleAns::unsafe_arena_set_allocated_song(::Song* song) {
   clear_msg();
   if (song) {
     set_has_song();
-    msg_.song_ = song;
+    _impl_.msg_.song_ = song;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:SimpleAns.song)
 }
@@ -4283,9 +4353,9 @@ inline ::Song* SimpleAns::_internal_mutable_song() {
   if (!_internal_has_song()) {
     clear_msg();
     set_has_song();
-    msg_.song_ = CreateMaybeMessage< ::Song >(GetArenaForAllocation());
+    _impl_.msg_.song_ = CreateMaybeMessage< ::Song >(GetArenaForAllocation());
   }
-  return msg_.song_;
+  return _impl_.msg_.song_;
 }
 inline ::Song* SimpleAns::mutable_song() {
   ::Song* _msg = _internal_mutable_song();
@@ -4301,12 +4371,12 @@ inline bool SimpleAns::has_concert() const {
   return _internal_has_concert();
 }
 inline void SimpleAns::set_has_concert() {
-  _oneof_case_[0] = kConcert;
+  _impl_._oneof_case_[0] = kConcert;
 }
 inline void SimpleAns::clear_concert() {
   if (_internal_has_concert()) {
     if (GetArenaForAllocation() == nullptr) {
-      delete msg_.concert_;
+      delete _impl_.msg_.concert_;
     }
     clear_has_msg();
   }
@@ -4315,11 +4385,11 @@ inline ::Concert* SimpleAns::release_concert() {
   // @@protoc_insertion_point(field_release:SimpleAns.concert)
   if (_internal_has_concert()) {
     clear_has_msg();
-    ::Concert* temp = msg_.concert_;
+    ::Concert* temp = _impl_.msg_.concert_;
     if (GetArenaForAllocation() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    msg_.concert_ = nullptr;
+    _impl_.msg_.concert_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -4327,7 +4397,7 @@ inline ::Concert* SimpleAns::release_concert() {
 }
 inline const ::Concert& SimpleAns::_internal_concert() const {
   return _internal_has_concert()
-      ? *msg_.concert_
+      ? *_impl_.msg_.concert_
       : reinterpret_cast< ::Concert&>(::_Concert_default_instance_);
 }
 inline const ::Concert& SimpleAns::concert() const {
@@ -4338,8 +4408,8 @@ inline ::Concert* SimpleAns::unsafe_arena_release_concert() {
   // @@protoc_insertion_point(field_unsafe_arena_release:SimpleAns.concert)
   if (_internal_has_concert()) {
     clear_has_msg();
-    ::Concert* temp = msg_.concert_;
-    msg_.concert_ = nullptr;
+    ::Concert* temp = _impl_.msg_.concert_;
+    _impl_.msg_.concert_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -4349,7 +4419,7 @@ inline void SimpleAns::unsafe_arena_set_allocated_concert(::Concert* concert) {
   clear_msg();
   if (concert) {
     set_has_concert();
-    msg_.concert_ = concert;
+    _impl_.msg_.concert_ = concert;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:SimpleAns.concert)
 }
@@ -4357,9 +4427,9 @@ inline ::Concert* SimpleAns::_internal_mutable_concert() {
   if (!_internal_has_concert()) {
     clear_msg();
     set_has_concert();
-    msg_.concert_ = CreateMaybeMessage< ::Concert >(GetArenaForAllocation());
+    _impl_.msg_.concert_ = CreateMaybeMessage< ::Concert >(GetArenaForAllocation());
   }
-  return msg_.concert_;
+  return _impl_.msg_.concert_;
 }
 inline ::Concert* SimpleAns::mutable_concert() {
   ::Concert* _msg = _internal_mutable_concert();
@@ -4375,12 +4445,12 @@ inline bool SimpleAns::has_musician() const {
   return _internal_has_musician();
 }
 inline void SimpleAns::set_has_musician() {
-  _oneof_case_[0] = kMusician;
+  _impl_._oneof_case_[0] = kMusician;
 }
 inline void SimpleAns::clear_musician() {
   if (_internal_has_musician()) {
     if (GetArenaForAllocation() == nullptr) {
-      delete msg_.musician_;
+      delete _impl_.msg_.musician_;
     }
     clear_has_msg();
   }
@@ -4389,11 +4459,11 @@ inline ::Musician* SimpleAns::release_musician() {
   // @@protoc_insertion_point(field_release:SimpleAns.musician)
   if (_internal_has_musician()) {
     clear_has_msg();
-    ::Musician* temp = msg_.musician_;
+    ::Musician* temp = _impl_.msg_.musician_;
     if (GetArenaForAllocation() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    msg_.musician_ = nullptr;
+    _impl_.msg_.musician_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -4401,7 +4471,7 @@ inline ::Musician* SimpleAns::release_musician() {
 }
 inline const ::Musician& SimpleAns::_internal_musician() const {
   return _internal_has_musician()
-      ? *msg_.musician_
+      ? *_impl_.msg_.musician_
       : reinterpret_cast< ::Musician&>(::_Musician_default_instance_);
 }
 inline const ::Musician& SimpleAns::musician() const {
@@ -4412,8 +4482,8 @@ inline ::Musician* SimpleAns::unsafe_arena_release_musician() {
   // @@protoc_insertion_point(field_unsafe_arena_release:SimpleAns.musician)
   if (_internal_has_musician()) {
     clear_has_msg();
-    ::Musician* temp = msg_.musician_;
-    msg_.musician_ = nullptr;
+    ::Musician* temp = _impl_.msg_.musician_;
+    _impl_.msg_.musician_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -4423,7 +4493,7 @@ inline void SimpleAns::unsafe_arena_set_allocated_musician(::Musician* musician)
   clear_msg();
   if (musician) {
     set_has_musician();
-    msg_.musician_ = musician;
+    _impl_.msg_.musician_ = musician;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:SimpleAns.musician)
 }
@@ -4431,9 +4501,9 @@ inline ::Musician* SimpleAns::_internal_mutable_musician() {
   if (!_internal_has_musician()) {
     clear_msg();
     set_has_musician();
-    msg_.musician_ = CreateMaybeMessage< ::Musician >(GetArenaForAllocation());
+    _impl_.msg_.musician_ = CreateMaybeMessage< ::Musician >(GetArenaForAllocation());
   }
-  return msg_.musician_;
+  return _impl_.msg_.musician_;
 }
 inline ::Musician* SimpleAns::mutable_musician() {
   ::Musician* _msg = _internal_mutable_musician();
@@ -4449,12 +4519,12 @@ inline bool SimpleAns::has_membership() const {
   return _internal_has_membership();
 }
 inline void SimpleAns::set_has_membership() {
-  _oneof_case_[0] = kMembership;
+  _impl_._oneof_case_[0] = kMembership;
 }
 inline void SimpleAns::clear_membership() {
   if (_internal_has_membership()) {
     if (GetArenaForAllocation() == nullptr) {
-      delete msg_.membership_;
+      delete _impl_.msg_.membership_;
     }
     clear_has_msg();
   }
@@ -4463,11 +4533,11 @@ inline ::Membership* SimpleAns::release_membership() {
   // @@protoc_insertion_point(field_release:SimpleAns.membership)
   if (_internal_has_membership()) {
     clear_has_msg();
-    ::Membership* temp = msg_.membership_;
+    ::Membership* temp = _impl_.msg_.membership_;
     if (GetArenaForAllocation() != nullptr) {
       temp = ::PROTOBUF_NAMESPACE_ID::internal::DuplicateIfNonNull(temp);
     }
-    msg_.membership_ = nullptr;
+    _impl_.msg_.membership_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -4475,7 +4545,7 @@ inline ::Membership* SimpleAns::release_membership() {
 }
 inline const ::Membership& SimpleAns::_internal_membership() const {
   return _internal_has_membership()
-      ? *msg_.membership_
+      ? *_impl_.msg_.membership_
       : reinterpret_cast< ::Membership&>(::_Membership_default_instance_);
 }
 inline const ::Membership& SimpleAns::membership() const {
@@ -4486,8 +4556,8 @@ inline ::Membership* SimpleAns::unsafe_arena_release_membership() {
   // @@protoc_insertion_point(field_unsafe_arena_release:SimpleAns.membership)
   if (_internal_has_membership()) {
     clear_has_msg();
-    ::Membership* temp = msg_.membership_;
-    msg_.membership_ = nullptr;
+    ::Membership* temp = _impl_.msg_.membership_;
+    _impl_.msg_.membership_ = nullptr;
     return temp;
   } else {
     return nullptr;
@@ -4497,7 +4567,7 @@ inline void SimpleAns::unsafe_arena_set_allocated_membership(::Membership* membe
   clear_msg();
   if (membership) {
     set_has_membership();
-    msg_.membership_ = membership;
+    _impl_.msg_.membership_ = membership;
   }
   // @@protoc_insertion_point(field_unsafe_arena_set_allocated:SimpleAns.membership)
 }
@@ -4505,9 +4575,9 @@ inline ::Membership* SimpleAns::_internal_mutable_membership() {
   if (!_internal_has_membership()) {
     clear_msg();
     set_has_membership();
-    msg_.membership_ = CreateMaybeMessage< ::Membership >(GetArenaForAllocation());
+    _impl_.msg_.membership_ = CreateMaybeMessage< ::Membership >(GetArenaForAllocation());
   }
-  return msg_.membership_;
+  return _impl_.msg_.membership_;
 }
 inline ::Membership* SimpleAns::mutable_membership() {
   ::Membership* _msg = _internal_mutable_membership();
@@ -4519,10 +4589,10 @@ inline bool SimpleAns::has_msg() const {
   return msg_case() != MSG_NOT_SET;
 }
 inline void SimpleAns::clear_has_msg() {
-  _oneof_case_[0] = MSG_NOT_SET;
+  _impl_._oneof_case_[0] = MSG_NOT_SET;
 }
 inline SimpleAns::MsgCase SimpleAns::msg_case() const {
-  return SimpleAns::MsgCase(_oneof_case_[0]);
+  return SimpleAns::MsgCase(_impl_._oneof_case_[0]);
 }
 // -------------------------------------------------------------------
 
@@ -4530,7 +4600,7 @@ inline SimpleAns::MsgCase SimpleAns::msg_case() const {
 
 // bytes data = 1;
 inline void StreamAns::clear_data() {
-  data_.ClearToEmpty();
+  _impl_.data_.ClearToEmpty();
 }
 inline const std::string& StreamAns::data() const {
   // @@protoc_insertion_point(field_get:StreamAns.data)
@@ -4540,7 +4610,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void StreamAns::set_data(ArgT0&& arg0, ArgT... args) {
  
- data_.SetBytes(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.data_.SetBytes(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:StreamAns.data)
 }
 inline std::string* StreamAns::mutable_data() {
@@ -4549,19 +4619,19 @@ inline std::string* StreamAns::mutable_data() {
   return _s;
 }
 inline const std::string& StreamAns::_internal_data() const {
-  return data_.Get();
+  return _impl_.data_.Get();
 }
 inline void StreamAns::_internal_set_data(const std::string& value) {
   
-  data_.Set(value, GetArenaForAllocation());
+  _impl_.data_.Set(value, GetArenaForAllocation());
 }
 inline std::string* StreamAns::_internal_mutable_data() {
   
-  return data_.Mutable(GetArenaForAllocation());
+  return _impl_.data_.Mutable(GetArenaForAllocation());
 }
 inline std::string* StreamAns::release_data() {
   // @@protoc_insertion_point(field_release:StreamAns.data)
-  return data_.Release();
+  return _impl_.data_.Release();
 }
 inline void StreamAns::set_allocated_data(std::string* data) {
   if (data != nullptr) {
@@ -4569,10 +4639,10 @@ inline void StreamAns::set_allocated_data(std::string* data) {
   } else {
     
   }
-  data_.SetAllocated(data, GetArenaForAllocation());
+  _impl_.data_.SetAllocated(data, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (data_.IsDefault()) {
-    data_.Set("", GetArenaForAllocation());
+  if (_impl_.data_.IsDefault()) {
+    _impl_.data_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:StreamAns.data)
@@ -4580,10 +4650,10 @@ inline void StreamAns::set_allocated_data(std::string* data) {
 
 // bool isFinal = 2;
 inline void StreamAns::clear_isfinal() {
-  isfinal_ = false;
+  _impl_.isfinal_ = false;
 }
 inline bool StreamAns::_internal_isfinal() const {
-  return isfinal_;
+  return _impl_.isfinal_;
 }
 inline bool StreamAns::isfinal() const {
   // @@protoc_insertion_point(field_get:StreamAns.isFinal)
@@ -4591,7 +4661,7 @@ inline bool StreamAns::isfinal() const {
 }
 inline void StreamAns::_internal_set_isfinal(bool value) {
   
-  isfinal_ = value;
+  _impl_.isfinal_ = value;
 }
 inline void StreamAns::set_isfinal(bool value) {
   _internal_set_isfinal(value);
@@ -4604,7 +4674,7 @@ inline void StreamAns::set_isfinal(bool value) {
 
 // string musName = 1;
 inline void Membership::clear_musname() {
-  musname_.ClearToEmpty();
+  _impl_.musname_.ClearToEmpty();
 }
 inline const std::string& Membership::musname() const {
   // @@protoc_insertion_point(field_get:Membership.musName)
@@ -4614,7 +4684,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Membership::set_musname(ArgT0&& arg0, ArgT... args) {
  
- musname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.musname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Membership.musName)
 }
 inline std::string* Membership::mutable_musname() {
@@ -4623,19 +4693,19 @@ inline std::string* Membership::mutable_musname() {
   return _s;
 }
 inline const std::string& Membership::_internal_musname() const {
-  return musname_.Get();
+  return _impl_.musname_.Get();
 }
 inline void Membership::_internal_set_musname(const std::string& value) {
   
-  musname_.Set(value, GetArenaForAllocation());
+  _impl_.musname_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Membership::_internal_mutable_musname() {
   
-  return musname_.Mutable(GetArenaForAllocation());
+  return _impl_.musname_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Membership::release_musname() {
   // @@protoc_insertion_point(field_release:Membership.musName)
-  return musname_.Release();
+  return _impl_.musname_.Release();
 }
 inline void Membership::set_allocated_musname(std::string* musname) {
   if (musname != nullptr) {
@@ -4643,10 +4713,10 @@ inline void Membership::set_allocated_musname(std::string* musname) {
   } else {
     
   }
-  musname_.SetAllocated(musname, GetArenaForAllocation());
+  _impl_.musname_.SetAllocated(musname, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (musname_.IsDefault()) {
-    musname_.Set("", GetArenaForAllocation());
+  if (_impl_.musname_.IsDefault()) {
+    _impl_.musname_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Membership.musName)
@@ -4654,7 +4724,7 @@ inline void Membership::set_allocated_musname(std::string* musname) {
 
 // string bandName = 2;
 inline void Membership::clear_bandname() {
-  bandname_.ClearToEmpty();
+  _impl_.bandname_.ClearToEmpty();
 }
 inline const std::string& Membership::bandname() const {
   // @@protoc_insertion_point(field_get:Membership.bandName)
@@ -4664,7 +4734,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Membership::set_bandname(ArgT0&& arg0, ArgT... args) {
  
- bandname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.bandname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Membership.bandName)
 }
 inline std::string* Membership::mutable_bandname() {
@@ -4673,19 +4743,19 @@ inline std::string* Membership::mutable_bandname() {
   return _s;
 }
 inline const std::string& Membership::_internal_bandname() const {
-  return bandname_.Get();
+  return _impl_.bandname_.Get();
 }
 inline void Membership::_internal_set_bandname(const std::string& value) {
   
-  bandname_.Set(value, GetArenaForAllocation());
+  _impl_.bandname_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Membership::_internal_mutable_bandname() {
   
-  return bandname_.Mutable(GetArenaForAllocation());
+  return _impl_.bandname_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Membership::release_bandname() {
   // @@protoc_insertion_point(field_release:Membership.bandName)
-  return bandname_.Release();
+  return _impl_.bandname_.Release();
 }
 inline void Membership::set_allocated_bandname(std::string* bandname) {
   if (bandname != nullptr) {
@@ -4693,10 +4763,10 @@ inline void Membership::set_allocated_bandname(std::string* bandname) {
   } else {
     
   }
-  bandname_.SetAllocated(bandname, GetArenaForAllocation());
+  _impl_.bandname_.SetAllocated(bandname, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (bandname_.IsDefault()) {
-    bandname_.Set("", GetArenaForAllocation());
+  if (_impl_.bandname_.IsDefault()) {
+    _impl_.bandname_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Membership.bandName)
@@ -4704,10 +4774,10 @@ inline void Membership::set_allocated_bandname(std::string* bandname) {
 
 // int64 unixEntryDate = 3;
 inline void Membership::clear_unixentrydate() {
-  unixentrydate_ = int64_t{0};
+  _impl_.unixentrydate_ = int64_t{0};
 }
 inline int64_t Membership::_internal_unixentrydate() const {
-  return unixentrydate_;
+  return _impl_.unixentrydate_;
 }
 inline int64_t Membership::unixentrydate() const {
   // @@protoc_insertion_point(field_get:Membership.unixEntryDate)
@@ -4715,7 +4785,7 @@ inline int64_t Membership::unixentrydate() const {
 }
 inline void Membership::_internal_set_unixentrydate(int64_t value) {
   
-  unixentrydate_ = value;
+  _impl_.unixentrydate_ = value;
 }
 inline void Membership::set_unixentrydate(int64_t value) {
   _internal_set_unixentrydate(value);
@@ -4724,10 +4794,10 @@ inline void Membership::set_unixentrydate(int64_t value) {
 
 // int64 unixQuitDate = 4;
 inline void Membership::clear_unixquitdate() {
-  unixquitdate_ = int64_t{0};
+  _impl_.unixquitdate_ = int64_t{0};
 }
 inline int64_t Membership::_internal_unixquitdate() const {
-  return unixquitdate_;
+  return _impl_.unixquitdate_;
 }
 inline int64_t Membership::unixquitdate() const {
   // @@protoc_insertion_point(field_get:Membership.unixQuitDate)
@@ -4735,7 +4805,7 @@ inline int64_t Membership::unixquitdate() const {
 }
 inline void Membership::_internal_set_unixquitdate(int64_t value) {
   
-  unixquitdate_ = value;
+  _impl_.unixquitdate_ = value;
 }
 inline void Membership::set_unixquitdate(int64_t value) {
   _internal_set_unixquitdate(value);
@@ -4748,10 +4818,10 @@ inline void Membership::set_unixquitdate(int64_t value) {
 
 // int32 capacity = 1;
 inline void Concert::clear_capacity() {
-  capacity_ = 0;
+  _impl_.capacity_ = 0;
 }
 inline int32_t Concert::_internal_capacity() const {
-  return capacity_;
+  return _impl_.capacity_;
 }
 inline int32_t Concert::capacity() const {
   // @@protoc_insertion_point(field_get:Concert.capacity)
@@ -4759,7 +4829,7 @@ inline int32_t Concert::capacity() const {
 }
 inline void Concert::_internal_set_capacity(int32_t value) {
   
-  capacity_ = value;
+  _impl_.capacity_ = value;
 }
 inline void Concert::set_capacity(int32_t value) {
   _internal_set_capacity(value);
@@ -4768,7 +4838,7 @@ inline void Concert::set_capacity(int32_t value) {
 
 // string description = 2;
 inline void Concert::clear_description() {
-  description_.ClearToEmpty();
+  _impl_.description_.ClearToEmpty();
 }
 inline const std::string& Concert::description() const {
   // @@protoc_insertion_point(field_get:Concert.description)
@@ -4778,7 +4848,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Concert::set_description(ArgT0&& arg0, ArgT... args) {
  
- description_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.description_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Concert.description)
 }
 inline std::string* Concert::mutable_description() {
@@ -4787,19 +4857,19 @@ inline std::string* Concert::mutable_description() {
   return _s;
 }
 inline const std::string& Concert::_internal_description() const {
-  return description_.Get();
+  return _impl_.description_.Get();
 }
 inline void Concert::_internal_set_description(const std::string& value) {
   
-  description_.Set(value, GetArenaForAllocation());
+  _impl_.description_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Concert::_internal_mutable_description() {
   
-  return description_.Mutable(GetArenaForAllocation());
+  return _impl_.description_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Concert::release_description() {
   // @@protoc_insertion_point(field_release:Concert.description)
-  return description_.Release();
+  return _impl_.description_.Release();
 }
 inline void Concert::set_allocated_description(std::string* description) {
   if (description != nullptr) {
@@ -4807,10 +4877,10 @@ inline void Concert::set_allocated_description(std::string* description) {
   } else {
     
   }
-  description_.SetAllocated(description, GetArenaForAllocation());
+  _impl_.description_.SetAllocated(description, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (description_.IsDefault()) {
-    description_.Set("", GetArenaForAllocation());
+  if (_impl_.description_.IsDefault()) {
+    _impl_.description_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Concert.description)
@@ -4818,10 +4888,10 @@ inline void Concert::set_allocated_description(std::string* description) {
 
 // int64 unixDateTime = 3;
 inline void Concert::clear_unixdatetime() {
-  unixdatetime_ = int64_t{0};
+  _impl_.unixdatetime_ = int64_t{0};
 }
 inline int64_t Concert::_internal_unixdatetime() const {
-  return unixdatetime_;
+  return _impl_.unixdatetime_;
 }
 inline int64_t Concert::unixdatetime() const {
   // @@protoc_insertion_point(field_get:Concert.unixDateTime)
@@ -4829,7 +4899,7 @@ inline int64_t Concert::unixdatetime() const {
 }
 inline void Concert::_internal_set_unixdatetime(int64_t value) {
   
-  unixdatetime_ = value;
+  _impl_.unixdatetime_ = value;
 }
 inline void Concert::set_unixdatetime(int64_t value) {
   _internal_set_unixdatetime(value);
@@ -4838,7 +4908,7 @@ inline void Concert::set_unixdatetime(int64_t value) {
 
 // string location = 4;
 inline void Concert::clear_location() {
-  location_.ClearToEmpty();
+  _impl_.location_.ClearToEmpty();
 }
 inline const std::string& Concert::location() const {
   // @@protoc_insertion_point(field_get:Concert.location)
@@ -4848,7 +4918,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Concert::set_location(ArgT0&& arg0, ArgT... args) {
  
- location_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.location_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Concert.location)
 }
 inline std::string* Concert::mutable_location() {
@@ -4857,19 +4927,19 @@ inline std::string* Concert::mutable_location() {
   return _s;
 }
 inline const std::string& Concert::_internal_location() const {
-  return location_.Get();
+  return _impl_.location_.Get();
 }
 inline void Concert::_internal_set_location(const std::string& value) {
   
-  location_.Set(value, GetArenaForAllocation());
+  _impl_.location_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Concert::_internal_mutable_location() {
   
-  return location_.Mutable(GetArenaForAllocation());
+  return _impl_.location_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Concert::release_location() {
   // @@protoc_insertion_point(field_release:Concert.location)
-  return location_.Release();
+  return _impl_.location_.Release();
 }
 inline void Concert::set_allocated_location(std::string* location) {
   if (location != nullptr) {
@@ -4877,10 +4947,10 @@ inline void Concert::set_allocated_location(std::string* location) {
   } else {
     
   }
-  location_.SetAllocated(location, GetArenaForAllocation());
+  _impl_.location_.SetAllocated(location, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (location_.IsDefault()) {
-    location_.Set("", GetArenaForAllocation());
+  if (_impl_.location_.IsDefault()) {
+    _impl_.location_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Concert.location)
@@ -4888,13 +4958,13 @@ inline void Concert::set_allocated_location(std::string* location) {
 
 // repeated string bandNames = 5;
 inline int Concert::_internal_bandnames_size() const {
-  return bandnames_.size();
+  return _impl_.bandnames_.size();
 }
 inline int Concert::bandnames_size() const {
   return _internal_bandnames_size();
 }
 inline void Concert::clear_bandnames() {
-  bandnames_.Clear();
+  _impl_.bandnames_.Clear();
 }
 inline std::string* Concert::add_bandnames() {
   std::string* _s = _internal_add_bandnames();
@@ -4902,7 +4972,7 @@ inline std::string* Concert::add_bandnames() {
   return _s;
 }
 inline const std::string& Concert::_internal_bandnames(int index) const {
-  return bandnames_.Get(index);
+  return _impl_.bandnames_.Get(index);
 }
 inline const std::string& Concert::bandnames(int index) const {
   // @@protoc_insertion_point(field_get:Concert.bandNames)
@@ -4910,55 +4980,55 @@ inline const std::string& Concert::bandnames(int index) const {
 }
 inline std::string* Concert::mutable_bandnames(int index) {
   // @@protoc_insertion_point(field_mutable:Concert.bandNames)
-  return bandnames_.Mutable(index);
+  return _impl_.bandnames_.Mutable(index);
 }
 inline void Concert::set_bandnames(int index, const std::string& value) {
-  bandnames_.Mutable(index)->assign(value);
+  _impl_.bandnames_.Mutable(index)->assign(value);
   // @@protoc_insertion_point(field_set:Concert.bandNames)
 }
 inline void Concert::set_bandnames(int index, std::string&& value) {
-  bandnames_.Mutable(index)->assign(std::move(value));
+  _impl_.bandnames_.Mutable(index)->assign(std::move(value));
   // @@protoc_insertion_point(field_set:Concert.bandNames)
 }
 inline void Concert::set_bandnames(int index, const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  bandnames_.Mutable(index)->assign(value);
+  _impl_.bandnames_.Mutable(index)->assign(value);
   // @@protoc_insertion_point(field_set_char:Concert.bandNames)
 }
 inline void Concert::set_bandnames(int index, const char* value, size_t size) {
-  bandnames_.Mutable(index)->assign(
+  _impl_.bandnames_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
   // @@protoc_insertion_point(field_set_pointer:Concert.bandNames)
 }
 inline std::string* Concert::_internal_add_bandnames() {
-  return bandnames_.Add();
+  return _impl_.bandnames_.Add();
 }
 inline void Concert::add_bandnames(const std::string& value) {
-  bandnames_.Add()->assign(value);
+  _impl_.bandnames_.Add()->assign(value);
   // @@protoc_insertion_point(field_add:Concert.bandNames)
 }
 inline void Concert::add_bandnames(std::string&& value) {
-  bandnames_.Add(std::move(value));
+  _impl_.bandnames_.Add(std::move(value));
   // @@protoc_insertion_point(field_add:Concert.bandNames)
 }
 inline void Concert::add_bandnames(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  bandnames_.Add()->assign(value);
+  _impl_.bandnames_.Add()->assign(value);
   // @@protoc_insertion_point(field_add_char:Concert.bandNames)
 }
 inline void Concert::add_bandnames(const char* value, size_t size) {
-  bandnames_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  _impl_.bandnames_.Add()->assign(reinterpret_cast<const char*>(value), size);
   // @@protoc_insertion_point(field_add_pointer:Concert.bandNames)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
 Concert::bandnames() const {
   // @@protoc_insertion_point(field_list:Concert.bandNames)
-  return bandnames_;
+  return _impl_.bandnames_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
 Concert::mutable_bandnames() {
   // @@protoc_insertion_point(field_mutable_list:Concert.bandNames)
-  return &bandnames_;
+  return &_impl_.bandnames_;
 }
 
 // -------------------------------------------------------------------
@@ -4967,7 +5037,7 @@ Concert::mutable_bandnames() {
 
 // string bandName = 1;
 inline void Band::clear_bandname() {
-  bandname_.ClearToEmpty();
+  _impl_.bandname_.ClearToEmpty();
 }
 inline const std::string& Band::bandname() const {
   // @@protoc_insertion_point(field_get:Band.bandName)
@@ -4977,7 +5047,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Band::set_bandname(ArgT0&& arg0, ArgT... args) {
  
- bandname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.bandname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Band.bandName)
 }
 inline std::string* Band::mutable_bandname() {
@@ -4986,19 +5056,19 @@ inline std::string* Band::mutable_bandname() {
   return _s;
 }
 inline const std::string& Band::_internal_bandname() const {
-  return bandname_.Get();
+  return _impl_.bandname_.Get();
 }
 inline void Band::_internal_set_bandname(const std::string& value) {
   
-  bandname_.Set(value, GetArenaForAllocation());
+  _impl_.bandname_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Band::_internal_mutable_bandname() {
   
-  return bandname_.Mutable(GetArenaForAllocation());
+  return _impl_.bandname_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Band::release_bandname() {
   // @@protoc_insertion_point(field_release:Band.bandName)
-  return bandname_.Release();
+  return _impl_.bandname_.Release();
 }
 inline void Band::set_allocated_bandname(std::string* bandname) {
   if (bandname != nullptr) {
@@ -5006,10 +5076,10 @@ inline void Band::set_allocated_bandname(std::string* bandname) {
   } else {
     
   }
-  bandname_.SetAllocated(bandname, GetArenaForAllocation());
+  _impl_.bandname_.SetAllocated(bandname, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (bandname_.IsDefault()) {
-    bandname_.Set("", GetArenaForAllocation());
+  if (_impl_.bandname_.IsDefault()) {
+    _impl_.bandname_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Band.bandName)
@@ -5017,10 +5087,10 @@ inline void Band::set_allocated_bandname(std::string* bandname) {
 
 // .Genre genre = 2;
 inline void Band::clear_genre() {
-  genre_ = 0;
+  _impl_.genre_ = 0;
 }
 inline ::Genre Band::_internal_genre() const {
-  return static_cast< ::Genre >(genre_);
+  return static_cast< ::Genre >(_impl_.genre_);
 }
 inline ::Genre Band::genre() const {
   // @@protoc_insertion_point(field_get:Band.genre)
@@ -5028,7 +5098,7 @@ inline ::Genre Band::genre() const {
 }
 inline void Band::_internal_set_genre(::Genre value) {
   
-  genre_ = value;
+  _impl_.genre_ = value;
 }
 inline void Band::set_genre(::Genre value) {
   _internal_set_genre(value);
@@ -5037,10 +5107,10 @@ inline void Band::set_genre(::Genre value) {
 
 // int64 unixFoundDate = 3;
 inline void Band::clear_unixfounddate() {
-  unixfounddate_ = int64_t{0};
+  _impl_.unixfounddate_ = int64_t{0};
 }
 inline int64_t Band::_internal_unixfounddate() const {
-  return unixfounddate_;
+  return _impl_.unixfounddate_;
 }
 inline int64_t Band::unixfounddate() const {
   // @@protoc_insertion_point(field_get:Band.unixFoundDate)
@@ -5048,7 +5118,7 @@ inline int64_t Band::unixfounddate() const {
 }
 inline void Band::_internal_set_unixfounddate(int64_t value) {
   
-  unixfounddate_ = value;
+  _impl_.unixfounddate_ = value;
 }
 inline void Band::set_unixfounddate(int64_t value) {
   _internal_set_unixfounddate(value);
@@ -5057,10 +5127,10 @@ inline void Band::set_unixfounddate(int64_t value) {
 
 // int64 unixTermDate = 4;
 inline void Band::clear_unixtermdate() {
-  unixtermdate_ = int64_t{0};
+  _impl_.unixtermdate_ = int64_t{0};
 }
 inline int64_t Band::_internal_unixtermdate() const {
-  return unixtermdate_;
+  return _impl_.unixtermdate_;
 }
 inline int64_t Band::unixtermdate() const {
   // @@protoc_insertion_point(field_get:Band.unixTermDate)
@@ -5068,7 +5138,7 @@ inline int64_t Band::unixtermdate() const {
 }
 inline void Band::_internal_set_unixtermdate(int64_t value) {
   
-  unixtermdate_ = value;
+  _impl_.unixtermdate_ = value;
 }
 inline void Band::set_unixtermdate(int64_t value) {
   _internal_set_unixtermdate(value);
@@ -5077,7 +5147,7 @@ inline void Band::set_unixtermdate(int64_t value) {
 
 // string description = 5;
 inline void Band::clear_description() {
-  description_.ClearToEmpty();
+  _impl_.description_.ClearToEmpty();
 }
 inline const std::string& Band::description() const {
   // @@protoc_insertion_point(field_get:Band.description)
@@ -5087,7 +5157,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Band::set_description(ArgT0&& arg0, ArgT... args) {
  
- description_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.description_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Band.description)
 }
 inline std::string* Band::mutable_description() {
@@ -5096,19 +5166,19 @@ inline std::string* Band::mutable_description() {
   return _s;
 }
 inline const std::string& Band::_internal_description() const {
-  return description_.Get();
+  return _impl_.description_.Get();
 }
 inline void Band::_internal_set_description(const std::string& value) {
   
-  description_.Set(value, GetArenaForAllocation());
+  _impl_.description_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Band::_internal_mutable_description() {
   
-  return description_.Mutable(GetArenaForAllocation());
+  return _impl_.description_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Band::release_description() {
   // @@protoc_insertion_point(field_release:Band.description)
-  return description_.Release();
+  return _impl_.description_.Release();
 }
 inline void Band::set_allocated_description(std::string* description) {
   if (description != nullptr) {
@@ -5116,10 +5186,10 @@ inline void Band::set_allocated_description(std::string* description) {
   } else {
     
   }
-  description_.SetAllocated(description, GetArenaForAllocation());
+  _impl_.description_.SetAllocated(description, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (description_.IsDefault()) {
-    description_.Set("", GetArenaForAllocation());
+  if (_impl_.description_.IsDefault()) {
+    _impl_.description_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Band.description)
@@ -5127,13 +5197,13 @@ inline void Band::set_allocated_description(std::string* description) {
 
 // repeated string albumNames = 6;
 inline int Band::_internal_albumnames_size() const {
-  return albumnames_.size();
+  return _impl_.albumnames_.size();
 }
 inline int Band::albumnames_size() const {
   return _internal_albumnames_size();
 }
 inline void Band::clear_albumnames() {
-  albumnames_.Clear();
+  _impl_.albumnames_.Clear();
 }
 inline std::string* Band::add_albumnames() {
   std::string* _s = _internal_add_albumnames();
@@ -5141,7 +5211,7 @@ inline std::string* Band::add_albumnames() {
   return _s;
 }
 inline const std::string& Band::_internal_albumnames(int index) const {
-  return albumnames_.Get(index);
+  return _impl_.albumnames_.Get(index);
 }
 inline const std::string& Band::albumnames(int index) const {
   // @@protoc_insertion_point(field_get:Band.albumNames)
@@ -5149,85 +5219,85 @@ inline const std::string& Band::albumnames(int index) const {
 }
 inline std::string* Band::mutable_albumnames(int index) {
   // @@protoc_insertion_point(field_mutable:Band.albumNames)
-  return albumnames_.Mutable(index);
+  return _impl_.albumnames_.Mutable(index);
 }
 inline void Band::set_albumnames(int index, const std::string& value) {
-  albumnames_.Mutable(index)->assign(value);
+  _impl_.albumnames_.Mutable(index)->assign(value);
   // @@protoc_insertion_point(field_set:Band.albumNames)
 }
 inline void Band::set_albumnames(int index, std::string&& value) {
-  albumnames_.Mutable(index)->assign(std::move(value));
+  _impl_.albumnames_.Mutable(index)->assign(std::move(value));
   // @@protoc_insertion_point(field_set:Band.albumNames)
 }
 inline void Band::set_albumnames(int index, const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  albumnames_.Mutable(index)->assign(value);
+  _impl_.albumnames_.Mutable(index)->assign(value);
   // @@protoc_insertion_point(field_set_char:Band.albumNames)
 }
 inline void Band::set_albumnames(int index, const char* value, size_t size) {
-  albumnames_.Mutable(index)->assign(
+  _impl_.albumnames_.Mutable(index)->assign(
     reinterpret_cast<const char*>(value), size);
   // @@protoc_insertion_point(field_set_pointer:Band.albumNames)
 }
 inline std::string* Band::_internal_add_albumnames() {
-  return albumnames_.Add();
+  return _impl_.albumnames_.Add();
 }
 inline void Band::add_albumnames(const std::string& value) {
-  albumnames_.Add()->assign(value);
+  _impl_.albumnames_.Add()->assign(value);
   // @@protoc_insertion_point(field_add:Band.albumNames)
 }
 inline void Band::add_albumnames(std::string&& value) {
-  albumnames_.Add(std::move(value));
+  _impl_.albumnames_.Add(std::move(value));
   // @@protoc_insertion_point(field_add:Band.albumNames)
 }
 inline void Band::add_albumnames(const char* value) {
   GOOGLE_DCHECK(value != nullptr);
-  albumnames_.Add()->assign(value);
+  _impl_.albumnames_.Add()->assign(value);
   // @@protoc_insertion_point(field_add_char:Band.albumNames)
 }
 inline void Band::add_albumnames(const char* value, size_t size) {
-  albumnames_.Add()->assign(reinterpret_cast<const char*>(value), size);
+  _impl_.albumnames_.Add()->assign(reinterpret_cast<const char*>(value), size);
   // @@protoc_insertion_point(field_add_pointer:Band.albumNames)
 }
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>&
 Band::albumnames() const {
   // @@protoc_insertion_point(field_list:Band.albumNames)
-  return albumnames_;
+  return _impl_.albumnames_;
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField<std::string>*
 Band::mutable_albumnames() {
   // @@protoc_insertion_point(field_mutable_list:Band.albumNames)
-  return &albumnames_;
+  return &_impl_.albumnames_;
 }
 
 // repeated .Membership participants = 7;
 inline int Band::_internal_participants_size() const {
-  return participants_.size();
+  return _impl_.participants_.size();
 }
 inline int Band::participants_size() const {
   return _internal_participants_size();
 }
 inline void Band::clear_participants() {
-  participants_.Clear();
+  _impl_.participants_.Clear();
 }
 inline ::Membership* Band::mutable_participants(int index) {
   // @@protoc_insertion_point(field_mutable:Band.participants)
-  return participants_.Mutable(index);
+  return _impl_.participants_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Membership >*
 Band::mutable_participants() {
   // @@protoc_insertion_point(field_mutable_list:Band.participants)
-  return &participants_;
+  return &_impl_.participants_;
 }
 inline const ::Membership& Band::_internal_participants(int index) const {
-  return participants_.Get(index);
+  return _impl_.participants_.Get(index);
 }
 inline const ::Membership& Band::participants(int index) const {
   // @@protoc_insertion_point(field_get:Band.participants)
   return _internal_participants(index);
 }
 inline ::Membership* Band::_internal_add_participants() {
-  return participants_.Add();
+  return _impl_.participants_.Add();
 }
 inline ::Membership* Band::add_participants() {
   ::Membership* _add = _internal_add_participants();
@@ -5237,37 +5307,37 @@ inline ::Membership* Band::add_participants() {
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Membership >&
 Band::participants() const {
   // @@protoc_insertion_point(field_list:Band.participants)
-  return participants_;
+  return _impl_.participants_;
 }
 
 // repeated .Concert concerts = 8;
 inline int Band::_internal_concerts_size() const {
-  return concerts_.size();
+  return _impl_.concerts_.size();
 }
 inline int Band::concerts_size() const {
   return _internal_concerts_size();
 }
 inline void Band::clear_concerts() {
-  concerts_.Clear();
+  _impl_.concerts_.Clear();
 }
 inline ::Concert* Band::mutable_concerts(int index) {
   // @@protoc_insertion_point(field_mutable:Band.concerts)
-  return concerts_.Mutable(index);
+  return _impl_.concerts_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Concert >*
 Band::mutable_concerts() {
   // @@protoc_insertion_point(field_mutable_list:Band.concerts)
-  return &concerts_;
+  return &_impl_.concerts_;
 }
 inline const ::Concert& Band::_internal_concerts(int index) const {
-  return concerts_.Get(index);
+  return _impl_.concerts_.Get(index);
 }
 inline const ::Concert& Band::concerts(int index) const {
   // @@protoc_insertion_point(field_get:Band.concerts)
   return _internal_concerts(index);
 }
 inline ::Concert* Band::_internal_add_concerts() {
-  return concerts_.Add();
+  return _impl_.concerts_.Add();
 }
 inline ::Concert* Band::add_concerts() {
   ::Concert* _add = _internal_add_concerts();
@@ -5277,7 +5347,7 @@ inline ::Concert* Band::add_concerts() {
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Concert >&
 Band::concerts() const {
   // @@protoc_insertion_point(field_list:Band.concerts)
-  return concerts_;
+  return _impl_.concerts_;
 }
 
 // -------------------------------------------------------------------
@@ -5286,7 +5356,7 @@ Band::concerts() const {
 
 // string songName = 1;
 inline void Song::clear_songname() {
-  songname_.ClearToEmpty();
+  _impl_.songname_.ClearToEmpty();
 }
 inline const std::string& Song::songname() const {
   // @@protoc_insertion_point(field_get:Song.songName)
@@ -5296,7 +5366,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Song::set_songname(ArgT0&& arg0, ArgT... args) {
  
- songname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.songname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Song.songName)
 }
 inline std::string* Song::mutable_songname() {
@@ -5305,19 +5375,19 @@ inline std::string* Song::mutable_songname() {
   return _s;
 }
 inline const std::string& Song::_internal_songname() const {
-  return songname_.Get();
+  return _impl_.songname_.Get();
 }
 inline void Song::_internal_set_songname(const std::string& value) {
   
-  songname_.Set(value, GetArenaForAllocation());
+  _impl_.songname_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Song::_internal_mutable_songname() {
   
-  return songname_.Mutable(GetArenaForAllocation());
+  return _impl_.songname_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Song::release_songname() {
   // @@protoc_insertion_point(field_release:Song.songName)
-  return songname_.Release();
+  return _impl_.songname_.Release();
 }
 inline void Song::set_allocated_songname(std::string* songname) {
   if (songname != nullptr) {
@@ -5325,10 +5395,10 @@ inline void Song::set_allocated_songname(std::string* songname) {
   } else {
     
   }
-  songname_.SetAllocated(songname, GetArenaForAllocation());
+  _impl_.songname_.SetAllocated(songname, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (songname_.IsDefault()) {
-    songname_.Set("", GetArenaForAllocation());
+  if (_impl_.songname_.IsDefault()) {
+    _impl_.songname_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Song.songName)
@@ -5336,10 +5406,10 @@ inline void Song::set_allocated_songname(std::string* songname) {
 
 // int32 lengthSec = 2;
 inline void Song::clear_lengthsec() {
-  lengthsec_ = 0;
+  _impl_.lengthsec_ = 0;
 }
 inline int32_t Song::_internal_lengthsec() const {
-  return lengthsec_;
+  return _impl_.lengthsec_;
 }
 inline int32_t Song::lengthsec() const {
   // @@protoc_insertion_point(field_get:Song.lengthSec)
@@ -5347,7 +5417,7 @@ inline int32_t Song::lengthsec() const {
 }
 inline void Song::_internal_set_lengthsec(int32_t value) {
   
-  lengthsec_ = value;
+  _impl_.lengthsec_ = value;
 }
 inline void Song::set_lengthsec(int32_t value) {
   _internal_set_lengthsec(value);
@@ -5356,7 +5426,7 @@ inline void Song::set_lengthsec(int32_t value) {
 
 // string albumName = 3;
 inline void Song::clear_albumname() {
-  albumname_.ClearToEmpty();
+  _impl_.albumname_.ClearToEmpty();
 }
 inline const std::string& Song::albumname() const {
   // @@protoc_insertion_point(field_get:Song.albumName)
@@ -5366,7 +5436,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Song::set_albumname(ArgT0&& arg0, ArgT... args) {
  
- albumname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.albumname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Song.albumName)
 }
 inline std::string* Song::mutable_albumname() {
@@ -5375,19 +5445,19 @@ inline std::string* Song::mutable_albumname() {
   return _s;
 }
 inline const std::string& Song::_internal_albumname() const {
-  return albumname_.Get();
+  return _impl_.albumname_.Get();
 }
 inline void Song::_internal_set_albumname(const std::string& value) {
   
-  albumname_.Set(value, GetArenaForAllocation());
+  _impl_.albumname_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Song::_internal_mutable_albumname() {
   
-  return albumname_.Mutable(GetArenaForAllocation());
+  return _impl_.albumname_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Song::release_albumname() {
   // @@protoc_insertion_point(field_release:Song.albumName)
-  return albumname_.Release();
+  return _impl_.albumname_.Release();
 }
 inline void Song::set_allocated_albumname(std::string* albumname) {
   if (albumname != nullptr) {
@@ -5395,10 +5465,10 @@ inline void Song::set_allocated_albumname(std::string* albumname) {
   } else {
     
   }
-  albumname_.SetAllocated(albumname, GetArenaForAllocation());
+  _impl_.albumname_.SetAllocated(albumname, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (albumname_.IsDefault()) {
-    albumname_.Set("", GetArenaForAllocation());
+  if (_impl_.albumname_.IsDefault()) {
+    _impl_.albumname_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Song.albumName)
@@ -5406,7 +5476,7 @@ inline void Song::set_allocated_albumname(std::string* albumname) {
 
 // string bandName = 4;
 inline void Song::clear_bandname() {
-  bandname_.ClearToEmpty();
+  _impl_.bandname_.ClearToEmpty();
 }
 inline const std::string& Song::bandname() const {
   // @@protoc_insertion_point(field_get:Song.bandName)
@@ -5416,7 +5486,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Song::set_bandname(ArgT0&& arg0, ArgT... args) {
  
- bandname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.bandname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Song.bandName)
 }
 inline std::string* Song::mutable_bandname() {
@@ -5425,19 +5495,19 @@ inline std::string* Song::mutable_bandname() {
   return _s;
 }
 inline const std::string& Song::_internal_bandname() const {
-  return bandname_.Get();
+  return _impl_.bandname_.Get();
 }
 inline void Song::_internal_set_bandname(const std::string& value) {
   
-  bandname_.Set(value, GetArenaForAllocation());
+  _impl_.bandname_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Song::_internal_mutable_bandname() {
   
-  return bandname_.Mutable(GetArenaForAllocation());
+  return _impl_.bandname_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Song::release_bandname() {
   // @@protoc_insertion_point(field_release:Song.bandName)
-  return bandname_.Release();
+  return _impl_.bandname_.Release();
 }
 inline void Song::set_allocated_bandname(std::string* bandname) {
   if (bandname != nullptr) {
@@ -5445,10 +5515,10 @@ inline void Song::set_allocated_bandname(std::string* bandname) {
   } else {
     
   }
-  bandname_.SetAllocated(bandname, GetArenaForAllocation());
+  _impl_.bandname_.SetAllocated(bandname, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (bandname_.IsDefault()) {
-    bandname_.Set("", GetArenaForAllocation());
+  if (_impl_.bandname_.IsDefault()) {
+    _impl_.bandname_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Song.bandName)
@@ -5460,7 +5530,7 @@ inline void Song::set_allocated_bandname(std::string* bandname) {
 
 // string title = 1;
 inline void Album::clear_title() {
-  title_.ClearToEmpty();
+  _impl_.title_.ClearToEmpty();
 }
 inline const std::string& Album::title() const {
   // @@protoc_insertion_point(field_get:Album.title)
@@ -5470,7 +5540,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Album::set_title(ArgT0&& arg0, ArgT... args) {
  
- title_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.title_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Album.title)
 }
 inline std::string* Album::mutable_title() {
@@ -5479,19 +5549,19 @@ inline std::string* Album::mutable_title() {
   return _s;
 }
 inline const std::string& Album::_internal_title() const {
-  return title_.Get();
+  return _impl_.title_.Get();
 }
 inline void Album::_internal_set_title(const std::string& value) {
   
-  title_.Set(value, GetArenaForAllocation());
+  _impl_.title_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Album::_internal_mutable_title() {
   
-  return title_.Mutable(GetArenaForAllocation());
+  return _impl_.title_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Album::release_title() {
   // @@protoc_insertion_point(field_release:Album.title)
-  return title_.Release();
+  return _impl_.title_.Release();
 }
 inline void Album::set_allocated_title(std::string* title) {
   if (title != nullptr) {
@@ -5499,10 +5569,10 @@ inline void Album::set_allocated_title(std::string* title) {
   } else {
     
   }
-  title_.SetAllocated(title, GetArenaForAllocation());
+  _impl_.title_.SetAllocated(title, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (title_.IsDefault()) {
-    title_.Set("", GetArenaForAllocation());
+  if (_impl_.title_.IsDefault()) {
+    _impl_.title_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Album.title)
@@ -5510,10 +5580,10 @@ inline void Album::set_allocated_title(std::string* title) {
 
 // int64 unixReleaseDate = 2;
 inline void Album::clear_unixreleasedate() {
-  unixreleasedate_ = int64_t{0};
+  _impl_.unixreleasedate_ = int64_t{0};
 }
 inline int64_t Album::_internal_unixreleasedate() const {
-  return unixreleasedate_;
+  return _impl_.unixreleasedate_;
 }
 inline int64_t Album::unixreleasedate() const {
   // @@protoc_insertion_point(field_get:Album.unixReleaseDate)
@@ -5521,7 +5591,7 @@ inline int64_t Album::unixreleasedate() const {
 }
 inline void Album::_internal_set_unixreleasedate(int64_t value) {
   
-  unixreleasedate_ = value;
+  _impl_.unixreleasedate_ = value;
 }
 inline void Album::set_unixreleasedate(int64_t value) {
   _internal_set_unixreleasedate(value);
@@ -5530,32 +5600,32 @@ inline void Album::set_unixreleasedate(int64_t value) {
 
 // repeated .Song songs = 3;
 inline int Album::_internal_songs_size() const {
-  return songs_.size();
+  return _impl_.songs_.size();
 }
 inline int Album::songs_size() const {
   return _internal_songs_size();
 }
 inline void Album::clear_songs() {
-  songs_.Clear();
+  _impl_.songs_.Clear();
 }
 inline ::Song* Album::mutable_songs(int index) {
   // @@protoc_insertion_point(field_mutable:Album.songs)
-  return songs_.Mutable(index);
+  return _impl_.songs_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Song >*
 Album::mutable_songs() {
   // @@protoc_insertion_point(field_mutable_list:Album.songs)
-  return &songs_;
+  return &_impl_.songs_;
 }
 inline const ::Song& Album::_internal_songs(int index) const {
-  return songs_.Get(index);
+  return _impl_.songs_.Get(index);
 }
 inline const ::Song& Album::songs(int index) const {
   // @@protoc_insertion_point(field_get:Album.songs)
   return _internal_songs(index);
 }
 inline ::Song* Album::_internal_add_songs() {
-  return songs_.Add();
+  return _impl_.songs_.Add();
 }
 inline ::Song* Album::add_songs() {
   ::Song* _add = _internal_add_songs();
@@ -5565,12 +5635,12 @@ inline ::Song* Album::add_songs() {
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Song >&
 Album::songs() const {
   // @@protoc_insertion_point(field_list:Album.songs)
-  return songs_;
+  return _impl_.songs_;
 }
 
 // string bandName = 4;
 inline void Album::clear_bandname() {
-  bandname_.ClearToEmpty();
+  _impl_.bandname_.ClearToEmpty();
 }
 inline const std::string& Album::bandname() const {
   // @@protoc_insertion_point(field_get:Album.bandName)
@@ -5580,7 +5650,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Album::set_bandname(ArgT0&& arg0, ArgT... args) {
  
- bandname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.bandname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Album.bandName)
 }
 inline std::string* Album::mutable_bandname() {
@@ -5589,19 +5659,19 @@ inline std::string* Album::mutable_bandname() {
   return _s;
 }
 inline const std::string& Album::_internal_bandname() const {
-  return bandname_.Get();
+  return _impl_.bandname_.Get();
 }
 inline void Album::_internal_set_bandname(const std::string& value) {
   
-  bandname_.Set(value, GetArenaForAllocation());
+  _impl_.bandname_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Album::_internal_mutable_bandname() {
   
-  return bandname_.Mutable(GetArenaForAllocation());
+  return _impl_.bandname_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Album::release_bandname() {
   // @@protoc_insertion_point(field_release:Album.bandName)
-  return bandname_.Release();
+  return _impl_.bandname_.Release();
 }
 inline void Album::set_allocated_bandname(std::string* bandname) {
   if (bandname != nullptr) {
@@ -5609,10 +5679,10 @@ inline void Album::set_allocated_bandname(std::string* bandname) {
   } else {
     
   }
-  bandname_.SetAllocated(bandname, GetArenaForAllocation());
+  _impl_.bandname_.SetAllocated(bandname, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (bandname_.IsDefault()) {
-    bandname_.Set("", GetArenaForAllocation());
+  if (_impl_.bandname_.IsDefault()) {
+    _impl_.bandname_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Album.bandName)
@@ -5624,7 +5694,7 @@ inline void Album::set_allocated_bandname(std::string* bandname) {
 
 // string musName = 1;
 inline void Musician::clear_musname() {
-  musname_.ClearToEmpty();
+  _impl_.musname_.ClearToEmpty();
 }
 inline const std::string& Musician::musname() const {
   // @@protoc_insertion_point(field_get:Musician.musName)
@@ -5634,7 +5704,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Musician::set_musname(ArgT0&& arg0, ArgT... args) {
  
- musname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.musname_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Musician.musName)
 }
 inline std::string* Musician::mutable_musname() {
@@ -5643,19 +5713,19 @@ inline std::string* Musician::mutable_musname() {
   return _s;
 }
 inline const std::string& Musician::_internal_musname() const {
-  return musname_.Get();
+  return _impl_.musname_.Get();
 }
 inline void Musician::_internal_set_musname(const std::string& value) {
   
-  musname_.Set(value, GetArenaForAllocation());
+  _impl_.musname_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Musician::_internal_mutable_musname() {
   
-  return musname_.Mutable(GetArenaForAllocation());
+  return _impl_.musname_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Musician::release_musname() {
   // @@protoc_insertion_point(field_release:Musician.musName)
-  return musname_.Release();
+  return _impl_.musname_.Release();
 }
 inline void Musician::set_allocated_musname(std::string* musname) {
   if (musname != nullptr) {
@@ -5663,10 +5733,10 @@ inline void Musician::set_allocated_musname(std::string* musname) {
   } else {
     
   }
-  musname_.SetAllocated(musname, GetArenaForAllocation());
+  _impl_.musname_.SetAllocated(musname, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (musname_.IsDefault()) {
-    musname_.Set("", GetArenaForAllocation());
+  if (_impl_.musname_.IsDefault()) {
+    _impl_.musname_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Musician.musName)
@@ -5674,10 +5744,10 @@ inline void Musician::set_allocated_musname(std::string* musname) {
 
 // int64 unixDateOfBirth = 2;
 inline void Musician::clear_unixdateofbirth() {
-  unixdateofbirth_ = int64_t{0};
+  _impl_.unixdateofbirth_ = int64_t{0};
 }
 inline int64_t Musician::_internal_unixdateofbirth() const {
-  return unixdateofbirth_;
+  return _impl_.unixdateofbirth_;
 }
 inline int64_t Musician::unixdateofbirth() const {
   // @@protoc_insertion_point(field_get:Musician.unixDateOfBirth)
@@ -5685,7 +5755,7 @@ inline int64_t Musician::unixdateofbirth() const {
 }
 inline void Musician::_internal_set_unixdateofbirth(int64_t value) {
   
-  unixdateofbirth_ = value;
+  _impl_.unixdateofbirth_ = value;
 }
 inline void Musician::set_unixdateofbirth(int64_t value) {
   _internal_set_unixdateofbirth(value);
@@ -5694,7 +5764,7 @@ inline void Musician::set_unixdateofbirth(int64_t value) {
 
 // string bio = 3;
 inline void Musician::clear_bio() {
-  bio_.ClearToEmpty();
+  _impl_.bio_.ClearToEmpty();
 }
 inline const std::string& Musician::bio() const {
   // @@protoc_insertion_point(field_get:Musician.bio)
@@ -5704,7 +5774,7 @@ template <typename ArgT0, typename... ArgT>
 inline PROTOBUF_ALWAYS_INLINE
 void Musician::set_bio(ArgT0&& arg0, ArgT... args) {
  
- bio_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
+ _impl_.bio_.Set(static_cast<ArgT0 &&>(arg0), args..., GetArenaForAllocation());
   // @@protoc_insertion_point(field_set:Musician.bio)
 }
 inline std::string* Musician::mutable_bio() {
@@ -5713,19 +5783,19 @@ inline std::string* Musician::mutable_bio() {
   return _s;
 }
 inline const std::string& Musician::_internal_bio() const {
-  return bio_.Get();
+  return _impl_.bio_.Get();
 }
 inline void Musician::_internal_set_bio(const std::string& value) {
   
-  bio_.Set(value, GetArenaForAllocation());
+  _impl_.bio_.Set(value, GetArenaForAllocation());
 }
 inline std::string* Musician::_internal_mutable_bio() {
   
-  return bio_.Mutable(GetArenaForAllocation());
+  return _impl_.bio_.Mutable(GetArenaForAllocation());
 }
 inline std::string* Musician::release_bio() {
   // @@protoc_insertion_point(field_release:Musician.bio)
-  return bio_.Release();
+  return _impl_.bio_.Release();
 }
 inline void Musician::set_allocated_bio(std::string* bio) {
   if (bio != nullptr) {
@@ -5733,10 +5803,10 @@ inline void Musician::set_allocated_bio(std::string* bio) {
   } else {
     
   }
-  bio_.SetAllocated(bio, GetArenaForAllocation());
+  _impl_.bio_.SetAllocated(bio, GetArenaForAllocation());
 #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  if (bio_.IsDefault()) {
-    bio_.Set("", GetArenaForAllocation());
+  if (_impl_.bio_.IsDefault()) {
+    _impl_.bio_.Set("", GetArenaForAllocation());
   }
 #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   // @@protoc_insertion_point(field_set_allocated:Musician.bio)
@@ -5744,32 +5814,32 @@ inline void Musician::set_allocated_bio(std::string* bio) {
 
 // repeated .Membership memberships = 4;
 inline int Musician::_internal_memberships_size() const {
-  return memberships_.size();
+  return _impl_.memberships_.size();
 }
 inline int Musician::memberships_size() const {
   return _internal_memberships_size();
 }
 inline void Musician::clear_memberships() {
-  memberships_.Clear();
+  _impl_.memberships_.Clear();
 }
 inline ::Membership* Musician::mutable_memberships(int index) {
   // @@protoc_insertion_point(field_mutable:Musician.memberships)
-  return memberships_.Mutable(index);
+  return _impl_.memberships_.Mutable(index);
 }
 inline ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Membership >*
 Musician::mutable_memberships() {
   // @@protoc_insertion_point(field_mutable_list:Musician.memberships)
-  return &memberships_;
+  return &_impl_.memberships_;
 }
 inline const ::Membership& Musician::_internal_memberships(int index) const {
-  return memberships_.Get(index);
+  return _impl_.memberships_.Get(index);
 }
 inline const ::Membership& Musician::memberships(int index) const {
   // @@protoc_insertion_point(field_get:Musician.memberships)
   return _internal_memberships(index);
 }
 inline ::Membership* Musician::_internal_add_memberships() {
-  return memberships_.Add();
+  return _impl_.memberships_.Add();
 }
 inline ::Membership* Musician::add_memberships() {
   ::Membership* _add = _internal_add_memberships();
@@ -5779,7 +5849,7 @@ inline ::Membership* Musician::add_memberships() {
 inline const ::PROTOBUF_NAMESPACE_ID::RepeatedPtrField< ::Membership >&
 Musician::memberships() const {
   // @@protoc_insertion_point(field_list:Musician.memberships)
-  return memberships_;
+  return _impl_.memberships_;
 }
 
 #ifdef __GNUC__

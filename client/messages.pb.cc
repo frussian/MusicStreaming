@@ -21,10 +21,12 @@ namespace _pb = ::PROTOBUF_NAMESPACE_ID;
 namespace _pbi = _pb::internal;
 
 PROTOBUF_CONSTEXPR Request::Request(
-    ::_pbi::ConstantInitialized)
-  : reqid_(uint64_t{0u})
-  , cancel_(false)
-  , _oneof_case_{}{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.reqid_)*/uint64_t{0u}
+  , /*decltype(_impl_.cancel_)*/false
+  , /*decltype(_impl_.msg_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_._oneof_case_)*/{}} {}
 struct RequestDefaultTypeInternal {
   PROTOBUF_CONSTEXPR RequestDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -35,10 +37,12 @@ struct RequestDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 RequestDefaultTypeInternal _Request_default_instance_;
 PROTOBUF_CONSTEXPR Answer::Answer(
-    ::_pbi::ConstantInitialized)
-  : reqid_(uint64_t{0u})
-  , cancel_(false)
-  , _oneof_case_{}{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.reqid_)*/uint64_t{0u}
+  , /*decltype(_impl_.cancel_)*/false
+  , /*decltype(_impl_.msg_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_._oneof_case_)*/{}} {}
 struct AnswerDefaultTypeInternal {
   PROTOBUF_CONSTEXPR AnswerDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -49,12 +53,12 @@ struct AnswerDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AnswerDefaultTypeInternal _Answer_default_instance_;
 PROTOBUF_CONSTEXPR TableReq::TableReq(
-    ::_pbi::ConstantInitialized)
-  : filter_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , first_(0u)
-  , last_(0u)
-  , type_(0)
-{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.filter_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.first_)*/0u
+  , /*decltype(_impl_.last_)*/0u
+  , /*decltype(_impl_.type_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct TableReqDefaultTypeInternal {
   PROTOBUF_CONSTEXPR TableReqDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -65,10 +69,10 @@ struct TableReqDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TableReqDefaultTypeInternal _TableReq_default_instance_;
 PROTOBUF_CONSTEXPR SimpleReq::SimpleReq(
-    ::_pbi::ConstantInitialized)
-  : reqstring_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , type_(0)
-{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.reqstring_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.type_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SimpleReqDefaultTypeInternal {
   PROTOBUF_CONSTEXPR SimpleReqDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -79,11 +83,11 @@ struct SimpleReqDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SimpleReqDefaultTypeInternal _SimpleReq_default_instance_;
 PROTOBUF_CONSTEXPR StreamReq::StreamReq(
-    ::_pbi::ConstantInitialized)
-  : reqstring_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , suggestedsize_(0)
-  , type_(0)
-{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.reqstring_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.suggestedsize_)*/0
+  , /*decltype(_impl_.type_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct StreamReqDefaultTypeInternal {
   PROTOBUF_CONSTEXPR StreamReqDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -94,13 +98,13 @@ struct StreamReqDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StreamReqDefaultTypeInternal _StreamReq_default_instance_;
 PROTOBUF_CONSTEXPR TableAns::TableAns(
-    ::_pbi::ConstantInitialized)
-  : bands_()
-  , albums_()
-  , concerts_()
-  , songs_()
-  , type_(0)
-{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.bands_)*/{}
+  , /*decltype(_impl_.albums_)*/{}
+  , /*decltype(_impl_.concerts_)*/{}
+  , /*decltype(_impl_.songs_)*/{}
+  , /*decltype(_impl_.type_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct TableAnsDefaultTypeInternal {
   PROTOBUF_CONSTEXPR TableAnsDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -111,8 +115,10 @@ struct TableAnsDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 TableAnsDefaultTypeInternal _TableAns_default_instance_;
 PROTOBUF_CONSTEXPR SimpleAns::SimpleAns(
-    ::_pbi::ConstantInitialized)
-  : _oneof_case_{}{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.msg_)*/{}
+  , /*decltype(_impl_._cached_size_)*/{}
+  , /*decltype(_impl_._oneof_case_)*/{}} {}
 struct SimpleAnsDefaultTypeInternal {
   PROTOBUF_CONSTEXPR SimpleAnsDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -123,9 +129,10 @@ struct SimpleAnsDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SimpleAnsDefaultTypeInternal _SimpleAns_default_instance_;
 PROTOBUF_CONSTEXPR StreamAns::StreamAns(
-    ::_pbi::ConstantInitialized)
-  : data_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , isfinal_(false){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.data_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.isfinal_)*/false
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct StreamAnsDefaultTypeInternal {
   PROTOBUF_CONSTEXPR StreamAnsDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -136,11 +143,12 @@ struct StreamAnsDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 StreamAnsDefaultTypeInternal _StreamAns_default_instance_;
 PROTOBUF_CONSTEXPR Membership::Membership(
-    ::_pbi::ConstantInitialized)
-  : musname_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , bandname_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , unixentrydate_(int64_t{0})
-  , unixquitdate_(int64_t{0}){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.musname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.bandname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.unixentrydate_)*/int64_t{0}
+  , /*decltype(_impl_.unixquitdate_)*/int64_t{0}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct MembershipDefaultTypeInternal {
   PROTOBUF_CONSTEXPR MembershipDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -151,12 +159,13 @@ struct MembershipDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 MembershipDefaultTypeInternal _Membership_default_instance_;
 PROTOBUF_CONSTEXPR Concert::Concert(
-    ::_pbi::ConstantInitialized)
-  : bandnames_()
-  , description_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , location_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , unixdatetime_(int64_t{0})
-  , capacity_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.bandnames_)*/{}
+  , /*decltype(_impl_.description_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.location_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.unixdatetime_)*/int64_t{0}
+  , /*decltype(_impl_.capacity_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct ConcertDefaultTypeInternal {
   PROTOBUF_CONSTEXPR ConcertDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -167,16 +176,16 @@ struct ConcertDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 ConcertDefaultTypeInternal _Concert_default_instance_;
 PROTOBUF_CONSTEXPR Band::Band(
-    ::_pbi::ConstantInitialized)
-  : albumnames_()
-  , participants_()
-  , concerts_()
-  , bandname_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , description_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , unixfounddate_(int64_t{0})
-  , unixtermdate_(int64_t{0})
-  , genre_(0)
-{}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.albumnames_)*/{}
+  , /*decltype(_impl_.participants_)*/{}
+  , /*decltype(_impl_.concerts_)*/{}
+  , /*decltype(_impl_.bandname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.description_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.unixfounddate_)*/int64_t{0}
+  , /*decltype(_impl_.unixtermdate_)*/int64_t{0}
+  , /*decltype(_impl_.genre_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct BandDefaultTypeInternal {
   PROTOBUF_CONSTEXPR BandDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -187,11 +196,12 @@ struct BandDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 BandDefaultTypeInternal _Band_default_instance_;
 PROTOBUF_CONSTEXPR Song::Song(
-    ::_pbi::ConstantInitialized)
-  : songname_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , albumname_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , bandname_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , lengthsec_(0){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.songname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.albumname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.bandname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.lengthsec_)*/0
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct SongDefaultTypeInternal {
   PROTOBUF_CONSTEXPR SongDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -202,11 +212,12 @@ struct SongDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 SongDefaultTypeInternal _Song_default_instance_;
 PROTOBUF_CONSTEXPR Album::Album(
-    ::_pbi::ConstantInitialized)
-  : songs_()
-  , title_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , bandname_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , unixreleasedate_(int64_t{0}){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.songs_)*/{}
+  , /*decltype(_impl_.title_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.bandname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.unixreleasedate_)*/int64_t{0}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct AlbumDefaultTypeInternal {
   PROTOBUF_CONSTEXPR AlbumDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -217,11 +228,12 @@ struct AlbumDefaultTypeInternal {
 };
 PROTOBUF_ATTRIBUTE_NO_DESTROY PROTOBUF_CONSTINIT PROTOBUF_ATTRIBUTE_INIT_PRIORITY1 AlbumDefaultTypeInternal _Album_default_instance_;
 PROTOBUF_CONSTEXPR Musician::Musician(
-    ::_pbi::ConstantInitialized)
-  : memberships_()
-  , musname_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , bio_(&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{})
-  , unixdateofbirth_(int64_t{0}){}
+    ::_pbi::ConstantInitialized): _impl_{
+    /*decltype(_impl_.memberships_)*/{}
+  , /*decltype(_impl_.musname_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.bio_)*/{&::_pbi::fixed_address_empty_string, ::_pbi::ConstantInitialized{}}
+  , /*decltype(_impl_.unixdateofbirth_)*/int64_t{0}
+  , /*decltype(_impl_._cached_size_)*/{}} {}
 struct MusicianDefaultTypeInternal {
   PROTOBUF_CONSTEXPR MusicianDefaultTypeInternal()
       : _instance(::_pbi::ConstantInitialized{}) {}
@@ -239,69 +251,69 @@ const uint32_t TableStruct_messages_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Request, _internal_metadata_),
   ~0u,  // no _extensions_
-  PROTOBUF_FIELD_OFFSET(::Request, _oneof_case_[0]),
+  PROTOBUF_FIELD_OFFSET(::Request, _impl_._oneof_case_[0]),
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Request, reqid_),
-  PROTOBUF_FIELD_OFFSET(::Request, cancel_),
+  PROTOBUF_FIELD_OFFSET(::Request, _impl_.reqid_),
+  PROTOBUF_FIELD_OFFSET(::Request, _impl_.cancel_),
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
-  PROTOBUF_FIELD_OFFSET(::Request, msg_),
+  PROTOBUF_FIELD_OFFSET(::Request, _impl_.msg_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Answer, _internal_metadata_),
   ~0u,  // no _extensions_
-  PROTOBUF_FIELD_OFFSET(::Answer, _oneof_case_[0]),
+  PROTOBUF_FIELD_OFFSET(::Answer, _impl_._oneof_case_[0]),
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Answer, reqid_),
-  PROTOBUF_FIELD_OFFSET(::Answer, cancel_),
+  PROTOBUF_FIELD_OFFSET(::Answer, _impl_.reqid_),
+  PROTOBUF_FIELD_OFFSET(::Answer, _impl_.cancel_),
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
-  PROTOBUF_FIELD_OFFSET(::Answer, msg_),
+  PROTOBUF_FIELD_OFFSET(::Answer, _impl_.msg_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::TableReq, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::TableReq, first_),
-  PROTOBUF_FIELD_OFFSET(::TableReq, last_),
-  PROTOBUF_FIELD_OFFSET(::TableReq, filter_),
-  PROTOBUF_FIELD_OFFSET(::TableReq, type_),
+  PROTOBUF_FIELD_OFFSET(::TableReq, _impl_.first_),
+  PROTOBUF_FIELD_OFFSET(::TableReq, _impl_.last_),
+  PROTOBUF_FIELD_OFFSET(::TableReq, _impl_.filter_),
+  PROTOBUF_FIELD_OFFSET(::TableReq, _impl_.type_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::SimpleReq, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::SimpleReq, reqstring_),
-  PROTOBUF_FIELD_OFFSET(::SimpleReq, type_),
+  PROTOBUF_FIELD_OFFSET(::SimpleReq, _impl_.reqstring_),
+  PROTOBUF_FIELD_OFFSET(::SimpleReq, _impl_.type_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::StreamReq, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::StreamReq, reqstring_),
-  PROTOBUF_FIELD_OFFSET(::StreamReq, suggestedsize_),
-  PROTOBUF_FIELD_OFFSET(::StreamReq, type_),
+  PROTOBUF_FIELD_OFFSET(::StreamReq, _impl_.reqstring_),
+  PROTOBUF_FIELD_OFFSET(::StreamReq, _impl_.suggestedsize_),
+  PROTOBUF_FIELD_OFFSET(::StreamReq, _impl_.type_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::TableAns, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::TableAns, bands_),
-  PROTOBUF_FIELD_OFFSET(::TableAns, albums_),
-  PROTOBUF_FIELD_OFFSET(::TableAns, concerts_),
-  PROTOBUF_FIELD_OFFSET(::TableAns, songs_),
-  PROTOBUF_FIELD_OFFSET(::TableAns, type_),
+  PROTOBUF_FIELD_OFFSET(::TableAns, _impl_.bands_),
+  PROTOBUF_FIELD_OFFSET(::TableAns, _impl_.albums_),
+  PROTOBUF_FIELD_OFFSET(::TableAns, _impl_.concerts_),
+  PROTOBUF_FIELD_OFFSET(::TableAns, _impl_.songs_),
+  PROTOBUF_FIELD_OFFSET(::TableAns, _impl_.type_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::SimpleAns, _internal_metadata_),
   ~0u,  // no _extensions_
-  PROTOBUF_FIELD_OFFSET(::SimpleAns, _oneof_case_[0]),
+  PROTOBUF_FIELD_OFFSET(::SimpleAns, _impl_._oneof_case_[0]),
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
   ::_pbi::kInvalidFieldOffsetTag,
@@ -310,80 +322,80 @@ const uint32_t TableStruct_messages_2eproto::offsets[] PROTOBUF_SECTION_VARIABLE
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
   ::_pbi::kInvalidFieldOffsetTag,
-  PROTOBUF_FIELD_OFFSET(::SimpleAns, msg_),
+  PROTOBUF_FIELD_OFFSET(::SimpleAns, _impl_.msg_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::StreamAns, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::StreamAns, data_),
-  PROTOBUF_FIELD_OFFSET(::StreamAns, isfinal_),
+  PROTOBUF_FIELD_OFFSET(::StreamAns, _impl_.data_),
+  PROTOBUF_FIELD_OFFSET(::StreamAns, _impl_.isfinal_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Membership, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Membership, musname_),
-  PROTOBUF_FIELD_OFFSET(::Membership, bandname_),
-  PROTOBUF_FIELD_OFFSET(::Membership, unixentrydate_),
-  PROTOBUF_FIELD_OFFSET(::Membership, unixquitdate_),
+  PROTOBUF_FIELD_OFFSET(::Membership, _impl_.musname_),
+  PROTOBUF_FIELD_OFFSET(::Membership, _impl_.bandname_),
+  PROTOBUF_FIELD_OFFSET(::Membership, _impl_.unixentrydate_),
+  PROTOBUF_FIELD_OFFSET(::Membership, _impl_.unixquitdate_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Concert, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Concert, capacity_),
-  PROTOBUF_FIELD_OFFSET(::Concert, description_),
-  PROTOBUF_FIELD_OFFSET(::Concert, unixdatetime_),
-  PROTOBUF_FIELD_OFFSET(::Concert, location_),
-  PROTOBUF_FIELD_OFFSET(::Concert, bandnames_),
+  PROTOBUF_FIELD_OFFSET(::Concert, _impl_.capacity_),
+  PROTOBUF_FIELD_OFFSET(::Concert, _impl_.description_),
+  PROTOBUF_FIELD_OFFSET(::Concert, _impl_.unixdatetime_),
+  PROTOBUF_FIELD_OFFSET(::Concert, _impl_.location_),
+  PROTOBUF_FIELD_OFFSET(::Concert, _impl_.bandnames_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Band, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Band, bandname_),
-  PROTOBUF_FIELD_OFFSET(::Band, genre_),
-  PROTOBUF_FIELD_OFFSET(::Band, unixfounddate_),
-  PROTOBUF_FIELD_OFFSET(::Band, unixtermdate_),
-  PROTOBUF_FIELD_OFFSET(::Band, description_),
-  PROTOBUF_FIELD_OFFSET(::Band, albumnames_),
-  PROTOBUF_FIELD_OFFSET(::Band, participants_),
-  PROTOBUF_FIELD_OFFSET(::Band, concerts_),
+  PROTOBUF_FIELD_OFFSET(::Band, _impl_.bandname_),
+  PROTOBUF_FIELD_OFFSET(::Band, _impl_.genre_),
+  PROTOBUF_FIELD_OFFSET(::Band, _impl_.unixfounddate_),
+  PROTOBUF_FIELD_OFFSET(::Band, _impl_.unixtermdate_),
+  PROTOBUF_FIELD_OFFSET(::Band, _impl_.description_),
+  PROTOBUF_FIELD_OFFSET(::Band, _impl_.albumnames_),
+  PROTOBUF_FIELD_OFFSET(::Band, _impl_.participants_),
+  PROTOBUF_FIELD_OFFSET(::Band, _impl_.concerts_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Song, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Song, songname_),
-  PROTOBUF_FIELD_OFFSET(::Song, lengthsec_),
-  PROTOBUF_FIELD_OFFSET(::Song, albumname_),
-  PROTOBUF_FIELD_OFFSET(::Song, bandname_),
+  PROTOBUF_FIELD_OFFSET(::Song, _impl_.songname_),
+  PROTOBUF_FIELD_OFFSET(::Song, _impl_.lengthsec_),
+  PROTOBUF_FIELD_OFFSET(::Song, _impl_.albumname_),
+  PROTOBUF_FIELD_OFFSET(::Song, _impl_.bandname_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Album, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Album, title_),
-  PROTOBUF_FIELD_OFFSET(::Album, unixreleasedate_),
-  PROTOBUF_FIELD_OFFSET(::Album, songs_),
-  PROTOBUF_FIELD_OFFSET(::Album, bandname_),
+  PROTOBUF_FIELD_OFFSET(::Album, _impl_.title_),
+  PROTOBUF_FIELD_OFFSET(::Album, _impl_.unixreleasedate_),
+  PROTOBUF_FIELD_OFFSET(::Album, _impl_.songs_),
+  PROTOBUF_FIELD_OFFSET(::Album, _impl_.bandname_),
   ~0u,  // no _has_bits_
   PROTOBUF_FIELD_OFFSET(::Musician, _internal_metadata_),
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
   ~0u,  // no _inlined_string_donated_
-  PROTOBUF_FIELD_OFFSET(::Musician, musname_),
-  PROTOBUF_FIELD_OFFSET(::Musician, unixdateofbirth_),
-  PROTOBUF_FIELD_OFFSET(::Musician, bio_),
-  PROTOBUF_FIELD_OFFSET(::Musician, memberships_),
+  PROTOBUF_FIELD_OFFSET(::Musician, _impl_.musname_),
+  PROTOBUF_FIELD_OFFSET(::Musician, _impl_.unixdateofbirth_),
+  PROTOBUF_FIELD_OFFSET(::Musician, _impl_.bio_),
+  PROTOBUF_FIELD_OFFSET(::Musician, _impl_.memberships_),
 };
 static const ::_pbi::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, -1, -1, sizeof(::Request)},
@@ -527,15 +539,15 @@ class Request::_Internal {
 
 const ::TableReq&
 Request::_Internal::tablereq(const Request* msg) {
-  return *msg->msg_.tablereq_;
+  return *msg->_impl_.msg_.tablereq_;
 }
 const ::SimpleReq&
 Request::_Internal::simplereq(const Request* msg) {
-  return *msg->msg_.simplereq_;
+  return *msg->_impl_.msg_.simplereq_;
 }
 const ::StreamReq&
 Request::_Internal::streamreq(const Request* msg) {
-  return *msg->msg_.streamreq_;
+  return *msg->_impl_.msg_.streamreq_;
 }
 void Request::set_allocated_tablereq(::TableReq* tablereq) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
@@ -548,7 +560,7 @@ void Request::set_allocated_tablereq(::TableReq* tablereq) {
           message_arena, tablereq, submessage_arena);
     }
     set_has_tablereq();
-    msg_.tablereq_ = tablereq;
+    _impl_.msg_.tablereq_ = tablereq;
   }
   // @@protoc_insertion_point(field_set_allocated:Request.tableReq)
 }
@@ -563,7 +575,7 @@ void Request::set_allocated_simplereq(::SimpleReq* simplereq) {
           message_arena, simplereq, submessage_arena);
     }
     set_has_simplereq();
-    msg_.simplereq_ = simplereq;
+    _impl_.msg_.simplereq_ = simplereq;
   }
   // @@protoc_insertion_point(field_set_allocated:Request.simpleReq)
 }
@@ -578,34 +590,45 @@ void Request::set_allocated_streamreq(::StreamReq* streamreq) {
           message_arena, streamreq, submessage_arena);
     }
     set_has_streamreq();
-    msg_.streamreq_ = streamreq;
+    _impl_.msg_.streamreq_ = streamreq;
   }
   // @@protoc_insertion_point(field_set_allocated:Request.streamReq)
 }
 Request::Request(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:Request)
 }
 Request::Request(const Request& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  Request* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.reqid_){}
+    , decltype(_impl_.cancel_){}
+    , decltype(_impl_.msg_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , /*decltype(_impl_._oneof_case_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&reqid_, &from.reqid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&cancel_) -
-    reinterpret_cast<char*>(&reqid_)) + sizeof(cancel_));
+  ::memcpy(&_impl_.reqid_, &from._impl_.reqid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.cancel_) -
+    reinterpret_cast<char*>(&_impl_.reqid_)) + sizeof(_impl_.cancel_));
   clear_has_msg();
   switch (from.msg_case()) {
     case kTableReq: {
-      _internal_mutable_tablereq()->::TableReq::MergeFrom(from._internal_tablereq());
+      _this->_internal_mutable_tablereq()->::TableReq::MergeFrom(
+          from._internal_tablereq());
       break;
     }
     case kSimpleReq: {
-      _internal_mutable_simplereq()->::SimpleReq::MergeFrom(from._internal_simplereq());
+      _this->_internal_mutable_simplereq()->::SimpleReq::MergeFrom(
+          from._internal_simplereq());
       break;
     }
     case kStreamReq: {
-      _internal_mutable_streamreq()->::StreamReq::MergeFrom(from._internal_streamreq());
+      _this->_internal_mutable_streamreq()->::StreamReq::MergeFrom(
+          from._internal_streamreq());
       break;
     }
     case MSG_NOT_SET: {
@@ -615,12 +638,18 @@ Request::Request(const Request& from)
   // @@protoc_insertion_point(copy_constructor:Request)
 }
 
-inline void Request::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&reqid_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&cancel_) -
-    reinterpret_cast<char*>(&reqid_)) + sizeof(cancel_));
-clear_has_msg();
+inline void Request::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.reqid_){uint64_t{0u}}
+    , decltype(_impl_.cancel_){false}
+    , decltype(_impl_.msg_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , /*decltype(_impl_._oneof_case_)*/{}
+  };
+  clear_has_msg();
 }
 
 Request::~Request() {
@@ -640,7 +669,7 @@ inline void Request::SharedDtor() {
 }
 
 void Request::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void Request::clear_msg() {
@@ -648,19 +677,19 @@ void Request::clear_msg() {
   switch (msg_case()) {
     case kTableReq: {
       if (GetArenaForAllocation() == nullptr) {
-        delete msg_.tablereq_;
+        delete _impl_.msg_.tablereq_;
       }
       break;
     }
     case kSimpleReq: {
       if (GetArenaForAllocation() == nullptr) {
-        delete msg_.simplereq_;
+        delete _impl_.msg_.simplereq_;
       }
       break;
     }
     case kStreamReq: {
       if (GetArenaForAllocation() == nullptr) {
-        delete msg_.streamreq_;
+        delete _impl_.msg_.streamreq_;
       }
       break;
     }
@@ -668,7 +697,7 @@ void Request::clear_msg() {
       break;
     }
   }
-  _oneof_case_[0] = MSG_NOT_SET;
+  _impl_._oneof_case_[0] = MSG_NOT_SET;
 }
 
 
@@ -678,9 +707,9 @@ void Request::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&reqid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&cancel_) -
-      reinterpret_cast<char*>(&reqid_)) + sizeof(cancel_));
+  ::memset(&_impl_.reqid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.cancel_) -
+      reinterpret_cast<char*>(&_impl_.reqid_)) + sizeof(_impl_.cancel_));
   clear_msg();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -694,7 +723,7 @@ const char* Request::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
       // uint64 reqId = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          reqid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.reqid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -702,7 +731,7 @@ const char* Request::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
       // bool cancel = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
-          cancel_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.cancel_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -824,73 +853,72 @@ size_t Request::ByteSizeLong() const {
     case kTableReq: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *msg_.tablereq_);
+          *_impl_.msg_.tablereq_);
       break;
     }
     // .SimpleReq simpleReq = 5;
     case kSimpleReq: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *msg_.simplereq_);
+          *_impl_.msg_.simplereq_);
       break;
     }
     // .StreamReq streamReq = 6;
     case kStreamReq: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *msg_.streamreq_);
+          *_impl_.msg_.streamreq_);
       break;
     }
     case MSG_NOT_SET: {
       break;
     }
   }
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Request::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     Request::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Request::GetClassData() const { return &_class_data_; }
 
-void Request::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<Request *>(to)->MergeFrom(
-      static_cast<const Request &>(from));
-}
 
-
-void Request::MergeFrom(const Request& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Request)
-  GOOGLE_DCHECK_NE(&from, this);
+void Request::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<Request*>(&to_msg);
+  auto& from = static_cast<const Request&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:Request)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_reqid() != 0) {
-    _internal_set_reqid(from._internal_reqid());
+    _this->_internal_set_reqid(from._internal_reqid());
   }
   if (from._internal_cancel() != 0) {
-    _internal_set_cancel(from._internal_cancel());
+    _this->_internal_set_cancel(from._internal_cancel());
   }
   switch (from.msg_case()) {
     case kTableReq: {
-      _internal_mutable_tablereq()->::TableReq::MergeFrom(from._internal_tablereq());
+      _this->_internal_mutable_tablereq()->::TableReq::MergeFrom(
+          from._internal_tablereq());
       break;
     }
     case kSimpleReq: {
-      _internal_mutable_simplereq()->::SimpleReq::MergeFrom(from._internal_simplereq());
+      _this->_internal_mutable_simplereq()->::SimpleReq::MergeFrom(
+          from._internal_simplereq());
       break;
     }
     case kStreamReq: {
-      _internal_mutable_streamreq()->::StreamReq::MergeFrom(from._internal_streamreq());
+      _this->_internal_mutable_streamreq()->::StreamReq::MergeFrom(
+          from._internal_streamreq());
       break;
     }
     case MSG_NOT_SET: {
       break;
     }
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Request::CopyFrom(const Request& from) {
@@ -908,13 +936,13 @@ void Request::InternalSwap(Request* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Request, cancel_)
-      + sizeof(Request::cancel_)
-      - PROTOBUF_FIELD_OFFSET(Request, reqid_)>(
-          reinterpret_cast<char*>(&reqid_),
-          reinterpret_cast<char*>(&other->reqid_));
-  swap(msg_, other->msg_);
-  swap(_oneof_case_[0], other->_oneof_case_[0]);
+      PROTOBUF_FIELD_OFFSET(Request, _impl_.cancel_)
+      + sizeof(Request::_impl_.cancel_)
+      - PROTOBUF_FIELD_OFFSET(Request, _impl_.reqid_)>(
+          reinterpret_cast<char*>(&_impl_.reqid_),
+          reinterpret_cast<char*>(&other->_impl_.reqid_));
+  swap(_impl_.msg_, other->_impl_.msg_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Request::GetMetadata() const {
@@ -934,15 +962,15 @@ class Answer::_Internal {
 
 const ::TableAns&
 Answer::_Internal::tableans(const Answer* msg) {
-  return *msg->msg_.tableans_;
+  return *msg->_impl_.msg_.tableans_;
 }
 const ::SimpleAns&
 Answer::_Internal::simpleans(const Answer* msg) {
-  return *msg->msg_.simpleans_;
+  return *msg->_impl_.msg_.simpleans_;
 }
 const ::StreamAns&
 Answer::_Internal::streamans(const Answer* msg) {
-  return *msg->msg_.streamans_;
+  return *msg->_impl_.msg_.streamans_;
 }
 void Answer::set_allocated_tableans(::TableAns* tableans) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
@@ -955,7 +983,7 @@ void Answer::set_allocated_tableans(::TableAns* tableans) {
           message_arena, tableans, submessage_arena);
     }
     set_has_tableans();
-    msg_.tableans_ = tableans;
+    _impl_.msg_.tableans_ = tableans;
   }
   // @@protoc_insertion_point(field_set_allocated:Answer.tableAns)
 }
@@ -970,7 +998,7 @@ void Answer::set_allocated_simpleans(::SimpleAns* simpleans) {
           message_arena, simpleans, submessage_arena);
     }
     set_has_simpleans();
-    msg_.simpleans_ = simpleans;
+    _impl_.msg_.simpleans_ = simpleans;
   }
   // @@protoc_insertion_point(field_set_allocated:Answer.simpleAns)
 }
@@ -985,34 +1013,45 @@ void Answer::set_allocated_streamans(::StreamAns* streamans) {
           message_arena, streamans, submessage_arena);
     }
     set_has_streamans();
-    msg_.streamans_ = streamans;
+    _impl_.msg_.streamans_ = streamans;
   }
   // @@protoc_insertion_point(field_set_allocated:Answer.streamAns)
 }
 Answer::Answer(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:Answer)
 }
 Answer::Answer(const Answer& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  Answer* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.reqid_){}
+    , decltype(_impl_.cancel_){}
+    , decltype(_impl_.msg_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , /*decltype(_impl_._oneof_case_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  ::memcpy(&reqid_, &from.reqid_,
-    static_cast<size_t>(reinterpret_cast<char*>(&cancel_) -
-    reinterpret_cast<char*>(&reqid_)) + sizeof(cancel_));
+  ::memcpy(&_impl_.reqid_, &from._impl_.reqid_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.cancel_) -
+    reinterpret_cast<char*>(&_impl_.reqid_)) + sizeof(_impl_.cancel_));
   clear_has_msg();
   switch (from.msg_case()) {
     case kTableAns: {
-      _internal_mutable_tableans()->::TableAns::MergeFrom(from._internal_tableans());
+      _this->_internal_mutable_tableans()->::TableAns::MergeFrom(
+          from._internal_tableans());
       break;
     }
     case kSimpleAns: {
-      _internal_mutable_simpleans()->::SimpleAns::MergeFrom(from._internal_simpleans());
+      _this->_internal_mutable_simpleans()->::SimpleAns::MergeFrom(
+          from._internal_simpleans());
       break;
     }
     case kStreamAns: {
-      _internal_mutable_streamans()->::StreamAns::MergeFrom(from._internal_streamans());
+      _this->_internal_mutable_streamans()->::StreamAns::MergeFrom(
+          from._internal_streamans());
       break;
     }
     case MSG_NOT_SET: {
@@ -1022,12 +1061,18 @@ Answer::Answer(const Answer& from)
   // @@protoc_insertion_point(copy_constructor:Answer)
 }
 
-inline void Answer::SharedCtor() {
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&reqid_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&cancel_) -
-    reinterpret_cast<char*>(&reqid_)) + sizeof(cancel_));
-clear_has_msg();
+inline void Answer::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.reqid_){uint64_t{0u}}
+    , decltype(_impl_.cancel_){false}
+    , decltype(_impl_.msg_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , /*decltype(_impl_._oneof_case_)*/{}
+  };
+  clear_has_msg();
 }
 
 Answer::~Answer() {
@@ -1047,7 +1092,7 @@ inline void Answer::SharedDtor() {
 }
 
 void Answer::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void Answer::clear_msg() {
@@ -1055,19 +1100,19 @@ void Answer::clear_msg() {
   switch (msg_case()) {
     case kTableAns: {
       if (GetArenaForAllocation() == nullptr) {
-        delete msg_.tableans_;
+        delete _impl_.msg_.tableans_;
       }
       break;
     }
     case kSimpleAns: {
       if (GetArenaForAllocation() == nullptr) {
-        delete msg_.simpleans_;
+        delete _impl_.msg_.simpleans_;
       }
       break;
     }
     case kStreamAns: {
       if (GetArenaForAllocation() == nullptr) {
-        delete msg_.streamans_;
+        delete _impl_.msg_.streamans_;
       }
       break;
     }
@@ -1075,7 +1120,7 @@ void Answer::clear_msg() {
       break;
     }
   }
-  _oneof_case_[0] = MSG_NOT_SET;
+  _impl_._oneof_case_[0] = MSG_NOT_SET;
 }
 
 
@@ -1085,9 +1130,9 @@ void Answer::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  ::memset(&reqid_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&cancel_) -
-      reinterpret_cast<char*>(&reqid_)) + sizeof(cancel_));
+  ::memset(&_impl_.reqid_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.cancel_) -
+      reinterpret_cast<char*>(&_impl_.reqid_)) + sizeof(_impl_.cancel_));
   clear_msg();
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
@@ -1101,7 +1146,7 @@ const char* Answer::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
       // uint64 reqId = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          reqid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.reqid_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -1109,7 +1154,7 @@ const char* Answer::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
       // bool cancel = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          cancel_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.cancel_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -1231,73 +1276,72 @@ size_t Answer::ByteSizeLong() const {
     case kTableAns: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *msg_.tableans_);
+          *_impl_.msg_.tableans_);
       break;
     }
     // .SimpleAns simpleAns = 4;
     case kSimpleAns: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *msg_.simpleans_);
+          *_impl_.msg_.simpleans_);
       break;
     }
     // .StreamAns streamAns = 5;
     case kStreamAns: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *msg_.streamans_);
+          *_impl_.msg_.streamans_);
       break;
     }
     case MSG_NOT_SET: {
       break;
     }
   }
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Answer::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     Answer::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Answer::GetClassData() const { return &_class_data_; }
 
-void Answer::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<Answer *>(to)->MergeFrom(
-      static_cast<const Answer &>(from));
-}
 
-
-void Answer::MergeFrom(const Answer& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Answer)
-  GOOGLE_DCHECK_NE(&from, this);
+void Answer::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<Answer*>(&to_msg);
+  auto& from = static_cast<const Answer&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:Answer)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (from._internal_reqid() != 0) {
-    _internal_set_reqid(from._internal_reqid());
+    _this->_internal_set_reqid(from._internal_reqid());
   }
   if (from._internal_cancel() != 0) {
-    _internal_set_cancel(from._internal_cancel());
+    _this->_internal_set_cancel(from._internal_cancel());
   }
   switch (from.msg_case()) {
     case kTableAns: {
-      _internal_mutable_tableans()->::TableAns::MergeFrom(from._internal_tableans());
+      _this->_internal_mutable_tableans()->::TableAns::MergeFrom(
+          from._internal_tableans());
       break;
     }
     case kSimpleAns: {
-      _internal_mutable_simpleans()->::SimpleAns::MergeFrom(from._internal_simpleans());
+      _this->_internal_mutable_simpleans()->::SimpleAns::MergeFrom(
+          from._internal_simpleans());
       break;
     }
     case kStreamAns: {
-      _internal_mutable_streamans()->::StreamAns::MergeFrom(from._internal_streamans());
+      _this->_internal_mutable_streamans()->::StreamAns::MergeFrom(
+          from._internal_streamans());
       break;
     }
     case MSG_NOT_SET: {
       break;
     }
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Answer::CopyFrom(const Answer& from) {
@@ -1315,13 +1359,13 @@ void Answer::InternalSwap(Answer* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Answer, cancel_)
-      + sizeof(Answer::cancel_)
-      - PROTOBUF_FIELD_OFFSET(Answer, reqid_)>(
-          reinterpret_cast<char*>(&reqid_),
-          reinterpret_cast<char*>(&other->reqid_));
-  swap(msg_, other->msg_);
-  swap(_oneof_case_[0], other->_oneof_case_[0]);
+      PROTOBUF_FIELD_OFFSET(Answer, _impl_.cancel_)
+      + sizeof(Answer::_impl_.cancel_)
+      - PROTOBUF_FIELD_OFFSET(Answer, _impl_.reqid_)>(
+          reinterpret_cast<char*>(&_impl_.reqid_),
+          reinterpret_cast<char*>(&other->_impl_.reqid_));
+  swap(_impl_.msg_, other->_impl_.msg_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Answer::GetMetadata() const {
@@ -1339,35 +1383,49 @@ class TableReq::_Internal {
 TableReq::TableReq(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:TableReq)
 }
 TableReq::TableReq(const TableReq& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  TableReq* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.filter_){}
+    , decltype(_impl_.first_){}
+    , decltype(_impl_.last_){}
+    , decltype(_impl_.type_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  filter_.InitDefault();
+  _impl_.filter_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    filter_.Set("", GetArenaForAllocation());
+    _impl_.filter_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_filter().empty()) {
-    filter_.Set(from._internal_filter(), 
-      GetArenaForAllocation());
+    _this->_impl_.filter_.Set(from._internal_filter(), 
+      _this->GetArenaForAllocation());
   }
-  ::memcpy(&first_, &from.first_,
-    static_cast<size_t>(reinterpret_cast<char*>(&type_) -
-    reinterpret_cast<char*>(&first_)) + sizeof(type_));
+  ::memcpy(&_impl_.first_, &from._impl_.first_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.type_) -
+    reinterpret_cast<char*>(&_impl_.first_)) + sizeof(_impl_.type_));
   // @@protoc_insertion_point(copy_constructor:TableReq)
 }
 
-inline void TableReq::SharedCtor() {
-filter_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  filter_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&first_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&type_) -
-    reinterpret_cast<char*>(&first_)) + sizeof(type_));
+inline void TableReq::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.filter_){}
+    , decltype(_impl_.first_){0u}
+    , decltype(_impl_.last_){0u}
+    , decltype(_impl_.type_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.filter_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.filter_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 TableReq::~TableReq() {
@@ -1381,11 +1439,11 @@ TableReq::~TableReq() {
 
 inline void TableReq::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  filter_.Destroy();
+  _impl_.filter_.Destroy();
 }
 
 void TableReq::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void TableReq::Clear() {
@@ -1394,10 +1452,10 @@ void TableReq::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  filter_.ClearToEmpty();
-  ::memset(&first_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&type_) -
-      reinterpret_cast<char*>(&first_)) + sizeof(type_));
+  _impl_.filter_.ClearToEmpty();
+  ::memset(&_impl_.first_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.type_) -
+      reinterpret_cast<char*>(&_impl_.first_)) + sizeof(_impl_.type_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1410,7 +1468,7 @@ const char* TableReq::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx)
       // uint32 first = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          first_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          _impl_.first_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -1418,7 +1476,7 @@ const char* TableReq::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx)
       // uint32 last = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          last_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          _impl_.last_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -1539,41 +1597,37 @@ size_t TableReq::ByteSizeLong() const {
       ::_pbi::WireFormatLite::EnumSize(this->_internal_type());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData TableReq::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     TableReq::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TableReq::GetClassData() const { return &_class_data_; }
 
-void TableReq::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<TableReq *>(to)->MergeFrom(
-      static_cast<const TableReq &>(from));
-}
 
-
-void TableReq::MergeFrom(const TableReq& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:TableReq)
-  GOOGLE_DCHECK_NE(&from, this);
+void TableReq::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<TableReq*>(&to_msg);
+  auto& from = static_cast<const TableReq&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:TableReq)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_filter().empty()) {
-    _internal_set_filter(from._internal_filter());
+    _this->_internal_set_filter(from._internal_filter());
   }
   if (from._internal_first() != 0) {
-    _internal_set_first(from._internal_first());
+    _this->_internal_set_first(from._internal_first());
   }
   if (from._internal_last() != 0) {
-    _internal_set_last(from._internal_last());
+    _this->_internal_set_last(from._internal_last());
   }
   if (from._internal_type() != 0) {
-    _internal_set_type(from._internal_type());
+    _this->_internal_set_type(from._internal_type());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void TableReq::CopyFrom(const TableReq& from) {
@@ -1593,15 +1647,15 @@ void TableReq::InternalSwap(TableReq* other) {
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &filter_, lhs_arena,
-      &other->filter_, rhs_arena
+      &_impl_.filter_, lhs_arena,
+      &other->_impl_.filter_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(TableReq, type_)
-      + sizeof(TableReq::type_)
-      - PROTOBUF_FIELD_OFFSET(TableReq, first_)>(
-          reinterpret_cast<char*>(&first_),
-          reinterpret_cast<char*>(&other->first_));
+      PROTOBUF_FIELD_OFFSET(TableReq, _impl_.type_)
+      + sizeof(TableReq::_impl_.type_)
+      - PROTOBUF_FIELD_OFFSET(TableReq, _impl_.first_)>(
+          reinterpret_cast<char*>(&_impl_.first_),
+          reinterpret_cast<char*>(&other->_impl_.first_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata TableReq::GetMetadata() const {
@@ -1619,30 +1673,43 @@ class SimpleReq::_Internal {
 SimpleReq::SimpleReq(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:SimpleReq)
 }
 SimpleReq::SimpleReq(const SimpleReq& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  SimpleReq* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.reqstring_){}
+    , decltype(_impl_.type_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  reqstring_.InitDefault();
+  _impl_.reqstring_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    reqstring_.Set("", GetArenaForAllocation());
+    _impl_.reqstring_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_reqstring().empty()) {
-    reqstring_.Set(from._internal_reqstring(), 
-      GetArenaForAllocation());
+    _this->_impl_.reqstring_.Set(from._internal_reqstring(), 
+      _this->GetArenaForAllocation());
   }
-  type_ = from.type_;
+  _this->_impl_.type_ = from._impl_.type_;
   // @@protoc_insertion_point(copy_constructor:SimpleReq)
 }
 
-inline void SimpleReq::SharedCtor() {
-reqstring_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  reqstring_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-type_ = 0;
+inline void SimpleReq::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.reqstring_){}
+    , decltype(_impl_.type_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.reqstring_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.reqstring_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 SimpleReq::~SimpleReq() {
@@ -1656,11 +1723,11 @@ SimpleReq::~SimpleReq() {
 
 inline void SimpleReq::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  reqstring_.Destroy();
+  _impl_.reqstring_.Destroy();
 }
 
 void SimpleReq::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SimpleReq::Clear() {
@@ -1669,8 +1736,8 @@ void SimpleReq::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  reqstring_.ClearToEmpty();
-  type_ = 0;
+  _impl_.reqstring_.ClearToEmpty();
+  _impl_.type_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1774,35 +1841,31 @@ size_t SimpleReq::ByteSizeLong() const {
       ::_pbi::WireFormatLite::EnumSize(this->_internal_type());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SimpleReq::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SimpleReq::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SimpleReq::GetClassData() const { return &_class_data_; }
 
-void SimpleReq::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SimpleReq *>(to)->MergeFrom(
-      static_cast<const SimpleReq &>(from));
-}
 
-
-void SimpleReq::MergeFrom(const SimpleReq& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:SimpleReq)
-  GOOGLE_DCHECK_NE(&from, this);
+void SimpleReq::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SimpleReq*>(&to_msg);
+  auto& from = static_cast<const SimpleReq&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:SimpleReq)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_reqstring().empty()) {
-    _internal_set_reqstring(from._internal_reqstring());
+    _this->_internal_set_reqstring(from._internal_reqstring());
   }
   if (from._internal_type() != 0) {
-    _internal_set_type(from._internal_type());
+    _this->_internal_set_type(from._internal_type());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SimpleReq::CopyFrom(const SimpleReq& from) {
@@ -1822,10 +1885,10 @@ void SimpleReq::InternalSwap(SimpleReq* other) {
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &reqstring_, lhs_arena,
-      &other->reqstring_, rhs_arena
+      &_impl_.reqstring_, lhs_arena,
+      &other->_impl_.reqstring_, rhs_arena
   );
-  swap(type_, other->type_);
+  swap(_impl_.type_, other->_impl_.type_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SimpleReq::GetMetadata() const {
@@ -1843,35 +1906,47 @@ class StreamReq::_Internal {
 StreamReq::StreamReq(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:StreamReq)
 }
 StreamReq::StreamReq(const StreamReq& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  StreamReq* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.reqstring_){}
+    , decltype(_impl_.suggestedsize_){}
+    , decltype(_impl_.type_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  reqstring_.InitDefault();
+  _impl_.reqstring_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    reqstring_.Set("", GetArenaForAllocation());
+    _impl_.reqstring_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_reqstring().empty()) {
-    reqstring_.Set(from._internal_reqstring(), 
-      GetArenaForAllocation());
+    _this->_impl_.reqstring_.Set(from._internal_reqstring(), 
+      _this->GetArenaForAllocation());
   }
-  ::memcpy(&suggestedsize_, &from.suggestedsize_,
-    static_cast<size_t>(reinterpret_cast<char*>(&type_) -
-    reinterpret_cast<char*>(&suggestedsize_)) + sizeof(type_));
+  ::memcpy(&_impl_.suggestedsize_, &from._impl_.suggestedsize_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.type_) -
+    reinterpret_cast<char*>(&_impl_.suggestedsize_)) + sizeof(_impl_.type_));
   // @@protoc_insertion_point(copy_constructor:StreamReq)
 }
 
-inline void StreamReq::SharedCtor() {
-reqstring_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  reqstring_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&suggestedsize_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&type_) -
-    reinterpret_cast<char*>(&suggestedsize_)) + sizeof(type_));
+inline void StreamReq::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.reqstring_){}
+    , decltype(_impl_.suggestedsize_){0}
+    , decltype(_impl_.type_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.reqstring_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.reqstring_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 StreamReq::~StreamReq() {
@@ -1885,11 +1960,11 @@ StreamReq::~StreamReq() {
 
 inline void StreamReq::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  reqstring_.Destroy();
+  _impl_.reqstring_.Destroy();
 }
 
 void StreamReq::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void StreamReq::Clear() {
@@ -1898,10 +1973,10 @@ void StreamReq::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  reqstring_.ClearToEmpty();
-  ::memset(&suggestedsize_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&type_) -
-      reinterpret_cast<char*>(&suggestedsize_)) + sizeof(type_));
+  _impl_.reqstring_.ClearToEmpty();
+  ::memset(&_impl_.suggestedsize_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.type_) -
+      reinterpret_cast<char*>(&_impl_.suggestedsize_)) + sizeof(_impl_.type_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -1924,7 +1999,7 @@ const char* StreamReq::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx
       // int32 suggestedSize = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          suggestedsize_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          _impl_.suggestedsize_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -2024,38 +2099,34 @@ size_t StreamReq::ByteSizeLong() const {
       ::_pbi::WireFormatLite::EnumSize(this->_internal_type());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData StreamReq::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     StreamReq::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*StreamReq::GetClassData() const { return &_class_data_; }
 
-void StreamReq::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<StreamReq *>(to)->MergeFrom(
-      static_cast<const StreamReq &>(from));
-}
 
-
-void StreamReq::MergeFrom(const StreamReq& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:StreamReq)
-  GOOGLE_DCHECK_NE(&from, this);
+void StreamReq::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<StreamReq*>(&to_msg);
+  auto& from = static_cast<const StreamReq&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:StreamReq)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_reqstring().empty()) {
-    _internal_set_reqstring(from._internal_reqstring());
+    _this->_internal_set_reqstring(from._internal_reqstring());
   }
   if (from._internal_suggestedsize() != 0) {
-    _internal_set_suggestedsize(from._internal_suggestedsize());
+    _this->_internal_set_suggestedsize(from._internal_suggestedsize());
   }
   if (from._internal_type() != 0) {
-    _internal_set_type(from._internal_type());
+    _this->_internal_set_type(from._internal_type());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void StreamReq::CopyFrom(const StreamReq& from) {
@@ -2075,15 +2146,15 @@ void StreamReq::InternalSwap(StreamReq* other) {
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &reqstring_, lhs_arena,
-      &other->reqstring_, rhs_arena
+      &_impl_.reqstring_, lhs_arena,
+      &other->_impl_.reqstring_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(StreamReq, type_)
-      + sizeof(StreamReq::type_)
-      - PROTOBUF_FIELD_OFFSET(StreamReq, suggestedsize_)>(
-          reinterpret_cast<char*>(&suggestedsize_),
-          reinterpret_cast<char*>(&other->suggestedsize_));
+      PROTOBUF_FIELD_OFFSET(StreamReq, _impl_.type_)
+      + sizeof(StreamReq::_impl_.type_)
+      - PROTOBUF_FIELD_OFFSET(StreamReq, _impl_.suggestedsize_)>(
+          reinterpret_cast<char*>(&_impl_.suggestedsize_),
+          reinterpret_cast<char*>(&other->_impl_.suggestedsize_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata StreamReq::GetMetadata() const {
@@ -2100,27 +2171,38 @@ class TableAns::_Internal {
 
 TableAns::TableAns(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
-  bands_(arena),
-  albums_(arena),
-  concerts_(arena),
-  songs_(arena) {
-  SharedCtor();
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:TableAns)
 }
 TableAns::TableAns(const TableAns& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      bands_(from.bands_),
-      albums_(from.albums_),
-      concerts_(from.concerts_),
-      songs_(from.songs_) {
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  TableAns* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.bands_){from._impl_.bands_}
+    , decltype(_impl_.albums_){from._impl_.albums_}
+    , decltype(_impl_.concerts_){from._impl_.concerts_}
+    , decltype(_impl_.songs_){from._impl_.songs_}
+    , decltype(_impl_.type_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  type_ = from.type_;
+  _this->_impl_.type_ = from._impl_.type_;
   // @@protoc_insertion_point(copy_constructor:TableAns)
 }
 
-inline void TableAns::SharedCtor() {
-type_ = 0;
+inline void TableAns::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.bands_){arena}
+    , decltype(_impl_.albums_){arena}
+    , decltype(_impl_.concerts_){arena}
+    , decltype(_impl_.songs_){arena}
+    , decltype(_impl_.type_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
 }
 
 TableAns::~TableAns() {
@@ -2134,10 +2216,14 @@ TableAns::~TableAns() {
 
 inline void TableAns::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
+  _impl_.bands_.~RepeatedPtrField();
+  _impl_.albums_.~RepeatedPtrField();
+  _impl_.concerts_.~RepeatedPtrField();
+  _impl_.songs_.~RepeatedPtrField();
 }
 
 void TableAns::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void TableAns::Clear() {
@@ -2146,11 +2232,11 @@ void TableAns::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  bands_.Clear();
-  albums_.Clear();
-  concerts_.Clear();
-  songs_.Clear();
-  type_ = 0;
+  _impl_.bands_.Clear();
+  _impl_.albums_.Clear();
+  _impl_.concerts_.Clear();
+  _impl_.songs_.Clear();
+  _impl_.type_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2307,28 +2393,28 @@ size_t TableAns::ByteSizeLong() const {
 
   // repeated .Band bands = 1;
   total_size += 1UL * this->_internal_bands_size();
-  for (const auto& msg : this->bands_) {
+  for (const auto& msg : this->_impl_.bands_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
   // repeated .Album albums = 2;
   total_size += 1UL * this->_internal_albums_size();
-  for (const auto& msg : this->albums_) {
+  for (const auto& msg : this->_impl_.albums_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
   // repeated .Concert concerts = 3;
   total_size += 1UL * this->_internal_concerts_size();
-  for (const auto& msg : this->concerts_) {
+  for (const auto& msg : this->_impl_.concerts_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
   // repeated .Song songs = 4;
   total_size += 1UL * this->_internal_songs_size();
-  for (const auto& msg : this->songs_) {
+  for (const auto& msg : this->_impl_.songs_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -2339,36 +2425,32 @@ size_t TableAns::ByteSizeLong() const {
       ::_pbi::WireFormatLite::EnumSize(this->_internal_type());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData TableAns::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     TableAns::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*TableAns::GetClassData() const { return &_class_data_; }
 
-void TableAns::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<TableAns *>(to)->MergeFrom(
-      static_cast<const TableAns &>(from));
-}
 
-
-void TableAns::MergeFrom(const TableAns& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:TableAns)
-  GOOGLE_DCHECK_NE(&from, this);
+void TableAns::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<TableAns*>(&to_msg);
+  auto& from = static_cast<const TableAns&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:TableAns)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  bands_.MergeFrom(from.bands_);
-  albums_.MergeFrom(from.albums_);
-  concerts_.MergeFrom(from.concerts_);
-  songs_.MergeFrom(from.songs_);
+  _this->_impl_.bands_.MergeFrom(from._impl_.bands_);
+  _this->_impl_.albums_.MergeFrom(from._impl_.albums_);
+  _this->_impl_.concerts_.MergeFrom(from._impl_.concerts_);
+  _this->_impl_.songs_.MergeFrom(from._impl_.songs_);
   if (from._internal_type() != 0) {
-    _internal_set_type(from._internal_type());
+    _this->_internal_set_type(from._internal_type());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void TableAns::CopyFrom(const TableAns& from) {
@@ -2385,11 +2467,11 @@ bool TableAns::IsInitialized() const {
 void TableAns::InternalSwap(TableAns* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  bands_.InternalSwap(&other->bands_);
-  albums_.InternalSwap(&other->albums_);
-  concerts_.InternalSwap(&other->concerts_);
-  songs_.InternalSwap(&other->songs_);
-  swap(type_, other->type_);
+  _impl_.bands_.InternalSwap(&other->_impl_.bands_);
+  _impl_.albums_.InternalSwap(&other->_impl_.albums_);
+  _impl_.concerts_.InternalSwap(&other->_impl_.concerts_);
+  _impl_.songs_.InternalSwap(&other->_impl_.songs_);
+  swap(_impl_.type_, other->_impl_.type_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata TableAns::GetMetadata() const {
@@ -2412,27 +2494,27 @@ class SimpleAns::_Internal {
 
 const ::Band&
 SimpleAns::_Internal::band(const SimpleAns* msg) {
-  return *msg->msg_.band_;
+  return *msg->_impl_.msg_.band_;
 }
 const ::Album&
 SimpleAns::_Internal::album(const SimpleAns* msg) {
-  return *msg->msg_.album_;
+  return *msg->_impl_.msg_.album_;
 }
 const ::Song&
 SimpleAns::_Internal::song(const SimpleAns* msg) {
-  return *msg->msg_.song_;
+  return *msg->_impl_.msg_.song_;
 }
 const ::Concert&
 SimpleAns::_Internal::concert(const SimpleAns* msg) {
-  return *msg->msg_.concert_;
+  return *msg->_impl_.msg_.concert_;
 }
 const ::Musician&
 SimpleAns::_Internal::musician(const SimpleAns* msg) {
-  return *msg->msg_.musician_;
+  return *msg->_impl_.msg_.musician_;
 }
 const ::Membership&
 SimpleAns::_Internal::membership(const SimpleAns* msg) {
-  return *msg->msg_.membership_;
+  return *msg->_impl_.msg_.membership_;
 }
 void SimpleAns::set_allocated_band(::Band* band) {
   ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaForAllocation();
@@ -2445,7 +2527,7 @@ void SimpleAns::set_allocated_band(::Band* band) {
           message_arena, band, submessage_arena);
     }
     set_has_band();
-    msg_.band_ = band;
+    _impl_.msg_.band_ = band;
   }
   // @@protoc_insertion_point(field_set_allocated:SimpleAns.band)
 }
@@ -2460,7 +2542,7 @@ void SimpleAns::set_allocated_album(::Album* album) {
           message_arena, album, submessage_arena);
     }
     set_has_album();
-    msg_.album_ = album;
+    _impl_.msg_.album_ = album;
   }
   // @@protoc_insertion_point(field_set_allocated:SimpleAns.album)
 }
@@ -2475,7 +2557,7 @@ void SimpleAns::set_allocated_song(::Song* song) {
           message_arena, song, submessage_arena);
     }
     set_has_song();
-    msg_.song_ = song;
+    _impl_.msg_.song_ = song;
   }
   // @@protoc_insertion_point(field_set_allocated:SimpleAns.song)
 }
@@ -2490,7 +2572,7 @@ void SimpleAns::set_allocated_concert(::Concert* concert) {
           message_arena, concert, submessage_arena);
     }
     set_has_concert();
-    msg_.concert_ = concert;
+    _impl_.msg_.concert_ = concert;
   }
   // @@protoc_insertion_point(field_set_allocated:SimpleAns.concert)
 }
@@ -2505,7 +2587,7 @@ void SimpleAns::set_allocated_musician(::Musician* musician) {
           message_arena, musician, submessage_arena);
     }
     set_has_musician();
-    msg_.musician_ = musician;
+    _impl_.msg_.musician_ = musician;
   }
   // @@protoc_insertion_point(field_set_allocated:SimpleAns.musician)
 }
@@ -2520,43 +2602,55 @@ void SimpleAns::set_allocated_membership(::Membership* membership) {
           message_arena, membership, submessage_arena);
     }
     set_has_membership();
-    msg_.membership_ = membership;
+    _impl_.msg_.membership_ = membership;
   }
   // @@protoc_insertion_point(field_set_allocated:SimpleAns.membership)
 }
 SimpleAns::SimpleAns(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:SimpleAns)
 }
 SimpleAns::SimpleAns(const SimpleAns& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  SimpleAns* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.msg_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , /*decltype(_impl_._oneof_case_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
   clear_has_msg();
   switch (from.msg_case()) {
     case kBand: {
-      _internal_mutable_band()->::Band::MergeFrom(from._internal_band());
+      _this->_internal_mutable_band()->::Band::MergeFrom(
+          from._internal_band());
       break;
     }
     case kAlbum: {
-      _internal_mutable_album()->::Album::MergeFrom(from._internal_album());
+      _this->_internal_mutable_album()->::Album::MergeFrom(
+          from._internal_album());
       break;
     }
     case kSong: {
-      _internal_mutable_song()->::Song::MergeFrom(from._internal_song());
+      _this->_internal_mutable_song()->::Song::MergeFrom(
+          from._internal_song());
       break;
     }
     case kConcert: {
-      _internal_mutable_concert()->::Concert::MergeFrom(from._internal_concert());
+      _this->_internal_mutable_concert()->::Concert::MergeFrom(
+          from._internal_concert());
       break;
     }
     case kMusician: {
-      _internal_mutable_musician()->::Musician::MergeFrom(from._internal_musician());
+      _this->_internal_mutable_musician()->::Musician::MergeFrom(
+          from._internal_musician());
       break;
     }
     case kMembership: {
-      _internal_mutable_membership()->::Membership::MergeFrom(from._internal_membership());
+      _this->_internal_mutable_membership()->::Membership::MergeFrom(
+          from._internal_membership());
       break;
     }
     case MSG_NOT_SET: {
@@ -2566,8 +2660,16 @@ SimpleAns::SimpleAns(const SimpleAns& from)
   // @@protoc_insertion_point(copy_constructor:SimpleAns)
 }
 
-inline void SimpleAns::SharedCtor() {
-clear_has_msg();
+inline void SimpleAns::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.msg_){}
+    , /*decltype(_impl_._cached_size_)*/{}
+    , /*decltype(_impl_._oneof_case_)*/{}
+  };
+  clear_has_msg();
 }
 
 SimpleAns::~SimpleAns() {
@@ -2587,7 +2689,7 @@ inline void SimpleAns::SharedDtor() {
 }
 
 void SimpleAns::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void SimpleAns::clear_msg() {
@@ -2595,37 +2697,37 @@ void SimpleAns::clear_msg() {
   switch (msg_case()) {
     case kBand: {
       if (GetArenaForAllocation() == nullptr) {
-        delete msg_.band_;
+        delete _impl_.msg_.band_;
       }
       break;
     }
     case kAlbum: {
       if (GetArenaForAllocation() == nullptr) {
-        delete msg_.album_;
+        delete _impl_.msg_.album_;
       }
       break;
     }
     case kSong: {
       if (GetArenaForAllocation() == nullptr) {
-        delete msg_.song_;
+        delete _impl_.msg_.song_;
       }
       break;
     }
     case kConcert: {
       if (GetArenaForAllocation() == nullptr) {
-        delete msg_.concert_;
+        delete _impl_.msg_.concert_;
       }
       break;
     }
     case kMusician: {
       if (GetArenaForAllocation() == nullptr) {
-        delete msg_.musician_;
+        delete _impl_.msg_.musician_;
       }
       break;
     }
     case kMembership: {
       if (GetArenaForAllocation() == nullptr) {
-        delete msg_.membership_;
+        delete _impl_.msg_.membership_;
       }
       break;
     }
@@ -2633,7 +2735,7 @@ void SimpleAns::clear_msg() {
       break;
     }
   }
-  _oneof_case_[0] = MSG_NOT_SET;
+  _impl_._oneof_case_[0] = MSG_NOT_SET;
 }
 
 
@@ -2793,100 +2895,102 @@ size_t SimpleAns::ByteSizeLong() const {
     case kBand: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *msg_.band_);
+          *_impl_.msg_.band_);
       break;
     }
     // .Album album = 2;
     case kAlbum: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *msg_.album_);
+          *_impl_.msg_.album_);
       break;
     }
     // .Song song = 3;
     case kSong: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *msg_.song_);
+          *_impl_.msg_.song_);
       break;
     }
     // .Concert concert = 4;
     case kConcert: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *msg_.concert_);
+          *_impl_.msg_.concert_);
       break;
     }
     // .Musician musician = 5;
     case kMusician: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *msg_.musician_);
+          *_impl_.msg_.musician_);
       break;
     }
     // .Membership membership = 6;
     case kMembership: {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
-          *msg_.membership_);
+          *_impl_.msg_.membership_);
       break;
     }
     case MSG_NOT_SET: {
       break;
     }
   }
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData SimpleAns::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     SimpleAns::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*SimpleAns::GetClassData() const { return &_class_data_; }
 
-void SimpleAns::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<SimpleAns *>(to)->MergeFrom(
-      static_cast<const SimpleAns &>(from));
-}
 
-
-void SimpleAns::MergeFrom(const SimpleAns& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:SimpleAns)
-  GOOGLE_DCHECK_NE(&from, this);
+void SimpleAns::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<SimpleAns*>(&to_msg);
+  auto& from = static_cast<const SimpleAns&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:SimpleAns)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   switch (from.msg_case()) {
     case kBand: {
-      _internal_mutable_band()->::Band::MergeFrom(from._internal_band());
+      _this->_internal_mutable_band()->::Band::MergeFrom(
+          from._internal_band());
       break;
     }
     case kAlbum: {
-      _internal_mutable_album()->::Album::MergeFrom(from._internal_album());
+      _this->_internal_mutable_album()->::Album::MergeFrom(
+          from._internal_album());
       break;
     }
     case kSong: {
-      _internal_mutable_song()->::Song::MergeFrom(from._internal_song());
+      _this->_internal_mutable_song()->::Song::MergeFrom(
+          from._internal_song());
       break;
     }
     case kConcert: {
-      _internal_mutable_concert()->::Concert::MergeFrom(from._internal_concert());
+      _this->_internal_mutable_concert()->::Concert::MergeFrom(
+          from._internal_concert());
       break;
     }
     case kMusician: {
-      _internal_mutable_musician()->::Musician::MergeFrom(from._internal_musician());
+      _this->_internal_mutable_musician()->::Musician::MergeFrom(
+          from._internal_musician());
       break;
     }
     case kMembership: {
-      _internal_mutable_membership()->::Membership::MergeFrom(from._internal_membership());
+      _this->_internal_mutable_membership()->::Membership::MergeFrom(
+          from._internal_membership());
       break;
     }
     case MSG_NOT_SET: {
       break;
     }
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void SimpleAns::CopyFrom(const SimpleAns& from) {
@@ -2903,8 +3007,8 @@ bool SimpleAns::IsInitialized() const {
 void SimpleAns::InternalSwap(SimpleAns* other) {
   using std::swap;
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  swap(msg_, other->msg_);
-  swap(_oneof_case_[0], other->_oneof_case_[0]);
+  swap(_impl_.msg_, other->_impl_.msg_);
+  swap(_impl_._oneof_case_[0], other->_impl_._oneof_case_[0]);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata SimpleAns::GetMetadata() const {
@@ -2922,30 +3026,43 @@ class StreamAns::_Internal {
 StreamAns::StreamAns(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:StreamAns)
 }
 StreamAns::StreamAns(const StreamAns& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  StreamAns* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.data_){}
+    , decltype(_impl_.isfinal_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  data_.InitDefault();
+  _impl_.data_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    data_.Set("", GetArenaForAllocation());
+    _impl_.data_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_data().empty()) {
-    data_.Set(from._internal_data(), 
-      GetArenaForAllocation());
+    _this->_impl_.data_.Set(from._internal_data(), 
+      _this->GetArenaForAllocation());
   }
-  isfinal_ = from.isfinal_;
+  _this->_impl_.isfinal_ = from._impl_.isfinal_;
   // @@protoc_insertion_point(copy_constructor:StreamAns)
 }
 
-inline void StreamAns::SharedCtor() {
-data_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  data_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-isfinal_ = false;
+inline void StreamAns::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.data_){}
+    , decltype(_impl_.isfinal_){false}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.data_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.data_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 StreamAns::~StreamAns() {
@@ -2959,11 +3076,11 @@ StreamAns::~StreamAns() {
 
 inline void StreamAns::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  data_.Destroy();
+  _impl_.data_.Destroy();
 }
 
 void StreamAns::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void StreamAns::Clear() {
@@ -2972,8 +3089,8 @@ void StreamAns::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  data_.ClearToEmpty();
-  isfinal_ = false;
+  _impl_.data_.ClearToEmpty();
+  _impl_.isfinal_ = false;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -2995,7 +3112,7 @@ const char* StreamAns::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx
       // bool isFinal = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          isfinal_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.isfinal_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -3069,35 +3186,31 @@ size_t StreamAns::ByteSizeLong() const {
     total_size += 1 + 1;
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData StreamAns::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     StreamAns::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*StreamAns::GetClassData() const { return &_class_data_; }
 
-void StreamAns::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<StreamAns *>(to)->MergeFrom(
-      static_cast<const StreamAns &>(from));
-}
 
-
-void StreamAns::MergeFrom(const StreamAns& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:StreamAns)
-  GOOGLE_DCHECK_NE(&from, this);
+void StreamAns::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<StreamAns*>(&to_msg);
+  auto& from = static_cast<const StreamAns&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:StreamAns)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_data().empty()) {
-    _internal_set_data(from._internal_data());
+    _this->_internal_set_data(from._internal_data());
   }
   if (from._internal_isfinal() != 0) {
-    _internal_set_isfinal(from._internal_isfinal());
+    _this->_internal_set_isfinal(from._internal_isfinal());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void StreamAns::CopyFrom(const StreamAns& from) {
@@ -3117,10 +3230,10 @@ void StreamAns::InternalSwap(StreamAns* other) {
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &data_, lhs_arena,
-      &other->data_, rhs_arena
+      &_impl_.data_, lhs_arena,
+      &other->_impl_.data_, rhs_arena
   );
-  swap(isfinal_, other->isfinal_);
+  swap(_impl_.isfinal_, other->_impl_.isfinal_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata StreamAns::GetMetadata() const {
@@ -3138,47 +3251,61 @@ class Membership::_Internal {
 Membership::Membership(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:Membership)
 }
 Membership::Membership(const Membership& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  Membership* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.musname_){}
+    , decltype(_impl_.bandname_){}
+    , decltype(_impl_.unixentrydate_){}
+    , decltype(_impl_.unixquitdate_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  musname_.InitDefault();
+  _impl_.musname_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    musname_.Set("", GetArenaForAllocation());
+    _impl_.musname_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_musname().empty()) {
-    musname_.Set(from._internal_musname(), 
-      GetArenaForAllocation());
+    _this->_impl_.musname_.Set(from._internal_musname(), 
+      _this->GetArenaForAllocation());
   }
-  bandname_.InitDefault();
+  _impl_.bandname_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    bandname_.Set("", GetArenaForAllocation());
+    _impl_.bandname_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_bandname().empty()) {
-    bandname_.Set(from._internal_bandname(), 
-      GetArenaForAllocation());
+    _this->_impl_.bandname_.Set(from._internal_bandname(), 
+      _this->GetArenaForAllocation());
   }
-  ::memcpy(&unixentrydate_, &from.unixentrydate_,
-    static_cast<size_t>(reinterpret_cast<char*>(&unixquitdate_) -
-    reinterpret_cast<char*>(&unixentrydate_)) + sizeof(unixquitdate_));
+  ::memcpy(&_impl_.unixentrydate_, &from._impl_.unixentrydate_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.unixquitdate_) -
+    reinterpret_cast<char*>(&_impl_.unixentrydate_)) + sizeof(_impl_.unixquitdate_));
   // @@protoc_insertion_point(copy_constructor:Membership)
 }
 
-inline void Membership::SharedCtor() {
-musname_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  musname_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-bandname_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  bandname_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&unixentrydate_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&unixquitdate_) -
-    reinterpret_cast<char*>(&unixentrydate_)) + sizeof(unixquitdate_));
+inline void Membership::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.musname_){}
+    , decltype(_impl_.bandname_){}
+    , decltype(_impl_.unixentrydate_){int64_t{0}}
+    , decltype(_impl_.unixquitdate_){int64_t{0}}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.musname_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.musname_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.bandname_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.bandname_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 Membership::~Membership() {
@@ -3192,12 +3319,12 @@ Membership::~Membership() {
 
 inline void Membership::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  musname_.Destroy();
-  bandname_.Destroy();
+  _impl_.musname_.Destroy();
+  _impl_.bandname_.Destroy();
 }
 
 void Membership::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void Membership::Clear() {
@@ -3206,11 +3333,11 @@ void Membership::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  musname_.ClearToEmpty();
-  bandname_.ClearToEmpty();
-  ::memset(&unixentrydate_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&unixquitdate_) -
-      reinterpret_cast<char*>(&unixentrydate_)) + sizeof(unixquitdate_));
+  _impl_.musname_.ClearToEmpty();
+  _impl_.bandname_.ClearToEmpty();
+  ::memset(&_impl_.unixentrydate_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.unixquitdate_) -
+      reinterpret_cast<char*>(&_impl_.unixentrydate_)) + sizeof(_impl_.unixquitdate_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -3243,7 +3370,7 @@ const char* Membership::_InternalParse(const char* ptr, ::_pbi::ParseContext* ct
       // int64 unixEntryDate = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
-          unixentrydate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.unixentrydate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -3251,7 +3378,7 @@ const char* Membership::_InternalParse(const char* ptr, ::_pbi::ParseContext* ct
       // int64 unixQuitDate = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
-          unixquitdate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.unixquitdate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -3357,41 +3484,37 @@ size_t Membership::ByteSizeLong() const {
     total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_unixquitdate());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Membership::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     Membership::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Membership::GetClassData() const { return &_class_data_; }
 
-void Membership::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<Membership *>(to)->MergeFrom(
-      static_cast<const Membership &>(from));
-}
 
-
-void Membership::MergeFrom(const Membership& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Membership)
-  GOOGLE_DCHECK_NE(&from, this);
+void Membership::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<Membership*>(&to_msg);
+  auto& from = static_cast<const Membership&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:Membership)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_musname().empty()) {
-    _internal_set_musname(from._internal_musname());
+    _this->_internal_set_musname(from._internal_musname());
   }
   if (!from._internal_bandname().empty()) {
-    _internal_set_bandname(from._internal_bandname());
+    _this->_internal_set_bandname(from._internal_bandname());
   }
   if (from._internal_unixentrydate() != 0) {
-    _internal_set_unixentrydate(from._internal_unixentrydate());
+    _this->_internal_set_unixentrydate(from._internal_unixentrydate());
   }
   if (from._internal_unixquitdate() != 0) {
-    _internal_set_unixquitdate(from._internal_unixquitdate());
+    _this->_internal_set_unixquitdate(from._internal_unixquitdate());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Membership::CopyFrom(const Membership& from) {
@@ -3411,19 +3534,19 @@ void Membership::InternalSwap(Membership* other) {
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &musname_, lhs_arena,
-      &other->musname_, rhs_arena
+      &_impl_.musname_, lhs_arena,
+      &other->_impl_.musname_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &bandname_, lhs_arena,
-      &other->bandname_, rhs_arena
+      &_impl_.bandname_, lhs_arena,
+      &other->_impl_.bandname_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Membership, unixquitdate_)
-      + sizeof(Membership::unixquitdate_)
-      - PROTOBUF_FIELD_OFFSET(Membership, unixentrydate_)>(
-          reinterpret_cast<char*>(&unixentrydate_),
-          reinterpret_cast<char*>(&other->unixentrydate_));
+      PROTOBUF_FIELD_OFFSET(Membership, _impl_.unixquitdate_)
+      + sizeof(Membership::_impl_.unixquitdate_)
+      - PROTOBUF_FIELD_OFFSET(Membership, _impl_.unixentrydate_)>(
+          reinterpret_cast<char*>(&_impl_.unixentrydate_),
+          reinterpret_cast<char*>(&other->_impl_.unixentrydate_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Membership::GetMetadata() const {
@@ -3440,50 +3563,64 @@ class Concert::_Internal {
 
 Concert::Concert(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
-  bandnames_(arena) {
-  SharedCtor();
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:Concert)
 }
 Concert::Concert(const Concert& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      bandnames_(from.bandnames_) {
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  Concert* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.bandnames_){from._impl_.bandnames_}
+    , decltype(_impl_.description_){}
+    , decltype(_impl_.location_){}
+    , decltype(_impl_.unixdatetime_){}
+    , decltype(_impl_.capacity_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  description_.InitDefault();
+  _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    description_.Set("", GetArenaForAllocation());
+    _impl_.description_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_description().empty()) {
-    description_.Set(from._internal_description(), 
-      GetArenaForAllocation());
+    _this->_impl_.description_.Set(from._internal_description(), 
+      _this->GetArenaForAllocation());
   }
-  location_.InitDefault();
+  _impl_.location_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    location_.Set("", GetArenaForAllocation());
+    _impl_.location_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_location().empty()) {
-    location_.Set(from._internal_location(), 
-      GetArenaForAllocation());
+    _this->_impl_.location_.Set(from._internal_location(), 
+      _this->GetArenaForAllocation());
   }
-  ::memcpy(&unixdatetime_, &from.unixdatetime_,
-    static_cast<size_t>(reinterpret_cast<char*>(&capacity_) -
-    reinterpret_cast<char*>(&unixdatetime_)) + sizeof(capacity_));
+  ::memcpy(&_impl_.unixdatetime_, &from._impl_.unixdatetime_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.capacity_) -
+    reinterpret_cast<char*>(&_impl_.unixdatetime_)) + sizeof(_impl_.capacity_));
   // @@protoc_insertion_point(copy_constructor:Concert)
 }
 
-inline void Concert::SharedCtor() {
-description_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  description_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-location_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  location_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&unixdatetime_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&capacity_) -
-    reinterpret_cast<char*>(&unixdatetime_)) + sizeof(capacity_));
+inline void Concert::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.bandnames_){arena}
+    , decltype(_impl_.description_){}
+    , decltype(_impl_.location_){}
+    , decltype(_impl_.unixdatetime_){int64_t{0}}
+    , decltype(_impl_.capacity_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.description_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.description_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.location_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.location_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 Concert::~Concert() {
@@ -3497,12 +3634,13 @@ Concert::~Concert() {
 
 inline void Concert::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  description_.Destroy();
-  location_.Destroy();
+  _impl_.bandnames_.~RepeatedPtrField();
+  _impl_.description_.Destroy();
+  _impl_.location_.Destroy();
 }
 
 void Concert::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void Concert::Clear() {
@@ -3511,12 +3649,12 @@ void Concert::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  bandnames_.Clear();
-  description_.ClearToEmpty();
-  location_.ClearToEmpty();
-  ::memset(&unixdatetime_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&capacity_) -
-      reinterpret_cast<char*>(&unixdatetime_)) + sizeof(capacity_));
+  _impl_.bandnames_.Clear();
+  _impl_.description_.ClearToEmpty();
+  _impl_.location_.ClearToEmpty();
+  ::memset(&_impl_.unixdatetime_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.capacity_) -
+      reinterpret_cast<char*>(&_impl_.unixdatetime_)) + sizeof(_impl_.capacity_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -3529,7 +3667,7 @@ const char* Concert::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
       // int32 capacity = 1;
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 8)) {
-          capacity_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          _impl_.capacity_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -3547,7 +3685,7 @@ const char* Concert::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) 
       // int64 unixDateTime = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
-          unixdatetime_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.unixdatetime_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -3666,10 +3804,10 @@ size_t Concert::ByteSizeLong() const {
 
   // repeated string bandNames = 5;
   total_size += 1 *
-      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(bandnames_.size());
-  for (int i = 0, n = bandnames_.size(); i < n; i++) {
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(_impl_.bandnames_.size());
+  for (int i = 0, n = _impl_.bandnames_.size(); i < n; i++) {
     total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-      bandnames_.Get(i));
+      _impl_.bandnames_.Get(i));
   }
 
   // string description = 2;
@@ -3696,42 +3834,38 @@ size_t Concert::ByteSizeLong() const {
     total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_capacity());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Concert::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     Concert::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Concert::GetClassData() const { return &_class_data_; }
 
-void Concert::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<Concert *>(to)->MergeFrom(
-      static_cast<const Concert &>(from));
-}
 
-
-void Concert::MergeFrom(const Concert& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Concert)
-  GOOGLE_DCHECK_NE(&from, this);
+void Concert::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<Concert*>(&to_msg);
+  auto& from = static_cast<const Concert&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:Concert)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  bandnames_.MergeFrom(from.bandnames_);
+  _this->_impl_.bandnames_.MergeFrom(from._impl_.bandnames_);
   if (!from._internal_description().empty()) {
-    _internal_set_description(from._internal_description());
+    _this->_internal_set_description(from._internal_description());
   }
   if (!from._internal_location().empty()) {
-    _internal_set_location(from._internal_location());
+    _this->_internal_set_location(from._internal_location());
   }
   if (from._internal_unixdatetime() != 0) {
-    _internal_set_unixdatetime(from._internal_unixdatetime());
+    _this->_internal_set_unixdatetime(from._internal_unixdatetime());
   }
   if (from._internal_capacity() != 0) {
-    _internal_set_capacity(from._internal_capacity());
+    _this->_internal_set_capacity(from._internal_capacity());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Concert::CopyFrom(const Concert& from) {
@@ -3750,21 +3884,21 @@ void Concert::InternalSwap(Concert* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  bandnames_.InternalSwap(&other->bandnames_);
+  _impl_.bandnames_.InternalSwap(&other->_impl_.bandnames_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &description_, lhs_arena,
-      &other->description_, rhs_arena
+      &_impl_.description_, lhs_arena,
+      &other->_impl_.description_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &location_, lhs_arena,
-      &other->location_, rhs_arena
+      &_impl_.location_, lhs_arena,
+      &other->_impl_.location_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Concert, capacity_)
-      + sizeof(Concert::capacity_)
-      - PROTOBUF_FIELD_OFFSET(Concert, unixdatetime_)>(
-          reinterpret_cast<char*>(&unixdatetime_),
-          reinterpret_cast<char*>(&other->unixdatetime_));
+      PROTOBUF_FIELD_OFFSET(Concert, _impl_.capacity_)
+      + sizeof(Concert::_impl_.capacity_)
+      - PROTOBUF_FIELD_OFFSET(Concert, _impl_.unixdatetime_)>(
+          reinterpret_cast<char*>(&_impl_.unixdatetime_),
+          reinterpret_cast<char*>(&other->_impl_.unixdatetime_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Concert::GetMetadata() const {
@@ -3781,54 +3915,70 @@ class Band::_Internal {
 
 Band::Band(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
-  albumnames_(arena),
-  participants_(arena),
-  concerts_(arena) {
-  SharedCtor();
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:Band)
 }
 Band::Band(const Band& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      albumnames_(from.albumnames_),
-      participants_(from.participants_),
-      concerts_(from.concerts_) {
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  Band* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.albumnames_){from._impl_.albumnames_}
+    , decltype(_impl_.participants_){from._impl_.participants_}
+    , decltype(_impl_.concerts_){from._impl_.concerts_}
+    , decltype(_impl_.bandname_){}
+    , decltype(_impl_.description_){}
+    , decltype(_impl_.unixfounddate_){}
+    , decltype(_impl_.unixtermdate_){}
+    , decltype(_impl_.genre_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  bandname_.InitDefault();
+  _impl_.bandname_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    bandname_.Set("", GetArenaForAllocation());
+    _impl_.bandname_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_bandname().empty()) {
-    bandname_.Set(from._internal_bandname(), 
-      GetArenaForAllocation());
+    _this->_impl_.bandname_.Set(from._internal_bandname(), 
+      _this->GetArenaForAllocation());
   }
-  description_.InitDefault();
+  _impl_.description_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    description_.Set("", GetArenaForAllocation());
+    _impl_.description_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_description().empty()) {
-    description_.Set(from._internal_description(), 
-      GetArenaForAllocation());
+    _this->_impl_.description_.Set(from._internal_description(), 
+      _this->GetArenaForAllocation());
   }
-  ::memcpy(&unixfounddate_, &from.unixfounddate_,
-    static_cast<size_t>(reinterpret_cast<char*>(&genre_) -
-    reinterpret_cast<char*>(&unixfounddate_)) + sizeof(genre_));
+  ::memcpy(&_impl_.unixfounddate_, &from._impl_.unixfounddate_,
+    static_cast<size_t>(reinterpret_cast<char*>(&_impl_.genre_) -
+    reinterpret_cast<char*>(&_impl_.unixfounddate_)) + sizeof(_impl_.genre_));
   // @@protoc_insertion_point(copy_constructor:Band)
 }
 
-inline void Band::SharedCtor() {
-bandname_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  bandname_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-description_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  description_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-::memset(reinterpret_cast<char*>(this) + static_cast<size_t>(
-    reinterpret_cast<char*>(&unixfounddate_) - reinterpret_cast<char*>(this)),
-    0, static_cast<size_t>(reinterpret_cast<char*>(&genre_) -
-    reinterpret_cast<char*>(&unixfounddate_)) + sizeof(genre_));
+inline void Band::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.albumnames_){arena}
+    , decltype(_impl_.participants_){arena}
+    , decltype(_impl_.concerts_){arena}
+    , decltype(_impl_.bandname_){}
+    , decltype(_impl_.description_){}
+    , decltype(_impl_.unixfounddate_){int64_t{0}}
+    , decltype(_impl_.unixtermdate_){int64_t{0}}
+    , decltype(_impl_.genre_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.bandname_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.bandname_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.description_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.description_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 Band::~Band() {
@@ -3842,12 +3992,15 @@ Band::~Band() {
 
 inline void Band::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  bandname_.Destroy();
-  description_.Destroy();
+  _impl_.albumnames_.~RepeatedPtrField();
+  _impl_.participants_.~RepeatedPtrField();
+  _impl_.concerts_.~RepeatedPtrField();
+  _impl_.bandname_.Destroy();
+  _impl_.description_.Destroy();
 }
 
 void Band::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void Band::Clear() {
@@ -3856,14 +4009,14 @@ void Band::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  albumnames_.Clear();
-  participants_.Clear();
-  concerts_.Clear();
-  bandname_.ClearToEmpty();
-  description_.ClearToEmpty();
-  ::memset(&unixfounddate_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&genre_) -
-      reinterpret_cast<char*>(&unixfounddate_)) + sizeof(genre_));
+  _impl_.albumnames_.Clear();
+  _impl_.participants_.Clear();
+  _impl_.concerts_.Clear();
+  _impl_.bandname_.ClearToEmpty();
+  _impl_.description_.ClearToEmpty();
+  ::memset(&_impl_.unixfounddate_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&_impl_.genre_) -
+      reinterpret_cast<char*>(&_impl_.unixfounddate_)) + sizeof(_impl_.genre_));
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -3895,7 +4048,7 @@ const char* Band::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
       // int64 unixFoundDate = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 24)) {
-          unixfounddate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.unixfounddate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -3903,7 +4056,7 @@ const char* Band::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
       // int64 unixTermDate = 4;
       case 4:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 32)) {
-          unixtermdate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.unixtermdate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -4071,22 +4224,22 @@ size_t Band::ByteSizeLong() const {
 
   // repeated string albumNames = 6;
   total_size += 1 *
-      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(albumnames_.size());
-  for (int i = 0, n = albumnames_.size(); i < n; i++) {
+      ::PROTOBUF_NAMESPACE_ID::internal::FromIntSize(_impl_.albumnames_.size());
+  for (int i = 0, n = _impl_.albumnames_.size(); i < n; i++) {
     total_size += ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-      albumnames_.Get(i));
+      _impl_.albumnames_.Get(i));
   }
 
   // repeated .Membership participants = 7;
   total_size += 1UL * this->_internal_participants_size();
-  for (const auto& msg : this->participants_) {
+  for (const auto& msg : this->_impl_.participants_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
 
   // repeated .Concert concerts = 8;
   total_size += 1UL * this->_internal_concerts_size();
-  for (const auto& msg : this->concerts_) {
+  for (const auto& msg : this->_impl_.concerts_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -4121,47 +4274,43 @@ size_t Band::ByteSizeLong() const {
       ::_pbi::WireFormatLite::EnumSize(this->_internal_genre());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Band::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     Band::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Band::GetClassData() const { return &_class_data_; }
 
-void Band::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<Band *>(to)->MergeFrom(
-      static_cast<const Band &>(from));
-}
 
-
-void Band::MergeFrom(const Band& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Band)
-  GOOGLE_DCHECK_NE(&from, this);
+void Band::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<Band*>(&to_msg);
+  auto& from = static_cast<const Band&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:Band)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  albumnames_.MergeFrom(from.albumnames_);
-  participants_.MergeFrom(from.participants_);
-  concerts_.MergeFrom(from.concerts_);
+  _this->_impl_.albumnames_.MergeFrom(from._impl_.albumnames_);
+  _this->_impl_.participants_.MergeFrom(from._impl_.participants_);
+  _this->_impl_.concerts_.MergeFrom(from._impl_.concerts_);
   if (!from._internal_bandname().empty()) {
-    _internal_set_bandname(from._internal_bandname());
+    _this->_internal_set_bandname(from._internal_bandname());
   }
   if (!from._internal_description().empty()) {
-    _internal_set_description(from._internal_description());
+    _this->_internal_set_description(from._internal_description());
   }
   if (from._internal_unixfounddate() != 0) {
-    _internal_set_unixfounddate(from._internal_unixfounddate());
+    _this->_internal_set_unixfounddate(from._internal_unixfounddate());
   }
   if (from._internal_unixtermdate() != 0) {
-    _internal_set_unixtermdate(from._internal_unixtermdate());
+    _this->_internal_set_unixtermdate(from._internal_unixtermdate());
   }
   if (from._internal_genre() != 0) {
-    _internal_set_genre(from._internal_genre());
+    _this->_internal_set_genre(from._internal_genre());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Band::CopyFrom(const Band& from) {
@@ -4180,23 +4329,23 @@ void Band::InternalSwap(Band* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  albumnames_.InternalSwap(&other->albumnames_);
-  participants_.InternalSwap(&other->participants_);
-  concerts_.InternalSwap(&other->concerts_);
+  _impl_.albumnames_.InternalSwap(&other->_impl_.albumnames_);
+  _impl_.participants_.InternalSwap(&other->_impl_.participants_);
+  _impl_.concerts_.InternalSwap(&other->_impl_.concerts_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &bandname_, lhs_arena,
-      &other->bandname_, rhs_arena
+      &_impl_.bandname_, lhs_arena,
+      &other->_impl_.bandname_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &description_, lhs_arena,
-      &other->description_, rhs_arena
+      &_impl_.description_, lhs_arena,
+      &other->_impl_.description_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::memswap<
-      PROTOBUF_FIELD_OFFSET(Band, genre_)
-      + sizeof(Band::genre_)
-      - PROTOBUF_FIELD_OFFSET(Band, unixfounddate_)>(
-          reinterpret_cast<char*>(&unixfounddate_),
-          reinterpret_cast<char*>(&other->unixfounddate_));
+      PROTOBUF_FIELD_OFFSET(Band, _impl_.genre_)
+      + sizeof(Band::_impl_.genre_)
+      - PROTOBUF_FIELD_OFFSET(Band, _impl_.unixfounddate_)>(
+          reinterpret_cast<char*>(&_impl_.unixfounddate_),
+          reinterpret_cast<char*>(&other->_impl_.unixfounddate_));
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Band::GetMetadata() const {
@@ -4214,54 +4363,71 @@ class Song::_Internal {
 Song::Song(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
   : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
-  SharedCtor();
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:Song)
 }
 Song::Song(const Song& from)
   : ::PROTOBUF_NAMESPACE_ID::Message() {
+  Song* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.songname_){}
+    , decltype(_impl_.albumname_){}
+    , decltype(_impl_.bandname_){}
+    , decltype(_impl_.lengthsec_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  songname_.InitDefault();
+  _impl_.songname_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    songname_.Set("", GetArenaForAllocation());
+    _impl_.songname_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_songname().empty()) {
-    songname_.Set(from._internal_songname(), 
-      GetArenaForAllocation());
+    _this->_impl_.songname_.Set(from._internal_songname(), 
+      _this->GetArenaForAllocation());
   }
-  albumname_.InitDefault();
+  _impl_.albumname_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    albumname_.Set("", GetArenaForAllocation());
+    _impl_.albumname_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_albumname().empty()) {
-    albumname_.Set(from._internal_albumname(), 
-      GetArenaForAllocation());
+    _this->_impl_.albumname_.Set(from._internal_albumname(), 
+      _this->GetArenaForAllocation());
   }
-  bandname_.InitDefault();
+  _impl_.bandname_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    bandname_.Set("", GetArenaForAllocation());
+    _impl_.bandname_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_bandname().empty()) {
-    bandname_.Set(from._internal_bandname(), 
-      GetArenaForAllocation());
+    _this->_impl_.bandname_.Set(from._internal_bandname(), 
+      _this->GetArenaForAllocation());
   }
-  lengthsec_ = from.lengthsec_;
+  _this->_impl_.lengthsec_ = from._impl_.lengthsec_;
   // @@protoc_insertion_point(copy_constructor:Song)
 }
 
-inline void Song::SharedCtor() {
-songname_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  songname_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-albumname_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  albumname_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-bandname_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  bandname_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-lengthsec_ = 0;
+inline void Song::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.songname_){}
+    , decltype(_impl_.albumname_){}
+    , decltype(_impl_.bandname_){}
+    , decltype(_impl_.lengthsec_){0}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.songname_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.songname_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.albumname_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.albumname_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.bandname_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.bandname_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 Song::~Song() {
@@ -4275,13 +4441,13 @@ Song::~Song() {
 
 inline void Song::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  songname_.Destroy();
-  albumname_.Destroy();
-  bandname_.Destroy();
+  _impl_.songname_.Destroy();
+  _impl_.albumname_.Destroy();
+  _impl_.bandname_.Destroy();
 }
 
 void Song::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void Song::Clear() {
@@ -4290,10 +4456,10 @@ void Song::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  songname_.ClearToEmpty();
-  albumname_.ClearToEmpty();
-  bandname_.ClearToEmpty();
-  lengthsec_ = 0;
+  _impl_.songname_.ClearToEmpty();
+  _impl_.albumname_.ClearToEmpty();
+  _impl_.bandname_.ClearToEmpty();
+  _impl_.lengthsec_ = 0;
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -4316,7 +4482,7 @@ const char* Song::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
       // int32 lengthSec = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          lengthsec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
+          _impl_.lengthsec_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint32(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -4448,41 +4614,37 @@ size_t Song::ByteSizeLong() const {
     total_size += ::_pbi::WireFormatLite::Int32SizePlusOne(this->_internal_lengthsec());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Song::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     Song::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Song::GetClassData() const { return &_class_data_; }
 
-void Song::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<Song *>(to)->MergeFrom(
-      static_cast<const Song &>(from));
-}
 
-
-void Song::MergeFrom(const Song& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Song)
-  GOOGLE_DCHECK_NE(&from, this);
+void Song::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<Song*>(&to_msg);
+  auto& from = static_cast<const Song&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:Song)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
   if (!from._internal_songname().empty()) {
-    _internal_set_songname(from._internal_songname());
+    _this->_internal_set_songname(from._internal_songname());
   }
   if (!from._internal_albumname().empty()) {
-    _internal_set_albumname(from._internal_albumname());
+    _this->_internal_set_albumname(from._internal_albumname());
   }
   if (!from._internal_bandname().empty()) {
-    _internal_set_bandname(from._internal_bandname());
+    _this->_internal_set_bandname(from._internal_bandname());
   }
   if (from._internal_lengthsec() != 0) {
-    _internal_set_lengthsec(from._internal_lengthsec());
+    _this->_internal_set_lengthsec(from._internal_lengthsec());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Song::CopyFrom(const Song& from) {
@@ -4502,18 +4664,18 @@ void Song::InternalSwap(Song* other) {
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &songname_, lhs_arena,
-      &other->songname_, rhs_arena
+      &_impl_.songname_, lhs_arena,
+      &other->_impl_.songname_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &albumname_, lhs_arena,
-      &other->albumname_, rhs_arena
+      &_impl_.albumname_, lhs_arena,
+      &other->_impl_.albumname_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &bandname_, lhs_arena,
-      &other->bandname_, rhs_arena
+      &_impl_.bandname_, lhs_arena,
+      &other->_impl_.bandname_, rhs_arena
   );
-  swap(lengthsec_, other->lengthsec_);
+  swap(_impl_.lengthsec_, other->_impl_.lengthsec_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Song::GetMetadata() const {
@@ -4530,45 +4692,60 @@ class Album::_Internal {
 
 Album::Album(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
-  songs_(arena) {
-  SharedCtor();
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:Album)
 }
 Album::Album(const Album& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      songs_(from.songs_) {
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  Album* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.songs_){from._impl_.songs_}
+    , decltype(_impl_.title_){}
+    , decltype(_impl_.bandname_){}
+    , decltype(_impl_.unixreleasedate_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  title_.InitDefault();
+  _impl_.title_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    title_.Set("", GetArenaForAllocation());
+    _impl_.title_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_title().empty()) {
-    title_.Set(from._internal_title(), 
-      GetArenaForAllocation());
+    _this->_impl_.title_.Set(from._internal_title(), 
+      _this->GetArenaForAllocation());
   }
-  bandname_.InitDefault();
+  _impl_.bandname_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    bandname_.Set("", GetArenaForAllocation());
+    _impl_.bandname_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_bandname().empty()) {
-    bandname_.Set(from._internal_bandname(), 
-      GetArenaForAllocation());
+    _this->_impl_.bandname_.Set(from._internal_bandname(), 
+      _this->GetArenaForAllocation());
   }
-  unixreleasedate_ = from.unixreleasedate_;
+  _this->_impl_.unixreleasedate_ = from._impl_.unixreleasedate_;
   // @@protoc_insertion_point(copy_constructor:Album)
 }
 
-inline void Album::SharedCtor() {
-title_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  title_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-bandname_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  bandname_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-unixreleasedate_ = int64_t{0};
+inline void Album::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.songs_){arena}
+    , decltype(_impl_.title_){}
+    , decltype(_impl_.bandname_){}
+    , decltype(_impl_.unixreleasedate_){int64_t{0}}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.title_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.title_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.bandname_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.bandname_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 Album::~Album() {
@@ -4582,12 +4759,13 @@ Album::~Album() {
 
 inline void Album::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  title_.Destroy();
-  bandname_.Destroy();
+  _impl_.songs_.~RepeatedPtrField();
+  _impl_.title_.Destroy();
+  _impl_.bandname_.Destroy();
 }
 
 void Album::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void Album::Clear() {
@@ -4596,10 +4774,10 @@ void Album::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  songs_.Clear();
-  title_.ClearToEmpty();
-  bandname_.ClearToEmpty();
-  unixreleasedate_ = int64_t{0};
+  _impl_.songs_.Clear();
+  _impl_.title_.ClearToEmpty();
+  _impl_.bandname_.ClearToEmpty();
+  _impl_.unixreleasedate_ = int64_t{0};
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -4622,7 +4800,7 @@ const char* Album::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx) {
       // int64 unixReleaseDate = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          unixreleasedate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.unixreleasedate_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -4731,7 +4909,7 @@ size_t Album::ByteSizeLong() const {
 
   // repeated .Song songs = 3;
   total_size += 1UL * this->_internal_songs_size();
-  for (const auto& msg : this->songs_) {
+  for (const auto& msg : this->_impl_.songs_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -4755,39 +4933,35 @@ size_t Album::ByteSizeLong() const {
     total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_unixreleasedate());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Album::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     Album::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Album::GetClassData() const { return &_class_data_; }
 
-void Album::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<Album *>(to)->MergeFrom(
-      static_cast<const Album &>(from));
-}
 
-
-void Album::MergeFrom(const Album& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Album)
-  GOOGLE_DCHECK_NE(&from, this);
+void Album::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<Album*>(&to_msg);
+  auto& from = static_cast<const Album&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:Album)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  songs_.MergeFrom(from.songs_);
+  _this->_impl_.songs_.MergeFrom(from._impl_.songs_);
   if (!from._internal_title().empty()) {
-    _internal_set_title(from._internal_title());
+    _this->_internal_set_title(from._internal_title());
   }
   if (!from._internal_bandname().empty()) {
-    _internal_set_bandname(from._internal_bandname());
+    _this->_internal_set_bandname(from._internal_bandname());
   }
   if (from._internal_unixreleasedate() != 0) {
-    _internal_set_unixreleasedate(from._internal_unixreleasedate());
+    _this->_internal_set_unixreleasedate(from._internal_unixreleasedate());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Album::CopyFrom(const Album& from) {
@@ -4806,16 +4980,16 @@ void Album::InternalSwap(Album* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  songs_.InternalSwap(&other->songs_);
+  _impl_.songs_.InternalSwap(&other->_impl_.songs_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &title_, lhs_arena,
-      &other->title_, rhs_arena
+      &_impl_.title_, lhs_arena,
+      &other->_impl_.title_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &bandname_, lhs_arena,
-      &other->bandname_, rhs_arena
+      &_impl_.bandname_, lhs_arena,
+      &other->_impl_.bandname_, rhs_arena
   );
-  swap(unixreleasedate_, other->unixreleasedate_);
+  swap(_impl_.unixreleasedate_, other->_impl_.unixreleasedate_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Album::GetMetadata() const {
@@ -4832,45 +5006,60 @@ class Musician::_Internal {
 
 Musician::Musician(::PROTOBUF_NAMESPACE_ID::Arena* arena,
                          bool is_message_owned)
-  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned),
-  memberships_(arena) {
-  SharedCtor();
+  : ::PROTOBUF_NAMESPACE_ID::Message(arena, is_message_owned) {
+  SharedCtor(arena, is_message_owned);
   // @@protoc_insertion_point(arena_constructor:Musician)
 }
 Musician::Musician(const Musician& from)
-  : ::PROTOBUF_NAMESPACE_ID::Message(),
-      memberships_(from.memberships_) {
+  : ::PROTOBUF_NAMESPACE_ID::Message() {
+  Musician* const _this = this; (void)_this;
+  new (&_impl_) Impl_{
+      decltype(_impl_.memberships_){from._impl_.memberships_}
+    , decltype(_impl_.musname_){}
+    , decltype(_impl_.bio_){}
+    , decltype(_impl_.unixdateofbirth_){}
+    , /*decltype(_impl_._cached_size_)*/{}};
+
   _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
-  musname_.InitDefault();
+  _impl_.musname_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    musname_.Set("", GetArenaForAllocation());
+    _impl_.musname_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_musname().empty()) {
-    musname_.Set(from._internal_musname(), 
-      GetArenaForAllocation());
+    _this->_impl_.musname_.Set(from._internal_musname(), 
+      _this->GetArenaForAllocation());
   }
-  bio_.InitDefault();
+  _impl_.bio_.InitDefault();
   #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-    bio_.Set("", GetArenaForAllocation());
+    _impl_.bio_.Set("", GetArenaForAllocation());
   #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
   if (!from._internal_bio().empty()) {
-    bio_.Set(from._internal_bio(), 
-      GetArenaForAllocation());
+    _this->_impl_.bio_.Set(from._internal_bio(), 
+      _this->GetArenaForAllocation());
   }
-  unixdateofbirth_ = from.unixdateofbirth_;
+  _this->_impl_.unixdateofbirth_ = from._impl_.unixdateofbirth_;
   // @@protoc_insertion_point(copy_constructor:Musician)
 }
 
-inline void Musician::SharedCtor() {
-musname_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  musname_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-bio_.InitDefault();
-#ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
-  bio_.Set("", GetArenaForAllocation());
-#endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
-unixdateofbirth_ = int64_t{0};
+inline void Musician::SharedCtor(
+    ::_pb::Arena* arena, bool is_message_owned) {
+  (void)arena;
+  (void)is_message_owned;
+  new (&_impl_) Impl_{
+      decltype(_impl_.memberships_){arena}
+    , decltype(_impl_.musname_){}
+    , decltype(_impl_.bio_){}
+    , decltype(_impl_.unixdateofbirth_){int64_t{0}}
+    , /*decltype(_impl_._cached_size_)*/{}
+  };
+  _impl_.musname_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.musname_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
+  _impl_.bio_.InitDefault();
+  #ifdef PROTOBUF_FORCE_COPY_DEFAULT_STRING
+    _impl_.bio_.Set("", GetArenaForAllocation());
+  #endif // PROTOBUF_FORCE_COPY_DEFAULT_STRING
 }
 
 Musician::~Musician() {
@@ -4884,12 +5073,13 @@ Musician::~Musician() {
 
 inline void Musician::SharedDtor() {
   GOOGLE_DCHECK(GetArenaForAllocation() == nullptr);
-  musname_.Destroy();
-  bio_.Destroy();
+  _impl_.memberships_.~RepeatedPtrField();
+  _impl_.musname_.Destroy();
+  _impl_.bio_.Destroy();
 }
 
 void Musician::SetCachedSize(int size) const {
-  _cached_size_.Set(size);
+  _impl_._cached_size_.Set(size);
 }
 
 void Musician::Clear() {
@@ -4898,10 +5088,10 @@ void Musician::Clear() {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  memberships_.Clear();
-  musname_.ClearToEmpty();
-  bio_.ClearToEmpty();
-  unixdateofbirth_ = int64_t{0};
+  _impl_.memberships_.Clear();
+  _impl_.musname_.ClearToEmpty();
+  _impl_.bio_.ClearToEmpty();
+  _impl_.unixdateofbirth_ = int64_t{0};
   _internal_metadata_.Clear<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>();
 }
 
@@ -4924,7 +5114,7 @@ const char* Musician::_InternalParse(const char* ptr, ::_pbi::ParseContext* ctx)
       // int64 unixDateOfBirth = 2;
       case 2:
         if (PROTOBUF_PREDICT_TRUE(static_cast<uint8_t>(tag) == 16)) {
-          unixdateofbirth_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          _impl_.unixdateofbirth_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else
           goto handle_unusual;
@@ -5033,7 +5223,7 @@ size_t Musician::ByteSizeLong() const {
 
   // repeated .Membership memberships = 4;
   total_size += 1UL * this->_internal_memberships_size();
-  for (const auto& msg : this->memberships_) {
+  for (const auto& msg : this->_impl_.memberships_) {
     total_size +=
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(msg);
   }
@@ -5057,39 +5247,35 @@ size_t Musician::ByteSizeLong() const {
     total_size += ::_pbi::WireFormatLite::Int64SizePlusOne(this->_internal_unixdateofbirth());
   }
 
-  return MaybeComputeUnknownFieldsSize(total_size, &_cached_size_);
+  return MaybeComputeUnknownFieldsSize(total_size, &_impl_._cached_size_);
 }
 
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData Musician::_class_data_ = {
-    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSizeCheck,
+    ::PROTOBUF_NAMESPACE_ID::Message::CopyWithSourceCheck,
     Musician::MergeImpl
 };
 const ::PROTOBUF_NAMESPACE_ID::Message::ClassData*Musician::GetClassData() const { return &_class_data_; }
 
-void Musician::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message* to,
-                      const ::PROTOBUF_NAMESPACE_ID::Message& from) {
-  static_cast<Musician *>(to)->MergeFrom(
-      static_cast<const Musician &>(from));
-}
 
-
-void Musician::MergeFrom(const Musician& from) {
-// @@protoc_insertion_point(class_specific_merge_from_start:Musician)
-  GOOGLE_DCHECK_NE(&from, this);
+void Musician::MergeImpl(::PROTOBUF_NAMESPACE_ID::Message& to_msg, const ::PROTOBUF_NAMESPACE_ID::Message& from_msg) {
+  auto* const _this = static_cast<Musician*>(&to_msg);
+  auto& from = static_cast<const Musician&>(from_msg);
+  // @@protoc_insertion_point(class_specific_merge_from_start:Musician)
+  GOOGLE_DCHECK_NE(&from, _this);
   uint32_t cached_has_bits = 0;
   (void) cached_has_bits;
 
-  memberships_.MergeFrom(from.memberships_);
+  _this->_impl_.memberships_.MergeFrom(from._impl_.memberships_);
   if (!from._internal_musname().empty()) {
-    _internal_set_musname(from._internal_musname());
+    _this->_internal_set_musname(from._internal_musname());
   }
   if (!from._internal_bio().empty()) {
-    _internal_set_bio(from._internal_bio());
+    _this->_internal_set_bio(from._internal_bio());
   }
   if (from._internal_unixdateofbirth() != 0) {
-    _internal_set_unixdateofbirth(from._internal_unixdateofbirth());
+    _this->_internal_set_unixdateofbirth(from._internal_unixdateofbirth());
   }
-  _internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
+  _this->_internal_metadata_.MergeFrom<::PROTOBUF_NAMESPACE_ID::UnknownFieldSet>(from._internal_metadata_);
 }
 
 void Musician::CopyFrom(const Musician& from) {
@@ -5108,16 +5294,16 @@ void Musician::InternalSwap(Musician* other) {
   auto* lhs_arena = GetArenaForAllocation();
   auto* rhs_arena = other->GetArenaForAllocation();
   _internal_metadata_.InternalSwap(&other->_internal_metadata_);
-  memberships_.InternalSwap(&other->memberships_);
+  _impl_.memberships_.InternalSwap(&other->_impl_.memberships_);
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &musname_, lhs_arena,
-      &other->musname_, rhs_arena
+      &_impl_.musname_, lhs_arena,
+      &other->_impl_.musname_, rhs_arena
   );
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr::InternalSwap(
-      &bio_, lhs_arena,
-      &other->bio_, rhs_arena
+      &_impl_.bio_, lhs_arena,
+      &other->_impl_.bio_, rhs_arena
   );
-  swap(unixdateofbirth_, other->unixdateofbirth_);
+  swap(_impl_.unixdateofbirth_, other->_impl_.unixdateofbirth_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata Musician::GetMetadata() const {

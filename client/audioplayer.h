@@ -19,10 +19,13 @@ signals:
 	void decode();
 	void decReset();
 	void processedUSecs(quint64 usecs);
+	void seekDec(int pcm_offset);
 public slots:
 	void writeOpusData(QByteArray opus);
 	void start(bool clear);
 	void stop(bool clear);
+	void seek(int secs);
+	void reset();
 private slots:
 	void handleStateChange(QAudio::State state);
 	void notify();

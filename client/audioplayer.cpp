@@ -57,6 +57,7 @@ AudioPlayer::AudioPlayer(QObject *parent)
 	connect(this, SIGNAL(decode()), decoder, SLOT(decode()));
 	connect(this, SIGNAL(writeOpus(QByteArray)), decoder, SLOT(writeOpus(QByteArray)));
 	connect(this, SIGNAL(decReset()), decoder, SLOT(reset()));
+	connect(this, SIGNAL(seekDec(int)), decoder, SLOT(seek(int)));
 }
 
 void AudioPlayer::handleStateChange(QAudio::State state)
@@ -138,6 +139,18 @@ void AudioPlayer::stop(bool /*clear*/)
 	state = STOPPED;
 	audio->suspend();
 	checkBytesTimer->stop();
+}
+
+void AudioPlayer::seek(int secs)
+{
+	int sample_offset = secs * 48000;
+	buf.clear();
+	emit seekDec(sample_offset);
+}
+
+void AudioPlayer::reset()
+{
+	decoder->isReset = true;
 }
 
 int AudioPlayer::tryWriting()

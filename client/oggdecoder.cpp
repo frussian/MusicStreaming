@@ -32,8 +32,8 @@ int OggDecoder::init(QByteArray data)
 	OpusFileCallbacks cbs;
 	int err;
 
-	cbs.seek = NULL;
-	cbs.tell = NULL;
+	cbs.seek = oggSeek;
+	cbs.tell = oggTell;
 	cbs.read = oggRead;
 	cbs.close = NULL;  //free
 
@@ -41,13 +41,11 @@ int OggDecoder::init(QByteArray data)
 	opus.clear();
 
 	opus.append(data);
-	qDebug() << "init decoder";
-
-	if (dec) {
-		//TODO: free opus or reinit
-	}
+	qDebug() << "init decoder" << data.size();
+	offset = data.size();
 	err = 0;
-	dec = op_open_callbacks(this, &cbs, nullptr, 0, &err);
+	dec = op_open_callbacks(this, &cbs, (const unsigned char*)data.data(), data.size(), &err);
+	inited = true;
 	if (err) qDebug() << "init error" << err;
 	else qDebug() << "success init";
 	op_set_dither_enabled(dec, false);
@@ -70,19 +68,20 @@ int OggDecoder::decode()
 
 	if (!dec) return 0;
 
-	if (availableForDec() == 0) {
+	if (availableForDec() <= 0) {
 //		qDebug() << "not available for decoding";
 		return 0;
 	}
-
+	qDebug() << opus.size() << offset << "avail";
 //	QTimer::singleShot(0, this, &OggDecoder::decode);  //for continuous decoding
 
 	r = op_read_stereo(dec, pcm, n);
+	qDebug() << "read" << r;
 	if (r < 0) {
 		qDebug() << "error" << r;
 		return -1;
 	} else if (r == 0) {
-		qDebug() << "end";
+//		qDebug() << "end";
 		return 0;
 	}
 
@@ -97,7 +96,18 @@ int OggDecoder::decode()
 
 int OggDecoder::writeOpus(QByteArray newOpus)
 {
-//	qDebug() << "opus size" << opus.size();
+	qDebug() << "opus size" << opus.size() << opusTmp.size();
+	if (isReset) {
+		opusTmp.append(newOpus);
+		return 0;
+	}
+
+	if (opusTmp.size() != 0) {
+		opusTmp.append(newOpus);
+		init(opusTmp);
+		opusTmp.clear();
+		return 0;
+	}
 
 	if (opus.size() == 0) {
 		init(newOpus);
@@ -111,31 +121,62 @@ int OggDecoder::writeOpus(QByteArray newOpus)
 
 void OggDecoder::reset()
 {
+	qDebug() << "reset";
 	opus.clear();
 	if (dec) op_free(dec);
 	dec = nullptr;
 	offset = 0;
+	isReset = false;
+}
+
+void OggDecoder::seek(int sample_offset)
+{
+	op_pcm_seek(dec, sample_offset);
 }
 
 int OggDecoder::oggRead(void *ptr, unsigned char *data, int len)
 {
 	OggDecoder *decoder = (OggDecoder*)ptr;
-//	qDebug() << "reading" << len;
+	qDebug() << "reading" << decoder->offset <<  len;
 	int offset = decoder->offset;
 	int size = decoder->opus.size();
 	unsigned char *opus = (unsigned char*)decoder->opus.data();
 
-	if (offset == size) return 0;
+	if (offset == size) {
+		qDebug() << "offset == size";
+		return 0;
+	}
 
 	if (offset + len > size) {
 		len = size - offset;
 	}
-
+	if (len == 0) {
+		qDebug() << "len 0";
+	}
 	memcpy(data, opus + offset, len);
 	decoder->offset += len;
 
 	return len;
 }
 
+int OggDecoder::oggSeek(void *stream, int64_t offset, int whence)
+{
+	OggDecoder *decoder = (OggDecoder*)stream;
+	qDebug() << "offset" << offset << "whence" << whence;
+	if (whence == SEEK_SET) {
+		decoder->offset = offset;
+	} else if (whence == SEEK_END) {
+		decoder->offset = decoder->opus.size() + offset;
+	} else {
+		decoder->offset += offset;
+	}
 
+	return 0;
+}
 
+int64_t OggDecoder::oggTell(void *stream)
+{
+	OggDecoder *decoder = (OggDecoder*)stream;
+	qDebug() << "tell" << decoder->offset;
+	return decoder->offset;
+}

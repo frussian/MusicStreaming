@@ -28,8 +28,10 @@ signals:
 	void simpleRequestParser(uint64_t reqId, QString name, enum EntityType type);
 	void streamRequestParser(uint64_t reqId, QString name, uint32_t size, enum EntityType type);
 	void cancelStreamRequestParser(uint64_t reqId);
+
 	void startPlayer(bool clear);
 	void stopPlayer(bool clear);
+	void seekPlayer(int secs);
 private slots:
 	void clicked();
 	void tableClicked(int row, int column);
@@ -42,6 +44,7 @@ private slots:
 	void reqFailed(uint64_t reqId);
 	void playPressed(bool checked);
 	void processedUSecs(quint64);
+	void sliderChanged();
 //	void simpleAns(uint64_t reqId, SimpleAns ans);
 //	void streamAns(uint64_t reqId, StreamAns ans);
 private:
@@ -75,13 +78,20 @@ private:
 	QGroupBox *searchGroup;
 	QGroupBox *playGroup;
 	QLineEdit *searchEdit;
+
 	QPushButton *songNameBtn;
 	QPushButton *bandNameBtn;
+	QPushButton *currTimeBtn;
+	QPushButton *endTimeBtn;
 	QSlider *playSlider;
 //	QGroupBox *playGroup;
+
 	QStackedWidget *tables;
 	uint64_t reqId = 1;
+
 	uint64_t currSongReqId = 0;
+	int currSongSecs = 0;
+
 	QMap<uint64_t, Req> requests;
 	NetworkParser *parser;
 	AudioPlayer *player;

@@ -57,8 +57,10 @@ MainWidget::MainWidget(QThread *th, QWidget *parent) : QWidget(parent)
 
 	connect(this, &MainWidget::startPlayer, player, &AudioPlayer::start);
 	connect(this, &MainWidget::stopPlayer, player, &AudioPlayer::stop);
+	connect(player, &AudioPlayer::processedUSecs, this, &MainWidget::processedUSecs);
+	connect(this, &MainWidget::seekPlayer, player, &AudioPlayer::seek);
 
-	emit connectToHost("192.168.1.30", 3018);
+	emit connectToHost("127.0.0.1", 3018);
 
 //	bool connected = parser->connectToHost("192.168.1.30", 3018);
 //	if (!connected) {
@@ -149,6 +151,7 @@ void MainWidget::setupPlayArea(QString stylesheet)
 //	progress->setStyleSheet(customStyleSheet);
 //	playLay->addWidget(progress);
 	playSlider = new QSlider(Qt::Horizontal);
+	connect(playSlider, &QSlider::sliderReleased, this, &MainWidget::sliderChanged);
 	playSlider->setMinimum(0);
 	playSlider->setMaximum(100);
 	playSlider->setValue(0);
@@ -175,11 +178,23 @@ void MainWidget::setupPlayArea(QString stylesheet)
 	songInfoLay->addWidget(songNameBtn);
 	songInfoLay->addWidget(bandNameBtn);
 	songInfoLay->addStretch();
+
+	currTimeBtn = new QPushButton;
+	currTimeBtn->setProperty("isFlat", true);
+	currTimeBtn->setStyleSheet("QPushButton { border: none; }");
+
+	endTimeBtn = new QPushButton;
+	endTimeBtn->setProperty("isFlat", true);
+	endTimeBtn->setStyleSheet("QPushButton { border: none; }");
+
+	QLabel endLbl("end");
 //	bandNameBtn->setStyleSheet("QPushButton { border: none; }");
 
-	playLay->addWidget(playBtn, 0, 1);
+	playLay->addWidget(playBtn, 0, 2);
 	playLay->setAlignment(playBtn, Qt::AlignCenter);
-	playLay->addWidget(playSlider, 1, 1);
+	playLay->addWidget(playSlider, 1, 2);
+	playLay->addWidget(currTimeBtn, 1, 1);
+	playLay->addWidget(endTimeBtn, 1, 3);
 	playLay->addLayout(songInfoLay, 0, 0, 2, 1);
 
 	playGroup->setLayout(playLay);
@@ -198,7 +213,25 @@ void MainWidget::playPressed(bool checked)
 
 void MainWidget::processedUSecs(quint64 usecs)
 {
+	int secs = usecs / 1000000;
+	playSlider->setValue(secs / (float)currSongSecs*100);
+	QTime curr = QTime(0, 0, 0, 0).addSecs(secs);
+	currTimeBtn->setText(curr.toString("mm:ss"));
+	qDebug() << secs << secs / (float)currSongSecs*100;
+}
 
+void MainWidget::sliderChanged()
+{
+	qDebug() << playSlider->value();
+	QString timeStr = endTimeBtn->text();
+	QTime time = QTime::fromString(timeStr, "mm:ss");
+	int endSecs = time.minute() * 60 + time.second();
+
+	int val = playSlider->value();
+	int secs = val / 100.f * endSecs;
+	emit seekPlayer(secs);
+	qDebug() << secs << endSecs;
+	//TODO: set offset and add later to elapsed seconds
 }
 
 void MainWidget::setupTables()
@@ -336,15 +369,21 @@ void MainWidget::tableClicked(int row, int col)
 		QTableWidgetItem *item = table->item(row, 0);
 		if (!item) return;
 		QVariant var = item->data(Qt::DisplayRole);
-		QString song = var.toString();
-
+		QString songName = var.toString();
+		Song song = item->data(dataRole).value<Song>();
+		currSongSecs = song.lengthsec();
 		item = table->item(row, 2);
 		QString band = item->data(Qt::DisplayRole).toString();
 
-		streamRequest(song, 8192, EntityType::SONG);
+		player->reset();  //in different thread
 		emit startPlayer(true);
-		songNameBtn->setText(song);
+		streamRequest(songName, 8000, EntityType::SONG);
+		songNameBtn->setText(songName);
 		bandNameBtn->setText(band);
+		currTimeBtn->setText("0:00");
+		QTime length = QTime(0, 0, 0, 0).addSecs(song.lengthsec());
+		endTimeBtn->setText(length.toString("mm:ss"));
+
 	}
 	}
 }
