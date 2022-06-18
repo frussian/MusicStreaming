@@ -36,6 +36,7 @@ private:
 		NOT_ACTIVE,
 		STOPPED,
 		ACTIVE,
+		NO_MORE_DATA
 	};
 
 	int tryWriting();

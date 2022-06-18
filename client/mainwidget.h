@@ -62,11 +62,12 @@ signals:
 	void stopPlayer(bool clear);
 	void seekPlayer(int secs);
 private slots:
-	void processSongClick(Song &song, QString band);
-	void albumSongsTableClicked(int row, int col);
+	ClickableLabel *getLabel(int typeId, QString text);
+	void processSongClick(Song &song);
+//	void albumSongsTableClicked(int row, int col);
 	void clickedReq(int typeId, QString text);
 	void clickedLeftPanel();
-	void tableClicked(int row, int column);
+//	void tableClicked(int row, int column);
 	void tableScrolled(int value);
 	void searchChanged(QString filter);
 	void tableAns(uint64_t reqId, TableAns ans);

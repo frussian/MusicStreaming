@@ -68,7 +68,10 @@ void AudioPlayer::handleStateChange(QAudio::State state)
 				// Finished playing (no more data)
 //				audio->stop();
 //				delete audio;
-		qDebug() << "Idle";
+		if (this->state == NO_MORE_DATA) {
+			checkBytesTimer->stop();
+			this->state = NOT_ACTIVE;
+		}
 //		decode();
 		break;
 		case QAudio::StoppedState:
@@ -78,6 +81,8 @@ void AudioPlayer::handleStateChange(QAudio::State state)
 			if (audio->error() != QAudio::NoError) {
 				// Error handling
 				qDebug() << audio->error();
+			} else {
+
 			}
 			break;
 		default:
@@ -100,7 +105,7 @@ void AudioPlayer::checkBytes()
 //		qDebug() << "decoding";
 		emit decode();
 		QTimer::singleShot(0, this, SLOT(checkBytes()));
-	} else {
+	} else if (state != STOPPED && state != NOT_ACTIVE) {
 //		qDebug() << "enough bytes";
 		emit processedUSecs(audio->processedUSecs());
 	}
@@ -109,7 +114,11 @@ void AudioPlayer::checkBytes()
 void AudioPlayer::writeToBuf(QByteArray pcm)
 {
 //	qDebug() << pcm.length();
-	buf.append(pcm);
+	if (pcm.isEmpty()) {
+		state = NO_MORE_DATA;
+	} else {
+		buf.append(pcm);
+	}
 	tryWriting();
 }
 

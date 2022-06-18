@@ -25,6 +25,7 @@
 
 #define BAND_CLICK_ID 0
 #define ALBUM_CLICK_ID 1
+#define SONG_CLICK_ID 2
 
 #define BAND_TABLE_ID 0
 #define ALBUM_TABLE_ID 1
@@ -133,9 +134,6 @@ void MainWidget::initUI()
 	mainPage = new QStackedWidget;
 	setupTables();
 	setupPages();
-	for (auto w: mainPage->widget(BAND_PAGE_ID)->findChildren<QGroupBox*>()) {
-		qDebug() << "child" << w;
-	}
 	mainPage->setCurrentIndex(BAND_TABLE_ID);
 	lay->addWidget(mainPage, 1, 1);
 
@@ -250,10 +248,8 @@ void MainWidget::setupPlayArea(QString stylesheet)
 void MainWidget::playPressed(bool checked)
 {
 	if (!checked) {
-		qDebug() << "start";
 		emit startPlayer(false);
 	} else {
-		qDebug() << "stop";
 		emit stopPlayer(false);
 	}
 }
@@ -322,7 +318,7 @@ void MainWidget::setupTables()
 	for (int i = 0; i < 4; i++) {
 		QTableWidget *w = dynamic_cast<QTableWidget*>(mainPage->widget(i));
 		w->setProperty("index", i);
-		connect(w, &QTableWidget::cellDoubleClicked, this, &MainWidget::tableClicked);
+//		connect(w, &QTableWidget::cellDoubleClicked, this, &MainWidget::tableClicked);
 		w->verticalScrollBar()->setProperty("index", i);
 		connect(w->verticalScrollBar(), &QScrollBar::valueChanged,
 				this, &MainWidget::tableScrolled);
@@ -434,7 +430,7 @@ void MainWidget::setupAlbumPage()
 	songs->setHorizontalHeaderLabels(cols);
 	songs->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 	songs->setEditTriggers(QAbstractItemView::NoEditTriggers);
-	connect(songs, &QTableWidget::cellDoubleClicked, this, &MainWidget::albumSongsTableClicked);
+//	connect(songs, &QTableWidget::cellDoubleClicked, this, &MainWidget::albumSongsTableClicked);
 
 	lay->addWidget(songs);
 
@@ -488,7 +484,14 @@ void MainWidget::streamRequest(QString name, uint32_t size, enum EntityType type
 	reqId++;
 }
 
-void MainWidget::processSongClick(Song &song, QString band)
+ClickableLabel *MainWidget::getLabel(int typeId, QString text)
+{
+	ClickableLabel *l = new ClickableLabel(typeId, text);
+	connect(l, &ClickableLabel::clicked, this, &MainWidget::clickedReq);
+	return l;
+}
+
+void MainWidget::processSongClick(Song &song)
 {
 	QString songName = QString::fromStdString(song.songname());
 	currSongSecs = song.lengthsec();
@@ -499,29 +502,30 @@ void MainWidget::processSongClick(Song &song, QString band)
 	streamRequest(songName, 8000, EntityType::SONG);
 #endif
 	songNameLbl->setText(songName);
-	bandNameLbl->setText(band);
+	bandNameLbl->setText(QString::fromStdString(song.bandname()));
 	currTimeBtn->setText("0:00");
 	QTime length = QTime(0, 0, 0, 0).addSecs(song.lengthsec());
 	endTimeBtn->setText(length.toString("mm:ss"));
 
 }
 
-void MainWidget::albumSongsTableClicked(int row, int col)
-{
-	if (col != 0) return;
-	QTableWidget *songs = dynamic_cast<QTableWidget*>(sender());
-	if (!songs) return;
+//void MainWidget::albumSongsTableClicked(int row, int col)
+//{
+//	if (col != 0) return;
+//	QTableWidget *songs = dynamic_cast<QTableWidget*>(sender());
+//	if (!songs) return;
 
-	QTableWidgetItem *item = songs->item(row, 0);
-	if (!item) return;
-	Song song = item->data(dataRole).value<Song>();
-	QString band = QString::fromStdString(song.bandname());
-	processSongClick(song, band);
-}
+//	QTableWidgetItem *item = songs->item(row, 0);
+//	if (!item) return;
+//	Song song = item->data(dataRole).value<Song>();
+//	QString band = QString::fromStdString(song.bandname());
+//	processSongClick(song, band);
+//}
 
 void MainWidget::clickedReq(int typeId, QString text)
 {
-	qDebug() << "clicked req" << typeId << text;
+	qDebug() << text << typeId;
+
 	switch (typeId) {
 	case BAND_CLICK_ID: {
 		simpleRequest(text, EntityType::BAND);
@@ -529,6 +533,17 @@ void MainWidget::clickedReq(int typeId, QString text)
 	}
 	case ALBUM_CLICK_ID: {
 		simpleRequest(text, EntityType::ALBUM);
+		break;
+	}
+	case SONG_CLICK_ID: {
+		ClickableLabel *lbl = dynamic_cast<ClickableLabel*>(sender());
+		if (!lbl) return;
+
+		Song song = lbl->property("song").value<Song>();
+		qDebug() << QString::fromStdString(song.songname()) <<
+					QString::fromStdString(song.bandname());
+		QString band = QString::fromStdString(song.bandname());
+		processSongClick(song);
 		break;
 	}
 	}
@@ -546,44 +561,44 @@ void MainWidget::clickedLeftPanel()
 //	requestTable(0, 5, filter, EntityType(id));
 }
 
-void MainWidget::tableClicked(int row, int col)
-{
-	QObject *obj = sender();
-	int id = obj->property("index").toInt();
-	QTableWidget *table = dynamic_cast<QTableWidget*>(mainPage->widget(id));
+//void MainWidget::tableClicked(int row, int col)
+//{
+//	QObject *obj = sender();
+//	int id = obj->property("index").toInt();
+//	QTableWidget *table = dynamic_cast<QTableWidget*>(mainPage->widget(id));
 
-	switch (id) {
-	case BAND_TABLE_ID: {
-		if (col != 0) return;
-		QTableWidgetItem *item = table->item(row, 0);
-		if (!item) return;
-//		QVariant var = item->data(dataRole);
-//		Band b = var.value<Band>();
-//		mainPage->setCurrentIndex(BAND_PAGE_ID);
-		QString band = item->data(Qt::DisplayRole).toString();
-		simpleRequest(band, EntityType::BAND);
-		break;
-	}
-	case SONG_TABLE_ID: {
-		if (col != 0) return;
-		QTableWidgetItem *item = table->item(row, 0);
-		if (!item) return;
-		Song song = item->data(dataRole).value<Song>();
-		item = table->item(row, 2);
-		QString band = item->data(Qt::DisplayRole).toString();
-		processSongClick(song, band);
-		break;
-	}
-	case ALBUM_TABLE_ID: {
-		if (col != 0) return;
-		QTableWidgetItem *item = table->item(row, 0);
-		if (!item) return;
-		QString album = item->data(Qt::DisplayRole).toString();
-		clickedReq(ALBUM_CLICK_ID, album);
-		break;
-	}
-	}
-}
+//	switch (id) {
+//	case BAND_TABLE_ID: {
+//		if (col != 0) return;
+//		QTableWidgetItem *item = table->item(row, 0);
+//		if (!item) return;
+////		QVariant var = item->data(dataRole);
+////		Band b = var.value<Band>();
+////		mainPage->setCurrentIndex(BAND_PAGE_ID);
+//		QString band = item->data(Qt::DisplayRole).toString();
+//		simpleRequest(band, EntityType::BAND);
+//		break;
+//	}
+//	case SONG_TABLE_ID: {
+//		if (col != 0) return;
+//		QTableWidgetItem *item = table->item(row, 0);
+//		if (!item) return;
+//		Song song = item->data(dataRole).value<Song>();
+//		item = table->item(row, 2);
+//		QString band = item->data(Qt::DisplayRole).toString();
+//		processSongClick(song, band);
+//		break;
+//	}
+//	case ALBUM_TABLE_ID: {
+//		if (col != 0) return;
+//		QTableWidgetItem *item = table->item(row, 0);
+//		if (!item) return;
+//		QString album = item->data(Qt::DisplayRole).toString();
+//		clickedReq(ALBUM_CLICK_ID, album);
+//		break;
+//	}
+//	}
+//}
 
 void MainWidget::tableScrolled(int value)
 {
@@ -601,7 +616,8 @@ void MainWidget::scrollTable(int id)
 	int last = 0;
 	for (int i = 0; i < table->rowCount(); i++) {
 		int pos = table->rowViewportPosition(i);
-		if (0 <= pos && pos <= h && !table->item(i, 0)) {
+		if (0 <= pos && pos <= h &&
+				(!table->cellWidget(i, 0) && !table->item(i, 0))) {
 			if (first == -1) {
 				first = i;
 			}
@@ -648,12 +664,15 @@ void MainWidget::handleBandInsertion(Req &req, TableAns *ans)
 		Band band = ans->bands(i);
 
 		const std::string &name = band.bandname();
-		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(name));
-		item->setData(dataRole, QVariant::fromValue(band));
-		bands->setItem(i+req.first, 0, item);
+//		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(name));
+//		item->setData(dataRole, QVariant::fromValue(band));
+//		bands->setItem(i+req.first, 0, item);
+		ClickableLabel *lbl = getLabel(BAND_CLICK_ID,
+									   QString::fromStdString(name));
+		bands->setCellWidget(i+req.first, 0, lbl);
 
 		QString genre = getGenre(band.genre());
-		item = new QTableWidgetItem(genre);
+		QTableWidgetItem *item = new QTableWidgetItem(genre);
 		bands->setItem(i+req.first, 1, item);
 
 		int64_t unix = band.unixfounddate();
@@ -675,17 +694,23 @@ void MainWidget::handleAlbumInsertion(Req &req, TableAns *ans)
 {
 	QTableWidget *albums = dynamic_cast<QTableWidget*>(mainPage->widget(ALBUM_TABLE_ID));
 //	albums->clearContents();
+	QTableWidgetItem *item;
 	for (int i = 0; i < ans->albums_size(); i++) {
 		Album album = ans->albums(i);
 
 		const std::string &albumname = album.title();
-		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(albumname));
-		item->setData(dataRole, QVariant::fromValue(album));
-		albums->setItem(i+req.first, 0, item);
-
+//		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(albumname));
+//		item->setData(dataRole, QVariant::fromValue(album));
+//		albums->setItem(i+req.first, 0, item);
+		ClickableLabel *lbl = getLabel(ALBUM_CLICK_ID,
+									   QString::fromStdString(albumname));
+		lbl->setProperty("album", QVariant::fromValue(album));
+		albums->setCellWidget(i+req.first, 0, lbl);
 		const std::string &bandname = album.bandname();
-		item = new QTableWidgetItem(QString::fromStdString(bandname));
-		albums->setItem(i+req.first, 1, item);
+//		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(bandname));
+//		albums->setItem(i+req.first, 1, item);
+		lbl = getLabel(BAND_CLICK_ID, QString::fromStdString(bandname));
+		albums->setCellWidget(i+req.first, 1, lbl);
 
 		int64_t unix = album.unixreleasedate();
 		if (unix) {
@@ -703,22 +728,30 @@ void MainWidget::handleAlbumInsertion(Req &req, TableAns *ans)
 void MainWidget::handleSongInsertion(Req &req, TableAns *ans)
 {
 	QTableWidget *songs = dynamic_cast<QTableWidget*>(mainPage->widget(SONG_TABLE_ID));
-//	songs->clearContents();
+	QTableWidgetItem *item;
 	for (int i = 0; i < ans->songs_size(); i++) {
 		Song song = ans->songs(i);
 
 		const std::string &songname = song.songname();
-		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(songname));
-		item->setData(dataRole, QVariant::fromValue(song));
-		songs->setItem(i+req.first, 0, item);
+//		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(songname));
+//		item->setData(dataRole, QVariant::fromValue(song));
+//		songs->setItem(i+req.first, 0, item);
+		ClickableLabel *lbl = getLabel(SONG_CLICK_ID,
+									   QString::fromStdString(songname));
+		lbl->setProperty("song", QVariant::fromValue(song));
+		songs->setCellWidget(i+req.first, 0, lbl);
 
 		const std::string &albumname = song.albumname();
-		item = new QTableWidgetItem(QString::fromStdString(albumname));
-		songs->setItem(i+req.first, 1, item);
+//		item = new QTableWidgetItem(QString::fromStdString(albumname));
+//		songs->setItem(i+req.first, 1, item);
+		lbl = getLabel(ALBUM_CLICK_ID, QString::fromStdString(albumname));
+		songs->setCellWidget(i+req.first, 1, lbl);
 
 		const std::string &bandname = song.bandname();
-		item = new QTableWidgetItem(QString::fromStdString(bandname));
-		songs->setItem(i+req.first, 2, item);
+//		item = new QTableWidgetItem(QString::fromStdString(bandname));
+		lbl = getLabel(BAND_CLICK_ID, QString::fromStdString(bandname));
+//		songs->setItem(i+req.first, 2, item);
+		songs->setCellWidget(i+req.first, 2, lbl);
 
 		QTime length = QTime(0, 0, 0, 0).addSecs(song.lengthsec());
 		item = new QTableWidgetItem(length.toString("mm:ss"));
@@ -729,7 +762,7 @@ void MainWidget::handleSongInsertion(Req &req, TableAns *ans)
 void MainWidget::handleConcertInsertion(Req &req, TableAns *ans)
 {
 	QTableWidget *concerts = dynamic_cast<QTableWidget*>(mainPage->widget(CONCERT_TABLE_ID));
-//	songs->clearContents();
+
 	for (int i = 0; i < ans->concerts_size(); i++) {
 		Concert concert = ans->concerts(i);
 
@@ -774,11 +807,9 @@ void MainWidget::handleBandPageInsertion(SimpleAns *ans)
 	label->adjustSize();
 
 	box = boxes.at(1);
-	qDebug() << box->title();
 	QString bandName = QString::fromStdString(band.bandname());
 	QHBoxLayout *lay = nullptr;
 	QVBoxLayout *vlay = dynamic_cast<QVBoxLayout*>(box->layout());
-	qDebug() << vlay << vlay->children().size();
 
 	QLayoutItem *item1, *item2;
 
@@ -905,13 +936,16 @@ void MainWidget::handleAlbumPageInsertion(SimpleAns *ans)
 		Song song = album.songs(i);
 
 		const std::string &songname = song.songname();
-		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(songname));
-		item->setData(dataRole, QVariant::fromValue(song));
-		songs->setItem(i, 0, item);
-		qDebug() << QString::fromStdString(song.bandname());
+//		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(songname));
+//		item->setData(dataRole, QVariant::fromValue(song));
+//		songs->setItem(i, 0, item);
+		ClickableLabel *lbl = getLabel(SONG_CLICK_ID,
+									   QString::fromStdString(songname));
+		lbl->setProperty("song", QVariant::fromValue(song));
+		songs->setCellWidget(i, 0, lbl);
 
 		QTime length = QTime(0, 0, 0, 0).addSecs(song.lengthsec());
-		item = new QTableWidgetItem(length.toString("mm:ss"));
+		QTableWidgetItem *item = new QTableWidgetItem(length.toString("mm:ss"));
 		songs->setItem(i, 1, item);
 	}
 
@@ -969,7 +1003,7 @@ void MainWidget::tableAns(uint64_t reqId, TableAns ans)
 
 	QTableWidget *table = dynamic_cast<QTableWidget*>(mainPage->widget(id));
 	int last = table->rowCount()-1;
-	if (table->item(last, 0)) {
+	if (table->cellWidget(last, 0) || table->item(last, 0)) {
 		table->setRowCount(last+1+TABLE_GROW);
 		scrollTable(id);  //load new rows if visible
 	}
@@ -980,6 +1014,7 @@ void MainWidget::simpleAns(uint64_t reqId, SimpleAns ans)
 {
 	requests.remove(reqId);
 	auto type = ans.msg_case();
+	qDebug() << "simpleAns" << type;
 	switch (type) {
 	case SimpleAns::kBand: {
 		const Band &band = ans.band();
