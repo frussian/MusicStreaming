@@ -53,7 +53,10 @@ func handleSimpleReq(conn *Conn, req *proto.SimpleReq) *proto.SimpleAns {
 	switch req.Type {
 	case proto.EntityType_BAND:
 		ans.Msg = dbSimpleBandReq(conn, req.ReqString)
+	case proto.EntityType_ALBUM:
+		ans.Msg = dbSimpleAlbumReq(conn, req.ReqString)
 	}
+
 
 	return ans
 }

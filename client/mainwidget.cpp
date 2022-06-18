@@ -23,30 +23,33 @@
 
 #include <iostream>
 
+#define BAND_CLICK_ID 0
+#define ALBUM_CLICK_ID 1
+
 #define BAND_TABLE_ID 0
 #define ALBUM_TABLE_ID 1
 #define SONG_TABLE_ID 2
 #define CONCERT_TABLE_ID 3
 #define BAND_PAGE_ID 4
+#define ALBUM_PAGE_ID 5
 
 #define TABLE_GROW 3
 
 int MainWidget::dataRole = Qt::UserRole + 1;
 
-ClickableLabel::ClickableLabel(QString text, QWidget *parent):
-	QLabel(text, parent)
+ClickableLabel::ClickableLabel(int typeId, QString text, QWidget *parent):
+	QLabel(text, parent), typeId(typeId)
 {
 	setCursor(Qt::PointingHandCursor);
 }
 
 void ClickableLabel::mousePressEvent(QMouseEvent *evt)
 {
-	if (evt->flags() & Qt::MouseEventCreatedDoubleClick) {
-		emit clicked();
-	}
+	emit clicked(typeId, text());
 }
 
-AlbumView::AlbumView(QString name, QString band, int nsongs)
+AlbumView::AlbumView(QString name, QString band, int nsongs):
+	title(name)
 {
 	QVBoxLayout *lay = new QVBoxLayout;
 	setLayout(lay);
@@ -67,9 +70,7 @@ AlbumView::~AlbumView()
 
 void AlbumView::mousePressEvent(QMouseEvent *evt)
 {
-	if (evt->flags() & Qt::MouseEventCreatedDoubleClick) {
-		emit clicked();
-	}
+	emit clicked(ALBUM_CLICK_ID, title);
 }
 
 MainWidget::MainWidget(QThread *th, QWidget *parent) : QWidget(parent)
@@ -135,7 +136,7 @@ void MainWidget::initUI()
 	for (auto w: mainPage->widget(BAND_PAGE_ID)->findChildren<QGroupBox*>()) {
 		qDebug() << "child" << w;
 	}
-	mainPage->setCurrentIndex(BAND_PAGE_ID);
+	mainPage->setCurrentIndex(BAND_TABLE_ID);
 	lay->addWidget(mainPage, 1, 1);
 
 	playGroup = new QGroupBox;
@@ -165,10 +166,10 @@ void MainWidget::setupLeftPanel()
 	songs->setProperty("index", SONG_TABLE_ID);
 	concerts->setProperty("index", CONCERT_TABLE_ID);
 
-	connect(bands, &QPushButton::clicked, this, &MainWidget::clicked);
-	connect(albums, &QPushButton::clicked, this, &MainWidget::clicked);
-	connect(songs, &QPushButton::clicked, this, &MainWidget::clicked);
-	connect(concerts, &QPushButton::clicked, this, &MainWidget::clicked);
+	connect(bands, &QPushButton::clicked, this, &MainWidget::clickedLeftPanel);
+	connect(albums, &QPushButton::clicked, this, &MainWidget::clickedLeftPanel);
+	connect(songs, &QPushButton::clicked, this, &MainWidget::clickedLeftPanel);
+	connect(concerts, &QPushButton::clicked, this, &MainWidget::clickedLeftPanel);
 //	connect(concerts, &QPushButton::clicked, [this](bool) {
 //		this->tables->setCurrentIndex(0);
 //	});
@@ -218,13 +219,11 @@ void MainWidget::setupPlayArea(QString stylesheet)
 	connect(playBtn, &QPushButton::toggled, this, &MainWidget::playPressed);
 
 	QVBoxLayout *songInfoLay = new QVBoxLayout;
-	songNameBtn = new QPushButton("");
-	songNameBtn->setProperty("isFlat", true);
-	songNameBtn->setStyleSheet("QPushButton { border: none; }");
-	bandNameBtn = new QPushButton("");
-	bandNameBtn->setFlat(true);
-	songInfoLay->addWidget(songNameBtn);
-	songInfoLay->addWidget(bandNameBtn);
+	songNameLbl = new QLabel("");
+	bandNameLbl = new ClickableLabel(BAND_CLICK_ID, "");
+	connect(bandNameLbl, &ClickableLabel::clicked, this, &MainWidget::clickedReq);
+	songInfoLay->addWidget(songNameLbl);
+	songInfoLay->addWidget(bandNameLbl);
 	songInfoLay->addStretch();
 
 	currTimeBtn = new QPushButton;
@@ -336,6 +335,8 @@ void MainWidget::setupTables()
 void MainWidget::setupPages()
 {
 	setupBandPage();
+	setupAlbumPage();
+
 }
 
 void MainWidget::setupBandPage()
@@ -404,6 +405,42 @@ void MainWidget::setupBandPage()
 	mainPage->addWidget(area);
 }
 
+void MainWidget::setupAlbumPage()
+{
+	QVBoxLayout *lay = new QVBoxLayout;
+	QWidget *page = new QWidget;
+	page->setLayout(lay);
+
+	QHBoxLayout *hlay = new QHBoxLayout;
+
+	ClickableLabel *clbl = new ClickableLabel(BAND_CLICK_ID);
+	clbl->setObjectName("band");
+	connect(clbl, &ClickableLabel::clicked, this, &MainWidget::clickedReq);
+	hlay->addWidget(clbl);
+
+	QLabel *lbl = new QLabel;
+	lbl->setObjectName("album");
+	hlay->addWidget(lbl);
+
+	lbl = new QLabel;
+	lbl->setObjectName("date");
+	hlay->addWidget(lbl);
+
+	lay->addLayout(hlay);
+
+	QStringList cols;
+	cols << "Name" << "Length";
+	QTableWidget *songs = new QTableWidget(0, cols.size());
+	songs->setHorizontalHeaderLabels(cols);
+	songs->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+	songs->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	connect(songs, &QTableWidget::cellDoubleClicked, this, &MainWidget::albumSongsTableClicked);
+
+	lay->addWidget(songs);
+
+	mainPage->addWidget(page);
+}
+
 void MainWidget::requestTable(int first, int last,
 							 QString filter, enum EntityType type)
 {
@@ -451,7 +488,53 @@ void MainWidget::streamRequest(QString name, uint32_t size, enum EntityType type
 	reqId++;
 }
 
-void MainWidget::clicked()
+void MainWidget::processSongClick(Song &song, QString band)
+{
+	QString songName = QString::fromStdString(song.songname());
+	currSongSecs = song.lengthsec();
+
+	player->reset();  //in different thread
+	emit startPlayer(true);
+#if RANGE_REQUESTS_FOR_SONGS == 0
+	streamRequest(songName, 8000, EntityType::SONG);
+#endif
+	songNameLbl->setText(songName);
+	bandNameLbl->setText(band);
+	currTimeBtn->setText("0:00");
+	QTime length = QTime(0, 0, 0, 0).addSecs(song.lengthsec());
+	endTimeBtn->setText(length.toString("mm:ss"));
+
+}
+
+void MainWidget::albumSongsTableClicked(int row, int col)
+{
+	if (col != 0) return;
+	QTableWidget *songs = dynamic_cast<QTableWidget*>(sender());
+	if (!songs) return;
+
+	QTableWidgetItem *item = songs->item(row, 0);
+	if (!item) return;
+	Song song = item->data(dataRole).value<Song>();
+	QString band = QString::fromStdString(song.bandname());
+	processSongClick(song, band);
+}
+
+void MainWidget::clickedReq(int typeId, QString text)
+{
+	qDebug() << "clicked req" << typeId << text;
+	switch (typeId) {
+	case BAND_CLICK_ID: {
+		simpleRequest(text, EntityType::BAND);
+		break;
+	}
+	case ALBUM_CLICK_ID: {
+		simpleRequest(text, EntityType::ALBUM);
+		break;
+	}
+	}
+}
+
+void MainWidget::clickedLeftPanel()
 {
 	QObject *obj = sender();
 	int id = obj->property("index").toInt();
@@ -468,7 +551,6 @@ void MainWidget::tableClicked(int row, int col)
 	QObject *obj = sender();
 	int id = obj->property("index").toInt();
 	QTableWidget *table = dynamic_cast<QTableWidget*>(mainPage->widget(id));
-	auto item = table->item(row, col);
 
 	switch (id) {
 	case BAND_TABLE_ID: {
@@ -486,24 +568,19 @@ void MainWidget::tableClicked(int row, int col)
 		if (col != 0) return;
 		QTableWidgetItem *item = table->item(row, 0);
 		if (!item) return;
-		QVariant var = item->data(Qt::DisplayRole);
-		QString songName = var.toString();
 		Song song = item->data(dataRole).value<Song>();
-		currSongSecs = song.lengthsec();
 		item = table->item(row, 2);
 		QString band = item->data(Qt::DisplayRole).toString();
-
-		player->reset();  //in different thread
-		emit startPlayer(true);
-#if RANGE_REQUESTS_FOR_SONGS == 0
-		streamRequest(songName, 8000, EntityType::SONG);
-#endif
-		songNameBtn->setText(songName);
-		bandNameBtn->setText(band);
-		currTimeBtn->setText("0:00");
-		QTime length = QTime(0, 0, 0, 0).addSecs(song.lengthsec());
-		endTimeBtn->setText(length.toString("mm:ss"));
-
+		processSongClick(song, band);
+		break;
+	}
+	case ALBUM_TABLE_ID: {
+		if (col != 0) return;
+		QTableWidgetItem *item = table->item(row, 0);
+		if (!item) return;
+		QString album = item->data(Qt::DisplayRole).toString();
+		clickedReq(ALBUM_CLICK_ID, album);
+		break;
 	}
 	}
 }
@@ -726,6 +803,7 @@ void MainWidget::handleBandPageInsertion(SimpleAns *ans)
 		}
 		AlbumView *album = new AlbumView(QString::fromStdString(band.albumnames(i)),
 										 bandName);
+		connect(album, &AlbumView::clicked, this, &MainWidget::clickedReq);
 		lay->addWidget(album);
 	}
 
@@ -786,6 +864,58 @@ void MainWidget::handleBandPageInsertion(SimpleAns *ans)
 	QScrollArea *area = dynamic_cast<QScrollArea*>(mainPage->widget(BAND_PAGE_ID));
 	area->widget()->adjustSize();
 	mainPage->setCurrentIndex(BAND_PAGE_ID);
+}
+
+void MainWidget::handleAlbumPageInsertion(SimpleAns *ans)
+{
+	QWidget *widget = mainPage->widget(ALBUM_PAGE_ID);
+	Album album = ans->album();
+	ClickableLabel *clbl = widget->findChild<ClickableLabel*>("band");
+	if (!clbl) {
+		qDebug() << "cant find band lbl";
+		return;
+	}
+	clbl->setText(QString::fromStdString(album.bandname()));
+
+	QLabel *lbl = widget->findChild<QLabel*>("album");
+	if (!lbl) {
+		qDebug() << "cant find album lbl";
+		return;
+	}
+	lbl->setText(QString::fromStdString(album.title()));
+
+	lbl = widget->findChild<QLabel*>("date");
+	if (!lbl) {
+		qDebug() << "cant find date lbl";
+		return;
+	}
+	int64_t unix = album.unixreleasedate();
+	QString val = "";
+	if (unix) {
+		QDateTime t = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
+		val = t.toString("dd-MM-yyyy");
+	}
+	lbl->setText(val);
+
+	QTableWidget *songs = widget->findChild<QTableWidget*>();
+	songs->clearContents();
+	songs->setRowCount(album.songs_size());
+
+	for (int i = 0; i < album.songs_size(); i++) {
+		Song song = album.songs(i);
+
+		const std::string &songname = song.songname();
+		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(songname));
+		item->setData(dataRole, QVariant::fromValue(song));
+		songs->setItem(i, 0, item);
+		qDebug() << QString::fromStdString(song.bandname());
+
+		QTime length = QTime(0, 0, 0, 0).addSecs(song.lengthsec());
+		item = new QTableWidgetItem(length.toString("mm:ss"));
+		songs->setItem(i, 1, item);
+	}
+
+	mainPage->setCurrentIndex(ALBUM_PAGE_ID);
 }
 
 void MainWidget::parserConnected()
@@ -858,11 +988,16 @@ void MainWidget::simpleAns(uint64_t reqId, SimpleAns ans)
 					band.participants_size() <<
 					band.concerts_size();
 //		if (mainPage->currentIndex() == BAND_PAGE_ID) {
-			handleBandPageInsertion(&ans);
+		handleBandPageInsertion(&ans);
 //		}
 		break;
 	}
+	case SimpleAns::kAlbum: {
+		handleAlbumPageInsertion(&ans);
+		break;
 	}
+	}
+
 }
 
 void MainWidget::streamAns(uint64_t reqId, StreamAns ans)

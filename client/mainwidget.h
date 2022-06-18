@@ -21,11 +21,13 @@ class ClickableLabel: public QLabel
 {
 	Q_OBJECT
 public:
-	ClickableLabel(QString text = "", QWidget *parent = nullptr);
+	ClickableLabel(int typeId, QString text = "", QWidget *parent = nullptr);
 protected:
 	void mousePressEvent(QMouseEvent *evt);
 signals:
-	void clicked();
+	void clicked(int typeId, QString text);
+private:
+	int typeId;
 };
 
 class AlbumView: public QFrame
@@ -37,7 +39,9 @@ public:
 protected:
 	void mousePressEvent(QMouseEvent *evt);
 signals:
-	void clicked();
+	void clicked(int typeId, QString text);
+private:
+	QString title;
 };
 
 class MainWidget : public QWidget
@@ -58,7 +62,10 @@ signals:
 	void stopPlayer(bool clear);
 	void seekPlayer(int secs);
 private slots:
-	void clicked();
+	void processSongClick(Song &song, QString band);
+	void albumSongsTableClicked(int row, int col);
+	void clickedReq(int typeId, QString text);
+	void clickedLeftPanel();
 	void tableClicked(int row, int column);
 	void tableScrolled(int value);
 	void searchChanged(QString filter);
@@ -87,6 +94,7 @@ private:
 	void setupTables();
 	void setupPages();
 	void setupBandPage();
+	void setupAlbumPage();
 	void scrollTable(int id);
 
 	void requestTable(int first, int last, QString filter,
@@ -100,6 +108,7 @@ private:
 	void handleConcertInsertion(Req&, TableAns*);
 
 	void handleBandPageInsertion(SimpleAns*);
+	void handleAlbumPageInsertion(SimpleAns*);
 
 	static int dataRole;
 
@@ -108,8 +117,8 @@ private:
 	QGroupBox *playGroup;
 	QLineEdit *searchEdit;
 
-	QPushButton *songNameBtn;
-	QPushButton *bandNameBtn;
+	QLabel *songNameLbl;
+	ClickableLabel *bandNameLbl;
 	QPushButton *currTimeBtn;
 	QPushButton *endTimeBtn;
 	QSlider *playSlider;

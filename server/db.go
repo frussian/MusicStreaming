@@ -297,6 +297,59 @@ func dbSimpleBandReq(conn *Conn, req string) *proto.SimpleAns_Band {
 	return ans
 }
 
+func dbSimpleAlbumReq(conn *Conn, req string) *proto.SimpleAns_Album {
+	sql := `select albumid, releasedate, bandid from album where title=$1;`
+	row := conn.stateSrv.pgxconn.QueryRow(context.Background(), sql, req)
+	var albumId, bandId pgtype.Int4
+	var date pgtype.Date
+	err := row.Scan(&albumId, &date, &bandId)
+	if err != nil {
+		conn.stateSrv.logger.Error(err.Error())
+		return nil
+	}
+
+	album := &proto.Album{}
+	album.UnixReleaseDate = date.Time.Unix()
+	album.Title = req
+
+	sql = `select bandname from band where bandid=$1`
+	row = conn.stateSrv.pgxconn.QueryRow(context.Background(), sql, bandId)
+	var bandName pgtype.Varchar
+	err = row.Scan(&bandName)
+	if err != nil {
+		conn.stateSrv.logger.Error(err.Error())
+		return nil
+	}
+
+	album.BandName = bandName.String
+
+	sql = `select songname, length from song where albumid=$1 order by index asc;`
+	rows, err := conn.stateSrv.pgxconn.Query(context.Background(), sql, albumId)
+	if err != nil {
+		conn.stateSrv.logger.Error(err.Error())
+		return nil
+	}
+
+	for rows.Next() {
+		var length pgtype.Interval
+		var songname pgtype.Varchar
+
+		song := &proto.Song{}
+		err = rows.Scan(&songname, &length)
+		if err != nil {
+			conn.stateSrv.logger.Error(err.Error())
+			continue
+		}
+		song.SongName = songname.String
+		song.LengthSec = int32(length.Microseconds / int64(math.Pow10(6)))
+		song.BandName = bandName.String
+		album.Songs = append(album.Songs, song)
+	}
+
+	ans := &proto.SimpleAns_Album{Album: album}
+	return ans
+}
+
 func dbGetObjId(conn *Conn, req *proto.StreamReq) int {
 	sql := ""
 	switch req.Type {
