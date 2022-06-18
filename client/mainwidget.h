@@ -4,6 +4,8 @@
 #include <QWidget>
 #include <QMap>
 #include <QMetaType>
+#include <QLabel>
+#include <QFrame>
 
 class QGroupBox;
 class QStackedWidget;
@@ -14,6 +16,29 @@ class QPushButton;
 class QSlider;
 
 #include "messages.pb.h"
+
+class ClickableLabel: public QLabel
+{
+	Q_OBJECT
+public:
+	ClickableLabel(QString text = "", QWidget *parent = nullptr);
+protected:
+	void mousePressEvent(QMouseEvent *evt);
+signals:
+	void clicked();
+};
+
+class AlbumView: public QFrame
+{
+	Q_OBJECT
+public:
+	AlbumView(QString title, QString band, int nsongs = 0);
+	~AlbumView();
+protected:
+	void mousePressEvent(QMouseEvent *evt);
+signals:
+	void clicked();
+};
 
 class MainWidget : public QWidget
 {
@@ -60,6 +85,8 @@ private:
 	void setupSearch();
 	void setupPlayArea(QString stylesheet);
 	void setupTables();
+	void setupPages();
+	void setupBandPage();
 	void scrollTable(int id);
 
 	void requestTable(int first, int last, QString filter,
@@ -71,6 +98,8 @@ private:
 	void handleAlbumInsertion(Req&, TableAns*);
 	void handleSongInsertion(Req&, TableAns*);
 	void handleConcertInsertion(Req&, TableAns*);
+
+	void handleBandPageInsertion(SimpleAns*);
 
 	static int dataRole;
 
@@ -86,7 +115,7 @@ private:
 	QSlider *playSlider;
 //	QGroupBox *playGroup;
 
-	QStackedWidget *tables;
+	QStackedWidget *mainPage;
 	uint64_t reqId = 1;
 
 	uint64_t currSongReqId = 0;

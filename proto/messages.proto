@@ -24,6 +24,7 @@ message Request {
     TableReq tableReq = 4;
     SimpleReq simpleReq = 5;
     StreamReq streamReq = 6;
+    RangeReq rangeReq = 7;
   }
 }
 
@@ -34,6 +35,7 @@ message Answer {
     TableAns tableAns = 3;
     SimpleAns simpleAns = 4;
     StreamAns streamAns = 5;
+    RangeAns rangeAns = 6;
   }
 }
 
@@ -53,6 +55,14 @@ message StreamReq {
   string reqString = 1;
   int32 suggestedSize = 2;
   EntityType type = 3;
+}
+
+
+message RangeReq {
+  string reqString = 1;
+  int32 suggestedSize = 2;  //0 if we want only the whole size
+  int32 offset = 3;
+  EntityType type = 4;
 }
 
 message TableAns {
@@ -77,6 +87,13 @@ message SimpleAns {
 message StreamAns {
   bytes data = 1;
   bool isFinal = 2;
+}
+
+
+message RangeAns {
+    bytes data = 1;
+    bool isFinal = 2;
+    int32 totalSize = 3;
 }
 
 enum Genre {

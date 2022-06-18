@@ -9,15 +9,6 @@
 #include "opusfile.h"
 #include "audioplayer.h"
 
-
-#define FRAME_SIZE 960
-#define SAMPLE_RATE 48000
-#define CHANNELS 2
-#define APPLICATION OPUS_APPLICATION_AUDIO
-#define BITRATE 64000
-#define MAX_FRAME_SIZE 6*960
-#define MAX_PACKET_SIZE (3*1276)
-
 OggDecoder::OggDecoder(AudioPlayer *player, QObject *parent):
 	QObject(parent)
 {
@@ -32,8 +23,8 @@ int OggDecoder::init(QByteArray data)
 	OpusFileCallbacks cbs;
 	int err;
 
-	cbs.seek = oggSeek;
-	cbs.tell = oggTell;
+	cbs.seek = NULL;
+	cbs.tell = NULL;
 	cbs.read = oggRead;
 	cbs.close = NULL;  //free
 
@@ -48,7 +39,7 @@ int OggDecoder::init(QByteArray data)
 	inited = true;
 	if (err) qDebug() << "init error" << err;
 	else qDebug() << "success init";
-	op_set_dither_enabled(dec, false);
+//	op_set_dither_enabled(dec, false);
 
 //	QTimer::singleShot(0, this, SLOT(decode()));
 
@@ -72,11 +63,11 @@ int OggDecoder::decode()
 //		qDebug() << "not available for decoding";
 		return 0;
 	}
-	qDebug() << opus.size() << offset << "avail";
+//	qDebug() << opus.size() << offset << "avail";
 //	QTimer::singleShot(0, this, &OggDecoder::decode);  //for continuous decoding
 
 	r = op_read_stereo(dec, pcm, n);
-	qDebug() << "read" << r;
+//	qDebug() << "read" << r;
 	if (r < 0) {
 		qDebug() << "error" << r;
 		return -1;
@@ -96,7 +87,7 @@ int OggDecoder::decode()
 
 int OggDecoder::writeOpus(QByteArray newOpus)
 {
-	qDebug() << "opus size" << opus.size() << opusTmp.size();
+//	qDebug() << "opus size" << opus.size() << opusTmp.size();
 	if (isReset) {
 		opusTmp.append(newOpus);
 		return 0;
@@ -131,13 +122,14 @@ void OggDecoder::reset()
 
 void OggDecoder::seek(int sample_offset)
 {
-	op_pcm_seek(dec, sample_offset);
+	int success = op_pcm_seek(dec, sample_offset);
+	qDebug() << success << "pcm seek request";
 }
 
 int OggDecoder::oggRead(void *ptr, unsigned char *data, int len)
 {
 	OggDecoder *decoder = (OggDecoder*)ptr;
-	qDebug() << "reading" << decoder->offset <<  len;
+//	qDebug() << "reading" << decoder->offset <<  len;
 	int offset = decoder->offset;
 	int size = decoder->opus.size();
 	unsigned char *opus = (unsigned char*)decoder->opus.data();
@@ -145,6 +137,10 @@ int OggDecoder::oggRead(void *ptr, unsigned char *data, int len)
 	if (offset == size) {
 		qDebug() << "offset == size";
 		return 0;
+	}
+	if (offset > size) {
+		qDebug() << "offset > size";
+		return -1;
 	}
 
 	if (offset + len > size) {
@@ -162,13 +158,20 @@ int OggDecoder::oggRead(void *ptr, unsigned char *data, int len)
 int OggDecoder::oggSeek(void *stream, int64_t offset, int whence)
 {
 	OggDecoder *decoder = (OggDecoder*)stream;
+	int old_offset = decoder->offset;
 	qDebug() << "offset" << offset << "whence" << whence;
 	if (whence == SEEK_SET) {
 		decoder->offset = offset;
 	} else if (whence == SEEK_END) {
-		decoder->offset = decoder->opus.size() + offset;
+		decoder->offset = 1000000 + offset;
 	} else {
 		decoder->offset += offset;
+	}
+
+	if (decoder->offset > decoder->opus.size()) {
+		qDebug() << "seek offset > size";
+		decoder->offset = old_offset;
+		return -1;
 	}
 
 	return 0;
