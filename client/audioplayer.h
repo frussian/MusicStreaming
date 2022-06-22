@@ -26,6 +26,7 @@ public slots:
 	void stop(bool clear);
 	void seek(int secs);
 	void reset();
+	void volChanged(int vol);
 private slots:
 	void handleStateChange(QAudio::State state);
 	void notify();

@@ -200,22 +200,23 @@ void MainWidget::setupPlayArea(QString stylesheet)
 //	progress->setStyleSheet(customStyleSheet);
 //	playLay->addWidget(progress);
 	playSlider = new QSlider(Qt::Horizontal);
-	connect(playSlider, &QSlider::sliderReleased, this, &MainWidget::sliderChanged);
+	connect(playSlider, &QSlider::sliderReleased, this, &MainWidget::playSliderChanged);
 	playSlider->setMinimum(0);
 	playSlider->setMaximum(100);
 	playSlider->setValue(0);
 	playSlider->setStyleSheet(stylesheet);
 
-	QPushButton *playBtn = new QPushButton;
-//	playBtn->setFixedSize(70, 70);
-//	QRect rect(QPoint(), playBtn->size());
-//	rect.adjust(10, 10, -10, -10);
-//	QRegion region(rect,QRegion::Ellipse);
-	playBtn->setStyleSheet(stylesheet);
-//	playBtn->setMask(region);
-//	playBtn->setFixedSize(50, 50);
+	volSlider = new QSlider(Qt::Horizontal);
+	connect(volSlider, &QSlider::valueChanged, player, &AudioPlayer::volChanged);
+	volSlider->setMinimum(0);
+	volSlider->setMaximum(100);
+	volSlider->setValue(100);
+	volSlider->setStyleSheet(stylesheet);
 
+	playBtn = new QPushButton;
+	playBtn->setStyleSheet(stylesheet);
 	playBtn->setCheckable(true);
+
 	connect(playBtn, &QPushButton::toggled, this, &MainWidget::playPressed);
 
 	QVBoxLayout *songInfoLay = new QVBoxLayout;
@@ -237,12 +238,19 @@ void MainWidget::setupPlayArea(QString stylesheet)
 	QLabel endLbl("end");
 //	bandNameBtn->setStyleSheet("QPushButton { border: none; }");
 
-	playLay->addWidget(playBtn, 0, 2);
-	playLay->setAlignment(playBtn, Qt::AlignCenter);
+	playLay->addWidget(playBtn, 0, 2, Qt::AlignCenter);
+//	playLay->setAlignment(playBtn, Qt::AlignCenter);
 	playLay->addWidget(playSlider, 1, 2);
 	playLay->addWidget(currTimeBtn, 1, 1);
 	playLay->addWidget(endTimeBtn, 1, 3);
+	playLay->addWidget(volSlider, 1, 4);
 	playLay->addLayout(songInfoLay, 0, 0, 2, 1);
+
+//	playLay->setColumnStretch(0, 3);
+//	playLay->setColumnStretch(1, 3);
+	playLay->setColumnStretch(2, 3);
+//	playLay->setColumnStretch(3, 3);
+	playLay->setColumnStretch(4, 1);
 
 	playGroup->setLayout(playLay);
 }
@@ -265,7 +273,7 @@ void MainWidget::processedUSecs(quint64 usecs)
 //	qDebug() << secs << secs / (float)currSongSecs*100;
 }
 
-void MainWidget::sliderChanged()
+void MainWidget::playSliderChanged()
 {
 	qDebug() << playSlider->value();
 	QString timeStr = endTimeBtn->text();
@@ -525,15 +533,17 @@ ClickableLabel *MainWidget::getLabel(int typeId, QString text)
 void MainWidget::processSongClick(Song &song)
 {
 	QString songName = QString::fromStdString(song.songname());
+	QString bandName = QString::fromStdString(song.bandname());
 	currSongSecs = song.lengthsec();
 
 	player->reset();  //in different thread
+	playBtn->setChecked(false);
 	emit startPlayer(true);
 #if RANGE_REQUESTS_FOR_SONGS == 0
 	streamRequest(songName, 8000, EntityType::SONG);
 #endif
 	songNameLbl->setText(songName);
-	bandNameLbl->setText(QString::fromStdString(song.bandname()));
+	bandNameLbl->setText(bandName);
 	currTimeBtn->setText("0:00");
 	QTime length = QTime(0, 0, 0, 0).addSecs(song.lengthsec());
 	endTimeBtn->setText(length.toString("mm:ss"));
@@ -1128,6 +1138,7 @@ void MainWidget::streamAns(uint64_t reqId, StreamAns ans)
 			currSongReqId = 0;
 			qDebug() << "bytes in last pkt" << data.size();
 			qDebug() << "end of transfer";
+			player->writeOpusData(QByteArray());
 		}
 		break;
 	}

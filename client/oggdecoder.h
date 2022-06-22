@@ -31,6 +31,7 @@ private:
 	OggOpusFile *dec = nullptr;
 	int offset = 0;
 	bool inited = false;
+	bool recvAll = false;
 	QByteArray opus;
 	QByteArray opusTmp;
 	AudioPlayer *player;

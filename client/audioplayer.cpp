@@ -167,6 +167,12 @@ void AudioPlayer::reset()
 	decoder->isReset = true;
 }
 
+void AudioPlayer::volChanged(int vol)
+{
+	qreal v = vol / (qreal)100;
+	audio->setVolume(v);
+}
+
 int AudioPlayer::tryWriting()
 {
 	int bytesToWrite = std::min(audio->bytesFree(), buf.length());

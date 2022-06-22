@@ -73,8 +73,8 @@ int OggDecoder::decode()
 		return -1;
 	} else if (r == 0) {
 //		qDebug() << "end";
-		qDebug() << "all" << opus.size();
-		emit decoded(QByteArray());
+		qDebug() << "all" << recvAll;
+		if (recvAll) emit decoded(QByteArray());
 		return 0;
 	}
 
@@ -90,6 +90,7 @@ int OggDecoder::decode()
 int OggDecoder::writeOpus(QByteArray newOpus)
 {
 //	qDebug() << "opus size" << opus.size() << opusTmp.size();
+	recvAll = newOpus.isEmpty();
 	if (isReset) {
 		opusTmp.append(newOpus);
 		return 0;
@@ -120,6 +121,7 @@ void OggDecoder::reset()
 	dec = nullptr;
 	offset = 0;
 	isReset = false;
+	recvAll = false;
 }
 
 void OggDecoder::seek(int sample_offset)

@@ -77,7 +77,7 @@ private slots:
 	void reqFailed(uint64_t reqId);
 	void playPressed(bool checked);
 	void processedUSecs(quint64);
-	void sliderChanged();
+	void playSliderChanged();
 //	void simpleAns(uint64_t reqId, SimpleAns ans);
 //	void streamAns(uint64_t reqId, StreamAns ans);
 private:
@@ -125,6 +125,8 @@ private:
 	QPushButton *currTimeBtn;
 	QPushButton *endTimeBtn;
 	QSlider *playSlider;
+	QPushButton *playBtn;
+	QSlider *volSlider;
 //	QGroupBox *playGroup;
 
 	QStackedWidget *mainPage;

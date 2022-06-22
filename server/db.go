@@ -220,10 +220,16 @@ func scanMembershipRow(state *ServerState, row pgx.Rows) *proto.Membership {
 		state.logger.Error(err.Error())
 		return nil
 	}
+	quitUnix := int64(0)
+	if quit.Status == pgtype.Null {
+		quitUnix = 0
+	} else {
+		quitUnix = quit.Time.Unix()
+	}
 	return &proto.Membership{MusName: mus.String,
 		BandName: band.String,
 		UnixEntryDate: enter.Time.Unix(),
-		UnixQuitDate: quit.Time.Unix()}
+		UnixQuitDate: quitUnix}
 }
 
 func dbSimpleBandReq(conn *Conn, req string) *proto.SimpleAns_Band {

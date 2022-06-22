@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/files">
-        <file>stylesheet.txt</file>
+        <file alias="stylesheet.txt">resources/stylesheet.txt</file>
+        <file alias="play_btn2.png">resources/play_btn2.png</file>
+        <file alias="play_btn.png">resources/play_btn.png</file>
+        <file alias="pause_btn.png">resources/pause_btn.png</file>
     </qresource>
 </RCC>

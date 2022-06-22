@@ -1,0 +1,49 @@
+QSlider::groove:horizontal {
+border: 1px solid #bbb;
+background: white;
+height: 10px;
+border-radius: 4px;
+}
+
+QSlider::sub-page:horizontal {
+background: qlineargradient(x1: 0, y1: 0.2, x2: 1, y2: 1,
+stop: 0 #1dcc1b, stop: 1 #98f296);
+border: 1px solid #777;
+height: 10px;
+border-radius: 4px;
+}
+
+QSlider::add-page:horizontal {
+background: #fff;
+border: 1px solid #777;
+height: 10px;
+border-radius: 4px;
+}
+
+QSlider::handle:horizontal {
+background: #ccc;
+border: 2px solid #ccc;
+width: 16px;
+height: 20px;
+line-height: 20px;
+margin-top: -5px;
+margin-bottom: -5px;
+border-radius: 10px;
+}
+
+QPushButton {
+border-image: url(:/files/pause_btn.png);
+min-width:40px;
+min-height:40px;
+}
+
+QPushButton:checked {
+border-image: url(:/files/play_btn.png);
+min-width:40px;
+min-height:40px;
+}
+
+/*QPushButton:hover {
+border-image: url(:/files/play_btn.png) 0 0 0 0 2 2;
+}
+*/
