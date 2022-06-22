@@ -350,6 +350,43 @@ func dbSimpleAlbumReq(conn *Conn, req string) *proto.SimpleAns_Album {
 	return ans
 }
 
+func dbSimpleMusicianReq(conn *Conn, req string) *proto.SimpleAns_Musician {
+	sql := "select dateOfBirth, biography, musicianID from musician where musicianName=$1;"
+	var musID pgtype.Int4
+	var date pgtype.Date
+	var bio pgtype.Varchar
+	row := conn.stateSrv.pgxconn.QueryRow(context.Background(), sql, req)
+	err := row.Scan(&date, &bio, &musID)
+	if err != nil {
+		conn.stateSrv.logger.Error(err.Error())
+		return nil
+	}
+
+	mus := &proto.Musician{}
+	mus.MusName = req
+	mus.UnixDateOfBirth = date.Time.Unix()
+	mus.Bio = bio.String
+
+	sql = "select $1, (select bandname from band b where b.bandid=m.bandid), " +
+		"enterdate, quitdate from membership m where musID=$2;"
+	rows, err := conn.stateSrv.pgxconn.Query(context.Background(), sql, req, musID.Int)
+	if err != nil {
+		conn.stateSrv.logger.Error(err.Error())
+		return nil
+	}
+
+	for rows.Next() {
+		memb := scanMembershipRow(conn.stateSrv, rows)
+		if memb == nil {
+			continue
+		}
+		mus.Memberships = append(mus.Memberships, memb)
+	}
+
+	ans := &proto.SimpleAns_Musician{Musician: mus}
+	return ans
+}
+
 func dbGetObjId(conn *Conn, req *proto.StreamReq) int {
 	sql := ""
 	switch req.Type {
@@ -400,10 +437,7 @@ func dbGetChunk(conn *Conn, stream *Stream) []byte {
 	chunk := make([]byte, stream.size)
 
 	n, err := lo.Read(chunk)
-	if err == io.EOF {
-		return nil
-	}
-	if err != nil {
+	if err != nil && err != io.EOF {
 		conn.stateSrv.logger.Error(err.Error())
 		return nil
 	}

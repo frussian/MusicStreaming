@@ -70,7 +70,12 @@ void AudioPlayer::handleStateChange(QAudio::State state)
 //				delete audio;
 		if (this->state == NO_MORE_DATA) {
 			checkBytesTimer->stop();
-			this->state = NOT_ACTIVE;
+			qDebug() << buf.size() << "left size";
+			if (!buf.isEmpty()) {
+				tryWriting();
+			} else {
+				this->state = NOT_ACTIVE;
+			}
 		}
 //		decode();
 		break;

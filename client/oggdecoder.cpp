@@ -73,6 +73,7 @@ int OggDecoder::decode()
 		return -1;
 	} else if (r == 0) {
 //		qDebug() << "end";
+		qDebug() << "all" << opus.size();
 		emit decoded(QByteArray());
 		return 0;
 	}

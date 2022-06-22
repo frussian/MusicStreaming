@@ -26,6 +26,7 @@
 #define BAND_CLICK_ID 0
 #define ALBUM_CLICK_ID 1
 #define SONG_CLICK_ID 2
+#define MUSICIAN_CLICK_ID 3
 
 #define BAND_TABLE_ID 0
 #define ALBUM_TABLE_ID 1
@@ -33,6 +34,7 @@
 #define CONCERT_TABLE_ID 3
 #define BAND_PAGE_ID 4
 #define ALBUM_PAGE_ID 5
+#define MUSICIAN_PAGE_ID 6
 
 #define TABLE_GROW 3
 
@@ -272,7 +274,7 @@ void MainWidget::sliderChanged()
 
 	int val = playSlider->value();
 	int secs = val / 100.f * endSecs;
-	emit seekPlayer(secs);
+//	emit seekPlayer(secs);
 	qDebug() << secs << endSecs;
 	//TODO: set offset and add later to elapsed seconds
 }
@@ -332,7 +334,7 @@ void MainWidget::setupPages()
 {
 	setupBandPage();
 	setupAlbumPage();
-
+	setupMusicianPage();
 }
 
 void MainWidget::setupBandPage()
@@ -433,6 +435,35 @@ void MainWidget::setupAlbumPage()
 //	connect(songs, &QTableWidget::cellDoubleClicked, this, &MainWidget::albumSongsTableClicked);
 
 	lay->addWidget(songs);
+
+	mainPage->addWidget(page);
+}
+
+void MainWidget::setupMusicianPage()
+{
+	QVBoxLayout *lay = new QVBoxLayout;
+	QWidget *page = new QWidget;
+	page->setLayout(lay);
+
+	QLabel *lbl = new QLabel;
+	lbl->setObjectName("name");
+	lay->addWidget(lbl);
+
+	lbl = new QLabel;
+	lbl->setObjectName("date");
+	lay->addWidget(lbl);
+
+	lbl = new QLabel;
+	lbl->setObjectName("bio");
+	lay->addWidget(lbl);
+
+	QStringList cols;
+	cols << "Band" << "Entry date" << "Quit date";
+	QTableWidget *table = new QTableWidget(0, cols.size());
+	table->setHorizontalHeaderLabels(cols);
+	table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+	table->setEditTriggers(QAbstractItemView::NoEditTriggers);
+	lay->addWidget(table);
 
 	mainPage->addWidget(page);
 }
@@ -546,6 +577,10 @@ void MainWidget::clickedReq(int typeId, QString text)
 		processSongClick(song);
 		break;
 	}
+	case MUSICIAN_CLICK_ID: {
+		simpleRequest(text, EntityType::MUSICIAN);
+		break;
+	}
 	}
 }
 
@@ -656,6 +691,14 @@ QString getGenre(enum Genre genre)
 	return "";
 }
 
+QString getFmtDateFromUnix(int64_t unix, QString fmt) {
+	if (unix) {
+		QDateTime d = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
+		return d.toString(fmt);
+	}
+	return "";
+}
+
 void MainWidget::handleBandInsertion(Req &req, TableAns *ans)
 {
 	QTableWidget *bands = dynamic_cast<QTableWidget*>(mainPage->widget(BAND_TABLE_ID));
@@ -676,48 +719,35 @@ void MainWidget::handleBandInsertion(Req &req, TableAns *ans)
 		bands->setItem(i+req.first, 1, item);
 
 		int64_t unix = band.unixfounddate();
-		if (unix) {
-			QDateTime found = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
-			item = new QTableWidgetItem(found.toString("yyyy"));
-			bands->setItem(i+req.first, 2, item);
-		}
+		item = new QTableWidgetItem(getFmtDateFromUnix(unix, "yyyy"));
+		bands->setItem(i+req.first, 2, item);
+
 		unix = band.unixtermdate();
-		if (unix) {
-			QDateTime term = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
-			item = new QTableWidgetItem(term.toString("yyyy"));
-			bands->setItem(i+req.first, 3, item);
-		}
+		item = new QTableWidgetItem(getFmtDateFromUnix(unix, "yyyy"));
+		bands->setItem(i+req.first, 3, item);
 	}
 }
 
 void MainWidget::handleAlbumInsertion(Req &req, TableAns *ans)
 {
 	QTableWidget *albums = dynamic_cast<QTableWidget*>(mainPage->widget(ALBUM_TABLE_ID));
-//	albums->clearContents();
 	QTableWidgetItem *item;
 	for (int i = 0; i < ans->albums_size(); i++) {
 		Album album = ans->albums(i);
 
 		const std::string &albumname = album.title();
-//		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(albumname));
-//		item->setData(dataRole, QVariant::fromValue(album));
-//		albums->setItem(i+req.first, 0, item);
 		ClickableLabel *lbl = getLabel(ALBUM_CLICK_ID,
 									   QString::fromStdString(albumname));
 		lbl->setProperty("album", QVariant::fromValue(album));
 		albums->setCellWidget(i+req.first, 0, lbl);
 		const std::string &bandname = album.bandname();
-//		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(bandname));
-//		albums->setItem(i+req.first, 1, item);
 		lbl = getLabel(BAND_CLICK_ID, QString::fromStdString(bandname));
 		albums->setCellWidget(i+req.first, 1, lbl);
 
 		int64_t unix = album.unixreleasedate();
-		if (unix) {
-			QDateTime found = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
-			item = new QTableWidgetItem(found.toString("yyyy-MM-dd"));
-			albums->setItem(i+req.first, 2, item);
-		}
+		QString reldate = getFmtDateFromUnix(unix, "yyyy-MM-dd");
+		item = new QTableWidgetItem(reldate);
+		albums->setItem(i+req.first, 2, item);
 
 		int nsongs = album.songs_size();
 		item = new QTableWidgetItem(QString::number(nsongs));
@@ -733,24 +763,17 @@ void MainWidget::handleSongInsertion(Req &req, TableAns *ans)
 		Song song = ans->songs(i);
 
 		const std::string &songname = song.songname();
-//		QTableWidgetItem *item = new QTableWidgetItem(QString::fromStdString(songname));
-//		item->setData(dataRole, QVariant::fromValue(song));
-//		songs->setItem(i+req.first, 0, item);
 		ClickableLabel *lbl = getLabel(SONG_CLICK_ID,
 									   QString::fromStdString(songname));
 		lbl->setProperty("song", QVariant::fromValue(song));
 		songs->setCellWidget(i+req.first, 0, lbl);
 
 		const std::string &albumname = song.albumname();
-//		item = new QTableWidgetItem(QString::fromStdString(albumname));
-//		songs->setItem(i+req.first, 1, item);
 		lbl = getLabel(ALBUM_CLICK_ID, QString::fromStdString(albumname));
 		songs->setCellWidget(i+req.first, 1, lbl);
 
 		const std::string &bandname = song.bandname();
-//		item = new QTableWidgetItem(QString::fromStdString(bandname));
 		lbl = getLabel(BAND_CLICK_ID, QString::fromStdString(bandname));
-//		songs->setItem(i+req.first, 2, item);
 		songs->setCellWidget(i+req.first, 2, lbl);
 
 		QTime length = QTime(0, 0, 0, 0).addSecs(song.lengthsec());
@@ -776,11 +799,9 @@ void MainWidget::handleConcertInsertion(Req &req, TableAns *ans)
 		concerts->setItem(i+req.first, 1, item);
 
 		int64_t unix = concert.unixdatetime();
-		if (unix) {
-			QDateTime t = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
-			item = new QTableWidgetItem(t.toString("dd-MM-yyyy hh:mm"));
-			concerts->setItem(i+req.first, 2, item);
-		}
+		QString datetime = getFmtDateFromUnix(unix, "dd-MM-yyyy hh:mm");
+		item = new QTableWidgetItem(datetime);
+		concerts->setItem(i+req.first, 2, item);
 	}
 }
 
@@ -849,22 +870,17 @@ void MainWidget::handleBandPageInsertion(SimpleAns *ans)
 	parts->setRowCount(band.participants_size());
 	for (int i = 0; i < band.participants_size(); i++) {
 		Membership memb = band.participants(i);
-		parts->setItem(i, 0, new QTableWidgetItem(QString::fromStdString(memb.musname())));
+		auto lbl = getLabel(MUSICIAN_CLICK_ID, QString::fromStdString(memb.musname()));
+		parts->setCellWidget(i, 0, lbl);
 
 		QTableWidgetItem *item;
 		int64_t unix = memb.unixentrydate();
-		if (unix > 0) {
-			QDateTime entry = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
-			item = new QTableWidgetItem(entry.toString("yyyy-MM-dd"));
-			parts->setItem(i, 1, item);
-		}
+		item = new QTableWidgetItem(getFmtDateFromUnix(unix, "yyyy-MM-dd"));
+		parts->setItem(i, 1, item);
 
 		unix = memb.unixquitdate();
-		if (unix > 0) {
-			QDateTime quit = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
-			item = new QTableWidgetItem(quit.toString("yyyy-MM-dd"));
-			parts->setItem(i, 2, item);
-		}
+		item = new QTableWidgetItem(getFmtDateFromUnix(unix, "yyyy-MM-dd"));
+		parts->setItem(i, 2, item);
 	}
 
 	box = boxes.at(3);
@@ -878,11 +894,9 @@ void MainWidget::handleBandPageInsertion(SimpleAns *ans)
 
 		QTableWidgetItem *item;
 		int64_t unix = c.unixdatetime();
-		if (unix) {
-			QDateTime t = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
-			item = new QTableWidgetItem(t.toString("dd-MM-yyyy hh:mm"));
-			concerts->setItem(i, 1, item);
-		}
+		item = new QTableWidgetItem(getFmtDateFromUnix(unix, "dd-MM-yyyy hh:mm"));
+		concerts->setItem(i, 1, item);
+
 		concerts->setItem(i, 2, new QTableWidgetItem(QString::fromStdString(c.description())));
 		concerts->setItem(i, 3, new QTableWidgetItem(QString::number(c.capacity())));
 	}
@@ -921,11 +935,7 @@ void MainWidget::handleAlbumPageInsertion(SimpleAns *ans)
 		return;
 	}
 	int64_t unix = album.unixreleasedate();
-	QString val = "";
-	if (unix) {
-		QDateTime t = QDateTime::fromSecsSinceEpoch(unix, Qt::UTC);
-		val = t.toString("dd-MM-yyyy");
-	}
+	QString val = getFmtDateFromUnix(unix, "dd-MM-yyyy");
 	lbl->setText(val);
 
 	QTableWidget *songs = widget->findChild<QTableWidget*>();
@@ -950,6 +960,55 @@ void MainWidget::handleAlbumPageInsertion(SimpleAns *ans)
 	}
 
 	mainPage->setCurrentIndex(ALBUM_PAGE_ID);
+}
+
+static bool findAndSetLbl(QWidget *w, QString name, QString val)
+{
+	QLabel *lbl = w->findChild<QLabel*>(name);
+	if (!lbl) {
+		qWarning() << "no lbl" << name;
+		return false;
+	}
+	lbl->setText(val);
+	return true;
+}
+
+void MainWidget::handleMusicianPageInsertion(SimpleAns *ans)
+{
+	QWidget *w = mainPage->widget(MUSICIAN_PAGE_ID);
+	Musician mus = ans->musician();
+	findAndSetLbl(w, "name", QString::fromStdString(mus.musname()));
+
+	int64_t unix = mus.unixdateofbirth();
+	QString val = getFmtDateFromUnix(unix, "dd-MM-yyyy");
+	findAndSetLbl(w, "date", val);
+
+	findAndSetLbl(w, "bio", QString::fromStdString(mus.bio()));
+
+	QTableWidget *table = w->findChild<QTableWidget*>();
+	if (!table) {
+		qWarning() << "cant find memb table";
+		return;
+	}
+	table->clearContents();
+	table->setRowCount(mus.memberships_size());
+	for (int i = 0; i < mus.memberships_size(); i++) {
+		Membership memb = mus.memberships(i);
+		auto lbl = getLabel(BAND_CLICK_ID, QString::fromStdString(memb.bandname()));
+		table->setCellWidget(i, 0, lbl);
+
+		int64_t unix = memb.unixentrydate();
+		QString d = getFmtDateFromUnix(unix, "dd-MM-yyyy");
+		QTableWidgetItem *item = new QTableWidgetItem(d);
+		table->setItem(i, 1, item);
+
+		unix = memb.unixquitdate();
+		d = getFmtDateFromUnix(unix, "dd-MM-yyyy");
+		item = new QTableWidgetItem(d);
+		table->setItem(i, 2, item);
+	}
+
+	mainPage->setCurrentIndex(MUSICIAN_PAGE_ID);
 }
 
 void MainWidget::parserConnected()
@@ -1031,6 +1090,10 @@ void MainWidget::simpleAns(uint64_t reqId, SimpleAns ans)
 		handleAlbumPageInsertion(&ans);
 		break;
 	}
+	case SimpleAns::kMusician: {
+		handleMusicianPageInsertion(&ans);
+		break;
+	}
 	}
 
 }
@@ -1063,6 +1126,7 @@ void MainWidget::streamAns(uint64_t reqId, StreamAns ans)
 		if (ans.isfinal()) {
 			requests.remove(reqId);
 			currSongReqId = 0;
+			qDebug() << "bytes in last pkt" << data.size();
 			qDebug() << "end of transfer";
 		}
 		break;

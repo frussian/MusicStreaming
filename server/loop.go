@@ -55,6 +55,8 @@ func handleSimpleReq(conn *Conn, req *proto.SimpleReq) *proto.SimpleAns {
 		ans.Msg = dbSimpleBandReq(conn, req.ReqString)
 	case proto.EntityType_ALBUM:
 		ans.Msg = dbSimpleAlbumReq(conn, req.ReqString)
+	case proto.EntityType_MUSICIAN:
+		ans.Msg = dbSimpleMusicianReq(conn, req.ReqString)
 	}
 
 
@@ -226,10 +228,10 @@ func processStreams(conn *Conn) int {
 			conn.stateSrv.logger.Error("cannot marshal msg", "reqId", stream.reqId)
 			return -1
 		}
+		conn.messages.PushBack(bytes)  //TODO: push front
 		if isFinal {
 			removeStream(conn, stream)
 		}
-		conn.messages.PushBack(bytes)  //TODO: push front
 	}
 
 	return 0

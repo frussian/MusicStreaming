@@ -96,6 +96,7 @@ private:
 	void setupPages();
 	void setupBandPage();
 	void setupAlbumPage();
+	void setupMusicianPage();
 	void scrollTable(int id);
 
 	void requestTable(int first, int last, QString filter,
@@ -110,6 +111,7 @@ private:
 
 	void handleBandPageInsertion(SimpleAns*);
 	void handleAlbumPageInsertion(SimpleAns*);
+	void handleMusicianPageInsertion(SimpleAns*);
 
 	static int dataRole;
 
