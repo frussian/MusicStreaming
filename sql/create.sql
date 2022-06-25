@@ -259,10 +259,9 @@ execute procedure album_insert_trig();
 create or replace function song_delete_trig() returns trigger as $song_delete_trig$
 begin
 --     raise notice 'song %', old.data;
-    if (not exists(
-            select 1 from Song
-            where albumID = old.albumID
-        ) and exists(select title from album a where a.albumID = old.albumID)) then
+    if (exists(
+            select title from album a where a.albumID = old.albumID)
+        ) then
         raise exception 'cannot delete song: album with id % must have at least 1 song', old.albumID;
     end if;
     perform lo_unlink(old.data);
