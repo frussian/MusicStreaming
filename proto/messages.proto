@@ -10,16 +10,9 @@ enum EntityType {
   MEMBERSHIP = 5;
 }
 
-//enum ReqType {
-//  TABLE_REQ_TYPE = 0;
-//  SIMPLE_REQ_TYPE = 1;
-//  STREAM_REQ_TYPE = 2;
-//}
-
 message Request {
   uint64 reqId = 1;
-//  ReqType type = 2;
-  bool cancel = 3;  //send again with cancel = true to cancel request or failed req on server side
+  bool cancel = 3;  //send again with cancel = true to cancel request
   oneof msg {
     TableReq tableReq = 4;
     SimpleReq simpleReq = 5;
@@ -30,7 +23,7 @@ message Request {
 
 message Answer {
   uint64 reqId = 1;
-  bool cancel = 2;
+  bool cancel = 2; //failed req on server side
   oneof msg {
     TableAns tableAns = 3;
     SimpleAns simpleAns = 4;
