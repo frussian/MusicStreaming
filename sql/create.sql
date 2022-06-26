@@ -69,9 +69,14 @@ create constraint trigger instr_upd_trig
 create or replace function instr_del_trig() returns trigger as $instr_del_trig$
     begin
         if not exists(select 1 from Instrument i
-                        where old.musicianID = i.musicianID) then
+                        where old.musicianID = i.musicianID)
+			and
+			exists(select 1 from musician
+							where musicianID = old.musicianID)
+		then
             raise exception 'cannot delete instrument because musician must have at least 1 instrument';
         end if;
+    return null;
     end;
 $instr_del_trig$ language plpgsql;
 
@@ -219,7 +224,6 @@ create table Album (
     unique(title, bandID)
 );
 
---TODO: https://postgrespro.ru/docs/postgresql/9.5/lo
 drop table if exists Song cascade;
 create table Song (
     songID int generated always as identity primary key,
@@ -260,9 +264,9 @@ create or replace function song_delete_trig() returns trigger as $song_delete_tr
 begin
 --     raise notice 'song %', old.data;
     if (exists(
-            select title from album a where a.albumID = old.albumID)
+            select 1 from album a where a.albumID = old.albumID)
         ) then
-        raise exception 'cannot delete song: album with id % must have at least 1 song', old.albumID;
+        raise exception 'cannot delete song %: only cascade delete is permitted', old.songname;
     end if;
     perform lo_unlink(old.data);
     return null;
