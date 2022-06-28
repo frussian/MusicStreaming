@@ -6,6 +6,7 @@
 #include <QMetaType>
 #include <QLabel>
 #include <QFrame>
+#include <QTimer>
 
 class QGroupBox;
 class QStackedWidget;
@@ -70,6 +71,7 @@ private slots:
 //	void tableClicked(int row, int column);
 	void tableScrolled(int value);
 	void searchChanged(QString filter);
+	void searchChangedTimer();
 	void tableAns(uint64_t reqId, TableAns ans);
 	void simpleAns(uint64_t reqId, SimpleAns ans);
 	void streamAns(uint64_t reqId, StreamAns ans);
@@ -119,6 +121,7 @@ private:
 	QGroupBox *searchGroup;
 	QGroupBox *playGroup;
 	QLineEdit *searchEdit;
+	QTimer searchTimer;
 
 	QLabel *songNameLbl;
 	ClickableLabel *bandNameLbl;

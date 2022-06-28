@@ -86,6 +86,9 @@ MainWidget::MainWidget(QThread *th, QWidget *parent) : QWidget(parent)
 	parser = new NetworkParser(th);
 	player = new AudioPlayer;
 
+	searchTimer.setSingleShot(true);
+	connect(&searchTimer, &QTimer::timeout, this, &MainWidget::searchChangedTimer);
+
 	initUI();
 
 	connect(parser, &NetworkParser::tableAns, this, &MainWidget::tableAns);
@@ -106,7 +109,7 @@ MainWidget::MainWidget(QThread *th, QWidget *parent) : QWidget(parent)
 	connect(player, &AudioPlayer::processedUSecs, this, &MainWidget::processedUSecs);
 	connect(this, &MainWidget::seekPlayer, player, &AudioPlayer::seek);
 
-	emit connectToHost("192.168.1.30", 3018);
+	emit connectToHost("127.0.0.1", 3018);
 
 //	bool connected = parser->connectToHost("192.168.1.30", 3018);
 //	if (!connected) {
@@ -681,12 +684,19 @@ void MainWidget::scrollTable(int id)
 void MainWidget::searchChanged(QString filter)
 {
 	(void)filter;
+	searchTimer.stop();
+	searchTimer.start(500);
+//	requestTable(0, 5, filter, EntityType(id));
+}
+
+void MainWidget::searchChangedTimer()
+{
+	qDebug() << "search changed timer";
 	int id = mainPage->currentIndex();
 	if (id >= BAND_PAGE_ID) return;
 	QTableWidget *table = dynamic_cast<QTableWidget*>(mainPage->widget(id));
 	table->clearContents();
 	scrollTable(id);
-//	requestTable(0, 5, filter, EntityType(id));
 }
 
 QString getGenre(enum Genre genre)
